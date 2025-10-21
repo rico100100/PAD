@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>GLASS: Flujograma, Tablas profesionales y Traducción</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f6faff;
+      color: #18304d;
+      padding: 32px;
+    }
+    h1, h2, h3 {
+      color: #165a92;
+      margin-bottom: 18px;
+    }
+    .nota, .nota-glass-stage {
+      background: #e4f3fa;
+      border-left: 5px solid #5da2ed;
+      padding: 14px;
+      margin-bottom: 2em;
+      color: #27436c;
+      font-size: 1.08em;
+    }
+    /* ==== TABLAS GLASS (FP/IP) ==== */
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      background: #fff;
+      box-shadow: 0 3px 16px rgba(50,95,174,0.09);
+      margin-bottom: 2.5em;
+    }
+    th, td {
+      border: 1.5px solid #b1c9ea;
+      text-align: center;
+      padding: 12px 9px;
+      font-size: 1.09em;
+      min-width: 60px;
+    }
+    th {
+      background: #2978c6;
+      color: #fff;
+      font-weight: bold;
+    }
+    .th-stage {
+      background: #205892;
+      color: #e9f3fe;
+      font-size: 1em;
+    }
+    .ip-label, .fp-label {
+      background: #e5f0fa;
+      color: #156584;
+      font-weight: bold;
+    }
+    tr:nth-child(even) td:not(.stage-I):not(.stage-II):not(.stage-III):not(.stage-NA){
+      background: #e8f2fb;
+    }
+    tr:hover td {
+      background: #d3e6f7 !important;
+      color: #163157;
+    }
+    /* tabla de grados */
+    .tabla-grados th, .tabla-grados td { text-align: left; font-size: 1em; }
+    .tabla-grados th { background: #2771b6; }
+    /* === Celdas de Estadio personalizado === */
+    .stage-I {
+      background: #d4f8e2 !important;
+      color: #22694b;
+      font-weight: bold;
+    }
+    .stage-II {
+      background: #fffacc !important;
+      color: #a17a17;
+      font-weight: bold;
+    }
+    .stage-III {
+      background: #ffd3d3 !important;
+      color: #b11818;
+      font-weight: bold;
+    }
+    .stage-NA {
+      background: #ddebf7;
+      color: #5d728c;
+      font-style: italic;
+      font-weight: normal;
+    }
+    /* ==== FLUJOGRAMAS ==== */
+    .contenedor-flowchart {
+      margin: 3em 0 3.5em 0;
+      text-align: center;
+    }
+    .flowchart-azul {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0 auto;
+      width: 100%;
+      max-width: 500px;
+    }
+    .step {
+      background: #e1edfb;
+      border: 2.2px solid #2978c6;
+      border-radius: 12px;
+      color: #144365;
+      padding: 16px 25px;
+      margin-bottom: 18px;
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 1.15em;
+      font-weight: 500;
+      text-align: center;
+      box-shadow: 0 6px 14px rgba(53,110,188,0.10);
+    }
+    .arrow {
+      font-size: 2.3em;
+      color: #2471a3;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 6px #b7d4ee;
+    }
+    @media (max-width: 800px) {
+      table, th, td { font-size: 0.94em; }
+      body { padding: 1em;}
+      .step { font-size: 1em; padding: 12px 10px;}
+      .flowchart-azul {max-width: 99%;}
+    }
+  </style>
+</head>
+<body>
+
+<h1>GLASS: Estadificación y Flujogramas</h1>
+
+<!-- TABLAS DE GRADOS FP e IP -->
+<h2>(A) Grado Femoropoplíteo (FP)</h2>
+<table class="tabla-grados">
+  <tr>
+    <th colspan="2">Gradación Femoropoplítea (FP)</th>
+  </tr>
+  <tr>
+    <th>0</th>
+    <td>Enfermedad leve o no significativa (&lt;50%).</td>
+  </tr>
+  <tr>
+    <th>1</th>
+    <td>Longitud total de la enfermedad de la arteria femoral superficial (AFS) &lt;1/3 (&lt;10 cm); puede incluir un solo CTO focal (&lt;5 cm) siempre que no sea oclusión flush; arteria poplítea con enfermedad leve o no significativa.</td>
+  </tr>
+  <tr>
+    <th>2</th>
+    <td>Longitud total de la enfermedad de la AFS de 1/3–2/3 (10–20 cm); puede incluir CTO que suma &lt;1/3 (10 cm) pero no oclusión flush; estenosis focal de la arteria poplítea &lt;2 cm, sin involucrar la trifurcación.</td>
+  </tr>
+  <tr>
+    <th>3</th>
+    <td>Longitud total de la enfermedad de la AFS &gt;2/3 (&gt;20 cm); puede incluir cualquier oclusión flush &lt;20 cm u CTO no-flush de 10–20 cm; estenosis poplítea corta de 2–5 cm, sin involucrar la trifurcación.</td>
+  </tr>
+  <tr>
+    <th>4</th>
+    <td>Oclusión total de la AFS &gt;20 cm; enfermedad poplítea &gt;5 cm o que se extiende hacia la trifurcación; cualquier CTO poplíteo.</td>
+  </tr>
+</table>
+
+<h2>(B) Grado Infrapoplíteo (IP)</h2>
+<table class="tabla-grados">
+  <tr>
+    <th colspan="2">Gradación Infrapoplítea (IP)</th>
+  </tr>
+  <tr>
+    <th>0</th>
+    <td>Enfermedad leve o no significativa (&lt;50%).</td>
+  </tr>
+  <tr>
+    <th>1</th>
+    <td>Estenosis focal &lt;3 cm (sin incluir el tronco tibioperoneo, TP).</td>
+  </tr>
+  <tr>
+    <th>2</th>
+    <td>Longitud total de la enfermedad arterial objetivo &lt;1/3 (&lt;10 cm); CTO focal único (&lt;3 cm, sin incluir tronco TP u origen arteria objetivo).</td>
+  </tr>
+  <tr>
+    <th>3</th>
+    <td>Longitud total de la enfermedad arterial objetivo 1/3–2/3 (10–20 cm); CTO de 3–10 cm (puede incluir origen de arteria objetivo, pero no tronco TP).</td>
+  </tr>
+  <tr>
+    <th>4</th>
+    <td>Longitud total de la enfermedad arterial objetivo &gt;2/3; CTO &gt;1/3 (&gt;10 cm) de longitud (puede incluir origen de la arteria objetivo); cualquier CTO de tronco TP.</td>
+  </tr>
+</table>
+
+<div class="nota">
+  <b>Notas:</b><br>
+  A — El compromiso de la trifurcación significa que la enfermedad incluye el origen de la arteria tibial anterior o del tronco tibioperoneo. Calcificación severa (&gt;50% de la circunferencia, difusa, voluminosa o en "arrecife de coral") dentro del TAP incrementa el grado del segmento correspondiente en +1.<br>
+  B — La gradación IP se aplica solo al vaso principal seleccionado en el TAP. La enfermedad de tronco TP solo se incluye si el TAP es la arteria tibial posterior o peronea.<br>
+</div>
+
+<!-- FLUJOGRAMA GLASS 3 -->
+<h2>Flujograma de estadificación GLASS</h2>
+<div class="flowchart-azul">
+  <div class="step">
+    Paciente con isquemia crónica de extremidad (CLTI), candidato para revascularización
+  </div>
+  <div class="arrow">↓</div>
+  <div class="step">
+    Obtener imagenología (angiográfica) de alta calidad, incluyendo tobillo y pie
+  </div>
+  <div class="arrow">↓</div>
+  <div class="step">
+    Definir la vía arterial objetivo
+  </div>
+  <div class="arrow">↓</div>
+  <div class="step">
+    Graduar el segmento femoropoplíteo (FP) A
+  </div>
+  <div class="arrow">↓</div>
+  <div class="step">
+    Graduar el segmento infrapoplíteo (IP) B
+  </div>
+  <div class="arrow">↓</div>
+  <div class="step">
+    Consultar el estadio general de GLASS
+  </div>
+  <div class="arrow">↓</div>
+  <div class="step">
+    Definir la estrategia preferida de revascularización integrando el riesgo del paciente, severidad de la extremidad (WIfI) y anatomía (GLASS) según el concepto PLAN
+  </div>
+</div>
+
+<!-- TABLA GLASS: FP x IP -->
+<h2>Tabla GLASS según Grado FP e IP</h2>
+<table>
+  <tr>
+    <th rowspan="2" class="th-stage">Grado FP</th>
+    <th colspan="5" class="th-stage">Estadio GLASS Infrainguinal</th>
+  </tr>
+  <tr>
+    <th class="th-stage">0</th>
+    <th class="th-stage">1</th>
+    <th class="th-stage">2</th>
+    <th class="th-stage">3</th>
+    <th class="th-stage">4</th>
+  </tr>
+  <tr>
+    <td class="fp-label">4</td>
+    <td class="stage-III">III</td>
+    <td class="stage-III">III</td>
+    <td class="stage-III">III</td>
+    <td class="stage-III">III</td>
+    <td class="stage-III">III</td>
+  </tr>
+  <tr>
+    <td class="fp-label">3</td>
+    <td class="stage-II">II</td>
+    <td class="stage-II">II</td>
+    <td class="stage-III">III</td>
+    <td class="stage-III">III</td>
+    <td class="stage-III">III</td>
+  </tr>
+  <tr>
+    <td class="fp-label">2</td>
+    <td class="stage-I">I</td>
+    <td class="stage-II">II</td>
+    <td class="stage-III">III</td>
+    <td class="stage-III">III</td>
+    <td class="stage-III">III</td>
+  </tr>
+  <tr>
+    <td class="fp-label">1</td>
+    <td class="stage-I">I</td>
+    <td class="stage-I">I</td>
+    <td class="stage-II">II</td>
+    <td class="stage-III">III</td>
+    <td class="stage-III">III</td>
+  </tr>
+  <tr>
+    <td class="fp-label">0</td>
+    <td class="stage-NA">NA</td>
+    <td class="stage-I">I</td>
+    <td class="stage-I">I</td>
+    <td class="stage-II">II</td>
+    <td class="stage-III">III</td>
+  </tr>
+  <tr>
+    <td class="ip-label" style="font-weight: normal; background:#ddebf7" colspan="6">
+      <b>IP Grade</b>: 0 &nbsp;&nbsp; 1 &nbsp;&nbsp; 2 &nbsp;&nbsp; 3 &nbsp;&nbsp; 4
+    </td>
+  </tr>
+</table>
+
+<div class="nota-glass-stage">
+  <b>Definiciones de estadio GLASS:</b><br>
+  <span class="stage-I">Estadio I:</span> Enfermedad de complejidad promedio (fallo técnico &lt;10% Y permeabilidad primaria a 12 meses &gt;70%).<br>
+  <span class="stage-II">Estadio II:</span> Complejidad intermedia (fallo técnico &lt;20% Y permeabilidad primaria a 12 meses 50–70%).<br>
+  <span class="stage-III">Estadio III:</span> Alta complejidad (fallo técnico &gt;20% O permeabilidad primaria a 12 meses &lt;50%).<br>
+  <span class="stage-NA">NA:</span> No aplica.
+</div>
+
+</body>
+</html>

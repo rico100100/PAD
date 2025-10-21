@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis Clínico de la Evidencia en Aterectomía</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Chosen Palette: Clinical Neutral -->
+    <!-- Application Structure Plan: He diseñado esta SPA con una estructura de "informe clínico interactivo", dirigida a un cirujano vascular. El flujo es jerárquico: (1) Resumen Ejecutivo del Problema (La Brecha de Evidencia), (2) Dashboard con el Estado Actual por Segmento Anatómico (BTK vs. ATK), (3) Un "Deep Dive" en la única indicación con evidencia sólida (ISR), detallando la patofisiología y la modalidad preferida (Láser), y (4) una sección de Hipótesis Clínicas y Futuro. Esta estructura es superior a un diseño narrativo simple porque refleja cómo un clínico asimila la información: del problema general a los detalles específicos y aplicaciones prácticas. La interactividad se centra en expandir secciones para acceder a notas clínicas detalladas, evitando la sobrecarga de información inicial. -->
+    <!-- Visualization & Content Choices: 
+        - [Info: Controversia sobre el "sobreuso" y falta de ECA] -> [Meta: Contextualizar el debate clínico] -> [Viz: Tarjetas de texto estructuradas] -> [Interacción: Ninguna] -> [Justificación: Presentación directa de los puntos clave de la discusión, relevante para la práctica diaria y la justificación de procedimientos] -> [Librería/Método: HTML/Tailwind].
+        - [Info: Estado BTK vs. ATK] -> [Meta: Comparar niveles de evidencia] -> [Viz: Columnas comparativas con iconos de estado] -> [Interacción: Ninguna] -> [Justificación: Ofrece una referencia visual rápida del panorama actual] -> [Librería/Método: HTML/Tailwind].
+        - [Info: Patofisiología de la ISR (Hiperplasia Neointimal vs. Calcio)] -> [Meta: Justificar la elección de la modalidad] -> [Viz: Diagrama simple basado en HTML/CSS] -> [Interacción: Ninguna] -> [Justificación: Un visual técnico es más eficaz que un gráfico de datos para explicar un concepto biológico a un especialista] -> [Librería/Método: HTML/Tailwind].
+        - [Info: Mecanismo del láser moderno vs. antiguo] -> [Meta: Detallar la tecnología] -> [Viz: Sección expandible con notas técnicas] -> [Interacción: Clic para expandir] -> [Justificación: Permite al usuario profundizar en los detalles técnicos del dispositivo a demanda, sin saturar la vista principal] -> [Librería/Método: HTML/JS].
+        - [Info: Hipótesis para placas blandas] -> [Meta: Explorar futuras aplicaciones] -> [Viz: Tarjeta de "Consideración Clínica"] -> [Interacción: Ninguna] -> [Justificación: Separa la evidencia actual de las discusiones especulativas pero clínicamente relevantes] -> [Librería/Método: HTML/Tailwind].
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+        .section-title {
+            font-weight: 900;
+            font-size: 2rem;
+            line-height: 2.25rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #212529;
+        }
+        .section-subtitle {
+            text-align: center;
+            max-width: 3xl;
+            margin: 0 auto 3rem auto;
+            font-size: 1.125rem;
+            line-height: 1.75rem;
+            color: #6c757d;
+        }
+        .nav-link {
+            transition: color 0.3s;
+            font-weight: 600;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #007bff;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            border: 1px solid #dee2e6;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            padding: 1.5rem;
+        }
+        .details-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .details-content.open {
+            max-height: 1000px; /* Sufficiently large value */
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/90 backdrop-blur-lg sticky top-0 z-50 border-b border-gray-200">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-[#212529]">Aterectomía: Revisión de Evidencia</h1>
+            <div class="hidden md:flex space-x-8" id="nav-menu">
+                <a href="#overview" class="nav-link active">Visión General</a>
+                <a href="#segments" class="nav-link">Análisis por Segmento</a>
+                <a href="#isr-deep-dive" class="nav-link">Focus: ISR</a>
+                <a href="#future" class="nav-link">Futuro</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="overview" class="py-20 px-6 text-center bg-white">
+            <h2 class="text-3xl md:text-5xl font-black mb-4">La Brecha de Evidencia en Aterectomía</h2>
+            <p class="max-w-3xl mx-auto mt-4 text-lg text-gray-700">
+                Una revisión crítica del estado actual del conocimiento, centrándose en la discordancia entre el uso clínico y la evidencia de alto nivel (Ensayos Controlados Aleatorizados - ECA). La aterectomía es una "palabra cargada", no por el procedimiento en sí, sino por la controversia sobre su indicación y el llamado "sobreuso".
+            </p>
+        </section>
+
+        <section id="segments" class="py-20 px-6">
+            <h2 class="section-title">Análisis Clínico por Segmento Anatómico</h2>
+            <p class="section-subtitle">
+                La evidencia y el consenso varían drásticamente dependiendo del lecho arterial tratado. La conversación actual exige definir con precisión dónde el procedimiento aporta un beneficio clínico real.
+            </p>
+            <div class="container mx-auto grid md:grid-cols-2 gap-8">
+                <div class="card">
+                    <h3 class="text-xl font-bold mb-3 flex items-center">
+                        <span class="text-red-500 mr-3">●</span> Aterectomía Infragenicular (BTK)
+                    </h3>
+                    <p class="font-semibold text-gray-800">Estado de la Evidencia: Vacío de ECA.</p>
+                    <p class="mt-2 text-gray-600">
+                        Actualmente, no existen ECA que comparen directamente la aterectomía contra la angioplastia simple en el segmento BTK. La evidencia existente es heterogénea y no aleatorizada.
+                    </p>
+                    <ul class="list-disc list-inside mt-3 text-gray-600 space-y-1">
+                        <li>La diversidad de dispositivos (orbital, direccional, rotacional, láser) complica la generalización de resultados.</li>
+                        <li>Se requiere una evaluación científica individualizada por cada tipo de dispositivo para establecer su eficacia.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-bold mb-3 flex items-center">
+                        <span class="text-yellow-500 mr-3">●</span> Aterectomía Supragenicular (ATK)
+                    </h3>
+                    <p class="font-semibold text-gray-800">Estado de la Evidencia: "Océano Azul" con una excepción clara.</p>
+                    <p class="mt-2 text-gray-600">
+                        Al igual que en BTK, el campo carece de evidencia sólida de ECA para la mayoría de las indicaciones, considerándose un "océano azul" para la investigación. Sin embargo, hay un consenso bien definido.
+                    </p>
+                    <ul class="list-disc list-inside mt-3 text-gray-600 space-y-1">
+                        <li>La única indicación con aprobación FDA y consenso general es la <strong>Estenosis Intra-Stent (ISR)</strong>.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="isr-deep-dive" class="py-20 px-6 bg-white">
+            <h2 class="section-title">Deep Dive: Aterectomía Láser en Estenosis Intra-Stent (ISR)</h2>
+            <p class="section-subtitle">
+                La ISR es el único escenario clínico donde la aterectomía, específicamente la láser, tiene un rol indiscutible y basado en evidencia. La clave reside en la patofisiología de la lesión.
+            </p>
+            <div class="container mx-auto max-w-5xl">
+                <div class="card mb-8">
+                    <h3 class="text-xl font-bold text-center mb-4">Patofisiología: ¿Por qué Láser para ISR?</h3>
+                    <div class="grid md:grid-cols-2 gap-8 text-center">
+                        <div class="border p-4 rounded-lg">
+                            <h4 class="font-bold text-lg text-red-600">Placa Calcificada (De Novo)</h4>
+                            <p class="text-sm mt-2">La aterectomía rotacional u orbital puede ser más efectiva para modificar placas duras y calcificadas.</p>
+                        </div>
+                        <div class="border-4 border-green-500 p-4 rounded-lg bg-green-50">
+                            <h4 class="font-bold text-lg text-green-700">Hiperplasia Neointimal (ISR)</h4>
+                            <p class="text-sm mt-2">La ISR es una placa blanda, "gomosa", similar a un trombo antiguo. El láser es altamente eficaz para vaporizar este tipo de tejido sin el riesgo mecánico de otros dispositivos en el entorno de un stent.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="text-xl font-bold mb-4">Modalidad Preferida: Láser de Excímeros</h3>
+                    <p class="text-gray-600 mb-4">El láser es el dispositivo "go-to" para ISR. Las tecnologías modernas han superado las limitaciones de las generaciones anteriores.</p>
+                    <button class="details-toggle w-full text-left font-semibold text-blue-600 p-3 bg-blue-50 rounded-md">
+                        Ver Notas Técnicas sobre Láser Moderno ▼
+                    </button>
+                    <div class="details-content mt-4 border-l-4 border-blue-500 pl-4">
+                        <h4 class="font-bold">Evolución Tecnológica:</h4>
+                        <p class="text-gray-700">Los láseres actuales (ej. Philips) no causan la "explosión de contraste" temida en el pasado. Su mecanismo es un pulso de vapor controlado, descrito como una "bolsa que sale y entra" (analogía de la "rana en un nenúfar"). Esto permite la inyección de contraste de forma segura durante el procedimiento.</p>
+                        <h4 class="font-bold mt-3">Precauciones con otros dispositivos en ISR:</h4>
+                        <p class="text-gray-700">Se pueden usar otros dispositivos de aterectomía, pero con extrema precaución. El riesgo de dañar los struts del stent es significativo, especialmente en stents implantados recientemente (&lt;30 días a 6 meses).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="future" class="py-20 px-6">
+            <h2 class="section-title">Hipótesis Clínicas y Direcciones Futuras</h2>
+            <p class="section-subtitle">
+                Extrapolando de la evidencia en ISR, surgen hipótesis para otras lesiones no calcificadas, aunque se necesita investigación formal.
+            </p>
+            <div class="container mx-auto max-w-3xl">
+                <div class="card bg-gray-50 border-l-4 border-yellow-400">
+                    <h3 class="text-xl font-bold mb-3">Consideración Clínica: Placa Blanda y Trombo Antiguo</h3>
+                    <p class="text-gray-700">
+                        Se está explorando si la aterectomía láser podría tener un rol en lesiones de placa muy blanda, como las que se observan en pacientes jóvenes (ej. mujeres de 40-50 años) con condiciones como el síndrome antifosfolípido.
+                    </p>
+                    <p class="mt-2 text-gray-700">
+                        La lógica es que la patofisiología de esta placa blanda podría ser análoga a la hiperplasia neointimal de la ISR, haciéndola un buen objetivo para la vaporización por láser. <strong>Actualmente, esto es una extrapolación conversacional y no está basado en datos de ensayos.</strong>
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="bg-gray-800 text-white text-center p-6 mt-12">
+        <p>Análisis interactivo para especialistas, basado en el vídeo "Current State Of Evidence For Atherectomy" de BackTable.</p>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Interactive details toggle
+    const detailToggles = document.querySelectorAll('.details-toggle');
+    detailToggles.forEach(button => {
+        button.addEventListener('click', () => {
+            const content = button.nextElementSibling;
+            content.classList.toggle('open');
+            if (content.classList.contains('open')) {
+                button.innerHTML = button.innerHTML.replace('▼', '▲');
+            } else {
+                button.innerHTML = button.innerHTML.replace('▲', '▼');
+            }
+        });
+    });
+
+    // Active navigation link based on scroll position
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('#nav-menu a');
+
+    window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            if (pageYOffset >= sectionTop - 60) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach(a => {
+            a.classList.remove('active');
+            if (a.getAttribute('href').substring(1) === current) {
+                a.classList.add('active');
+            }
+        });
+    });
+    
+    // Smooth scroll for navigation links
+    navLinks.forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+    });
+});
+</script>
+
+</body>
+</html>

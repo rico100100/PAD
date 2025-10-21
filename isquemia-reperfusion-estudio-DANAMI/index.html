@@ -1,0 +1,78 @@
+<!DOCTYPE html> <html lang="es"> <head> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1"> <title>DANAMI-3 en STEMI multivaso: reperfusión y revascularización</title> <meta name="description" content="Resumen profesional del programa DANAMI-3 en STEMI multivaso: iPOST, DEFER y PRIMULTI, con énfasis en lesión por reperfusión y revascularización completa FFR."> <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet"> <style> :root{ --bg:#0f0b0c; --hero:#22070a; --primary:#8a0b16; /* rojo sangre principal */ --primary-600:#a10d1a; --primary-300:#d9485c; --accent:#ffd1d6; /* rosa pálido contraste */ --ink:#f9f6f7; --muted:#c9b9bc; --card:#1a0d10; --card-2:#17090c; --ok:#19c37d; --warn:#ffcc00; --shadow:0 10px 24px rgba(0,0,0,.35), 0 2px 6px rgba(0,0,0,.2); --radius:14px; } *{box-sizing:border-box} html,body{margin:0;padding:0;background:linear-gradient(180deg,var(--hero),var(--bg));color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6} a{color:var(--accent);text-decoration:none} a:hover{opacity:.9} .container{max-width:1100px;margin:0 auto;padding:24px} .header{ position:sticky;top:0;z-index:50; backdrop-filter:blur(8px); background:linear-gradient(180deg,rgba(34,7,10,.92),rgba(34,7,10,.65)); border-bottom:1px solid rgba(255,255,255,.08); } .nav{display:flex;align-items:center;justify-content:space-between;gap:16px} .brand{display:flex;align-items:center;gap:12px} .brand .logo{ width:40px;height:40px;border-radius:10px; background:radial-gradient(120% 120% at 30% 30%, #b80d1e, #5a0a11 70%); box-shadow:inset 0 0 12px rgba(0,0,0,.35), 0 4px 18px rgba(138,11,22,.45); } .brand h1{font-size:18px;margin:0;font-weight:800;letter-spacing:.2px} .menu{display:flex;gap:14px;flex-wrap:wrap} .menu a{ padding:8px 12px;border-radius:10px;background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.06);transition:.2s ease } .menu a:hover{transform:translateY(-1px);background:rgba(255,255,255,.08)} .hero{ padding:36px 24px 8px;background: radial-gradient(1000px 500px at 10% -10%,rgba(255,70,85,.12),transparent 60%), radial-gradient(900px 500px at 90% -20%,rgba(255,70,85,.08),transparent 60%); border-bottom:1px solid rgba(255,255,255,.06) } .kicker{color:var(--primary-300);font-weight:700;text-transform:uppercase;letter-spacing:.18em;font-size:12px} .title{font-size:clamp(22px,4.5vw,36px);margin:.2rem 0 .6rem;font-weight:800} .subtitle{color:var(--muted);max-width:900px} .grid{ display:grid;gap:18px;margin-top:22px; grid-template-columns:repeat(12,1fr) } .card{ grid-column:span 12;background: linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.0)), radial-gradient(800px 400px at -20% -20%,rgba(138,11,22,.12),transparent 60%), var(--card); border:1px solid rgba(255,255,255,.08); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden } .card .head{ display:flex;align-items:center;justify-content:space-between;gap:12px; padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.06); background:linear-gradient(180deg,rgba(138,11,22,.18),rgba(138,11,22,.06)) } .card .head h3{margin:0;font-size:16px;letter-spacing:.2px} .badge{font-size:12px;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1)} .card .body{padding:16px 18px} .hl{color:var(--accent);font-weight:600} .note{ display:flex;gap:10px;align-items:flex-start; padding:10px 12px;border-radius:12px; background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02)); border:1px dashed rgba(255,255,255,.12);color:var(--muted) } .tag{display:inline-block;margin:.2rem .35rem 0 0;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:12px}
+
+.cta{
+display:flex;flex-wrap:wrap;gap:12px;margin-top:10px
+}
+.btn{
+appearance:none;border:none;cursor:pointer;
+padding:10px 14px;border-radius:12px;font-weight:700;letter-spacing:.2px
+}
+.btn.primary{
+background:linear-gradient(180deg,var(--primary),var(--primary-600));
+color:#fff;border:1px solid rgba(255,255,255,.15);box-shadow:0 8px 24px rgba(138,11,22,.45)
+}
+.btn.ghost{
+background:transparent;color:var(--accent);
+border:1px solid rgba(255,255,255,.15)
+}
+.two-col{display:grid;gap:16px;grid-template-columns:1fr}
+.kpi{
+display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:8px
+}
+.kpi .pill{
+padding:10px;border-radius:12px;background:var(--card-2);
+border:1px solid rgba(255,255,255,.08)
+}
+.pill strong{display:block;font-size:14px}
+.details{margin-top:8px}
+.toggle{
+width:100%;text-align:left;background:rgba(255,255,255,.04);
+border:1px solid rgba(255,255,255,.1);color:var(--ink);
+padding:10px 12px;border-radius:10px;cursor:pointer
+}
+.content{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.content.open{max-height:800px}
+
+.footer{
+margin-top:28px;padding:18px;color:var(--muted);
+border-top:1px solid rgba(255,255,255,.06);
+background:linear-gradient(180deg,rgba(0,0,0,.1),transparent)
+}
+
+/* responsive */
+@media (min-width:780px){
+.grid-2{grid-template-columns:repeat(12,1fr)}
+.span-6{grid-column:span 6}
+.two-col{grid-template-columns:1.2fr .8fr}
+}
+</style>
+</head> <body> <header class="header"> <div class="container nav"> <div class="brand"> <div class="logo" aria-hidden="true"></div> <h1>DANAMI-3 - STEMI multivaso</h1> </div> <nav class="menu" aria-label="Secciones"> <a href="#resumen">Resumen</a> <a href="#metodos">Métodos</a> <a href="#resultados">Resultados</a> <a href="#practica">Práctica</a> <a href="#bibliografia">Bibliografía</a> </nav> </div> </header> <main> <section class="hero"> <div class="container"> <div class="kicker">Intervención multivascular - Lesión por reperfusión</div> <h2 class="title">DANAMI-3: iPOST, Stent diferido y Revascularización completa FFR en STEMI</h2> <p class="subtitle">Evidencia clínica integrada para atenuar la lesión por reperfusión y optimizar la revascularización multivaso en el infarto con elevación del ST.</p> <div class="cta"> <button class="btn primary" data-scroll="#resumen">Ver resumen</button> <button class="btn ghost" data-scroll="#bibliografia">Ir a referencias</button> </div> </div> </section> <section id="resumen" class="container grid"> <article class="card"> <div class="head"> <h3>Resumen ejecutivo</h3> <span class="badge">Actualizado</span> </div> <div class="body two-col"> <div> <p><strong>Revascularización completa FFR</strong>: reduce eventos combinados a 10 años, principalmente por <span class="hl">menos revascularización</span> no culpable; sin diferencias claras en mortalidad o reinfarto frente a culpable sola.</p>[14][1][5][7][13][3] <p><strong>iPOST</strong> (poscondicionamiento): <em>no</em> redujo muerte ni hospitalización por IC; neutral en tamaño de infarto, MVO y salvamento.</p>[4][8][2][9] <p><strong>Stent diferido</strong>: <em>no</em> mejoró eventos; CMR sin beneficio global; señal post hoc en stents ≥24 mm.</p>[6][10][11][12] <div class="note"> <span>ℹ️</span> <div>Las guías recomiendan <strong>revascularización completa</strong> en STEMI multivaso, con debate sobre el <em>timing</em> (inmediata vs escalonada).</div>[27][25][26][3] </div> <div class="kpi"> <div class="pill"><strong>HR primario ≈0,75–0,76</strong> PRIMULTI 10 años</div>[1][5][14][3] <div class="pill"><strong>iPOST</strong> sin reducción de eventos</div>[2][4][9] </div> </div> <div> <button class="toggle" data-target="#tags">Etiquetas clave</button> <div id="tags" class="content"> <div class="details"> <span class="tag">FFR</span> <span class="tag">Multivaso</span> <span class="tag">Poscondicionamiento</span> <span class="tag">Deferred stenting</span> <span class="tag">CMR</span> <span class="tag">MVO</span> <span class="tag">EuroPCR/ESC</span> </div> </div> <button class="toggle" data-target="#takeaways">Puntos para la práctica</button> <div id="takeaways" class="content"> <ul class="details"> <li>Completar revascularización guiada por fisiología durante el ingreso o ≤45 días en estables.</li> <li>Evitar iPOST y stent diferido de rutina para “proteger” de reperfusión.</li> <li>Usar FFR para seleccionar lesiones no culpables realmente isquémicas.</li> </ul> </div> </div> </div> </article> </section> <section id="metodos" class="container grid grid-2"> <article class="card span-6"> <div class="head"><h3>DANAMI-3–iPOST: poscondicionamiento</h3><span class="badge">Reperfusión</span></div> <div class="body"> <p>Algoritmo: 4 ciclos de 30 s de oclusión con balón a baja presión separados por 30 s de reflujo tras abrir la arteria culpable.</p>[9][2] <p>Población: STEMI ≤12 h, TIMI 0–1 en la culpable; n=1.234; seguimiento ~38 meses.</p>[2][9] <p>Desenlaces: sin reducción en muerte/IC; neutral en tamaño de infarto, índice de salvamento, MVO y resolución del ST.</p>[8][4][9][2] </div> </article>
+
+text
+<article class="card span-6">
+  <div class="head"><h3>DANAMI-3–DEFER: stent diferido</h3><span class="badge">Reperfusión/flujo</span></div>
+  <div class="body">
+    <p>Estrategia: lograr TIMI 2–3 con mínima manipulación y diferir 24–48 h; algunos sin stent si residuo ≤30% y bajo trombo.</p>[19][10][12]
+    <p>Resultados: sin beneficio en compuesto de eventos; CMR sin ventajas globales; señal en stents ≥24 mm (post hoc).</p>[10][11][12][6]
+  </div>
+</article>
+
+<article class="card span-6">
+  <div class="head"><h3>DANAMI-3–PRIMULTI: revascularización completa FFR</h3><span class="badge">Multivascular</span></div>
+  <div class="body">
+    <p>Diseño: tras PCI de culpable, completar lesiones no culpables si <em>FFR ≤0,80</em> en procedimiento escalonado antes del alta.</p>[7][13]
+    <p>Beneficio: menos eventos compuestos a 27 meses y a 10 años, impulsado por <strong>menos revascularización</strong>; sin diferencias en muerte o reinfarto.</p>[5][13][14][1][3][7]
+    <p>Seguridad: sin incremento de sangrado mayor con el segundo procedimiento; más sangrado leve/atención médica.</p>[13][22]
+  </div>
+</article>
+
+<article class="card span-6">
+  <div class="head"><h3>Fuera de DANAMI-3: COMPLETE y metaanálisis</h3><span class="badge">Contexto</span></div>
+  <div class="body">
+    <p>COMPLETE: CR reduce muerte CV o MI vs culpable sola, ya sea durante el ingreso o ≤45 días; sin más sangrado o nefropatía.</p>[23]
+    <p>Metaanálisis: CR reduce muerte CV, MI y revascularización repetida; no cambia mortalidad total.</p>[24]
+    <p>Guías: CR recomendada; el <em>timing</em> inmediato vs escalonado sigue en evaluación con datos recientes matizados.</p>[25][26][27][3]
+  </div>
+</article>
+
+</section> <section id="resultados" class="container grid"> <article class="card"> <div class="head"><h3>Resultados clínicos y de imagen</h3><span class="badge">Evidencia</span></div> <div class="body"> <ul class="details"> <li><strong>iPOST</strong>: neutral en endpoints duros y CMR; no implementación rutinaria.</li>[4][9][2] <li><strong>DEFER</strong>: sin mejora en compuestos; CMR sin diferencia en tamaño de infarto/salvamento/MVO; señal exploratoria en stents largos.</li>[11][12][6][10] <li><strong>PRIMULTI</strong>: CR FFR reduce compuestos por menos revascularización; sin diferencias en muerte o MI a 10 años; reducción sostenida de re-PCI no culpable.</li>[14][1][3][5][7][13] <li><strong>Seguridad</strong>: sin incremento de sangrados mayores con CR escalonada.</li>[22][13] </ul> <div class="note"><span>💡</span><div>La fisiología coronaria (FFR) evita tratar lesiones no isquémicas, reduciendo intervenciones futuras sin penalización en seguridad.</div></div>[7][13] </div> </article> </section> <section id="practica" class="container grid"> <article class="card"> <div class="head"><h3>Aplicación práctica en el laboratorio de hemodinámica</h3><span class="badge">Recomendaciones</span></div> <div class="body"> <ul class="details"> <li><strong>Paciente STEMI estable con multivaso</strong>: priorizar culpable; planificar <strong>CR guiada por FFR</strong> intraingreso o ≤45 días según estabilidad, carga trombótica y complejidad.</li>[26][23][25][7] <li><strong>Evitar rutina de iPOST</strong> y <strong>deferred stenting</strong> como estrategias de cardioprotección, dada la neutralidad en eventos y CMR.</li>[12][10][11][2] <li><strong>Hemodinámica y sangrado</strong>: CR escalonada no aumenta sangrado mayor; considerar contraste total, función renal y recursos.</li>[13][22][23] </ul> </div> </article> </section> <section id="bibliografia" class="container grid"> <article class="card"> <div class="head"><h3>Bibliografía (formato APA 7)</h3><span class="badge">Fuentes clave</span></div> <div class="body"> <ol class="details"> <li>ACC. DANAMI-3–iPOST: Ischemic Postconditioning During Primary PCI. 2016.</li>[2] <li>Engstrøm T., et al. Effect of Ischemic Postconditioning During Primary PCI (DANAMI-3–iPOST). JAMA Cardiology, 2017.</li>[8][4][9] <li>ACC. DANAMI-3–DEFER: Deferred stent implantation. 2016; The Lancet, 2016 (Kelbæk H. et al.); JACC CMR substudy, 2017 (Lønborg J. et al.).</li>[6][10][11][12] <li>Engstrøm T., et al. Complete revascularisation (FFR) vs IRA-only (DANAMI-3–PRIMULTI). The Lancet, 2015.</li>[28][7] <li>Marquard J.M., et al. DANAMI-3–PRIMULTI 10 años: JACC 2025 / PubMed 2025.</li>[21][5][14] <li>TCTMD y Radcliffe Cardiology: cobertura EuroPCR 2025 sobre PRIMULTI y DEFER.</li>[29][1][3] <li>EuroIntervention/EurInterv subestudios PRIMULTI: sangrado y patrones de revascularización.</li>[30][22][13] <li>COMPLETE trial (ACC): CR reduce muerte CV o MI, 2019.</li>[23] <li>Metaanálisis ESC Heart Failure/European Heart Journal: CR reduce muerte CV, MI y revascularización, 2020.</li>[24] <li>ESC/EuroIntervention 2025: timing de CR inmediata vs escalonada (OPTION-STEMI y opinión de expertos).</li>[27][25][26] </ol> <p class="note">Las citas entre corchetes en el texto corresponden a las fuentes listadas y numeradas arriba.</p> </div> </article> </section> </main> <footer class="footer"> <div class="container">© 2025 - Resumen clínico DANAMI-3 para STEMI multivaso - Tema rojo sangre</div> </footer> <script> document.querySelectorAll('[data-scroll]').forEach(btn=>{ btn.addEventListener('click', e=>{ const sel = btn.getAttribute('data-scroll'); const el = document.querySelector(sel); if(el){ el.scrollIntoView({behavior:'smooth', block:'start'}); } }); }); document.querySelectorAll('.toggle').forEach(t=>{ t.addEventListener('click', ()=>{ const id = t.getAttribute('data-target'); const el = document.querySelector(id); if(!el) return; el.classList.toggle('open'); }); }); </script> </body> </html>

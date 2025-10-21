@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Calculadora Interactiva de Calidad de Vida tras Amputación Vascular</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f0f4f8;
+    color: #222;
+    margin: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  h2 {
+    color: #1a4a72;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    max-width: 900px;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+  .category-box {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    box-shadow: 0 3px 9px rgb(0 0 0 / 0.1);
+    padding: 20px;
+    width: 260px;
+    box-sizing: border-box;
+  }
+  .category-box h3 {
+    margin-top: 0;
+    color: #1a4a72;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    text-align: center;
+  }
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .option-button {
+    background: #f7f9fc;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.25s ease;
+    user-select: none;
+  }
+  .option-button:hover {
+    border-color: #1a4a72;
+  }
+  .option-button.selected {
+    background: #2a6bdb;
+    border-color: #1a4a72;
+    color: white;
+    font-weight: 600;
+  }
+  #resultado {
+    background: #1a4a72;
+    color: white;
+    font-weight: 600;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 1.25rem;
+    max-width: 900px;
+    width: 100%;
+  }
+  .footnote {
+    font-size: 0.85rem;
+    margin-top: 1rem;
+    color: #555;
+    max-width: 900px;
+    width: 100%;
+    text-align: center;
+    line-height: 1.4;
+  }
+  @media (max-width: 800px) {
+    .container {
+      flex-direction: column;
+      align-items: center;
+    }
+    .category-box {
+      width: 90%;
+    }
+  }
+</style>
+</head>
+<body>
+
+<h2>Calculadora Interactiva de Calidad de Vida tras Amputación Vascular</h2>
+<p style="max-width: 900px; text-align: center; margin-bottom: 2rem;">
+  Seleccione la opción que mejor refleje el estado actual en cada categoría para calcular su calidad de vida total.
+</p>
+
+<div class="container">
+  <div class="category-box" data-category="dolor">
+    <h3>Dolor</h3>
+    <div class="options">
+      <div class="option-button" data-score="0">Dolor intenso constante (0)</div>
+      <div class="option-button" data-score="2">Dolor moderado, controlado con medicación (2)</div>
+      <div class="option-button" data-score="4">Dolor leve o inexistente (4)</div>
+    </div>
+  </div>
+
+  <div class="category-box" data-category="movilidad">
+    <h3>Movilidad</h3>
+    <div class="options">
+      <div class="option-button" data-score="0">Uso exclusivo de silla de ruedas (0)</div>
+      <div class="option-button" data-score="3">Uso de prótesis con limitación para caminar (3)</div>
+      <div class="option-button" data-score="5">Uso de prótesis con buena función para caminar (5)</div>
+    </div>
+  </div>
+
+  <div class="category-box" data-category="funcionFisica">
+    <h3>Función Física</h3>
+    <div class="options">
+      <div class="option-button" data-score="0">Incapacidad para realizar actividades básicas (0)</div>
+      <div class="option-button" data-score="3">Alguna dificultad pero puede realizar la mayoría (3)</div>
+      <div class="option-button" data-score="5">Capacidad completa para actividades físicas básicas (5)</div>
+    </div>
+  </div>
+
+  <div class="category-box" data-category="saludMental">
+    <h3>Salud Psicológica</h3>
+    <div class="options">
+      <div class="option-button" data-score="0">Depresión o ansiedad severas (0)</div>
+      <div class="option-button" data-score="3">Condición emocional variable, manejo parcial (3)</div>
+      <div class="option-button" data-score="5">Estado emocional estable y buen apoyo social (5)</div>
+    </div>
+  </div>
+
+  <div class="category-box" data-category="impactoSocial">
+    <h3>Impacto Social</h3>
+    <div class="options">
+      <div class="option-button" data-score="0">Aislamiento social o desempleo persistente (0)</div>
+      <div class="option-button" data-score="2">Algunas limitaciones sociales o laborales (2)</div>
+      <div class="option-button" data-score="4">Participación social activa y empleo (4)</div>
+    </div>
+  </div>
+</div>
+
+<div id="resultado">Puntaje total: N/A</div>
+
+<p class="footnote">
+  Nota: El score máximo es 23 puntos.<br/>
+  Interpretación del resultado:<br/>
+  - 0-7: Calidad de vida baja, alta necesidad de intervenciones médicas y psicosociales.<br/>
+  - 8-15: Calidad de vida moderada, requiere seguimiento y rehabilitación adecuada.<br/>
+  - 16-23: Buena calidad de vida, adecuada adaptación post-amputación.<br/><br/>
+  Score basado en combinaciones adaptadas desde Silva et al. 2021, Suckow et al. 2015 y Davie-Smith et al. 2017.
+</p>
+
+<script>
+const categoryBoxes = document.querySelectorAll(".category-box");
+const resultado = document.getElementById("resultado");
+
+const scores = {
+  dolor: null,
+  movilidad: null,
+  funcionFisica: null,
+  saludMental: null,
+  impactoSocial: null,
+};
+
+categoryBoxes.forEach(box => {
+  const category = box.getAttribute("data-category");
+  const options = box.querySelectorAll(".option-button");
+
+  options.forEach(option => {
+    option.addEventListener("click", () => {
+      // Deseleccionar todos los botones de esta categoría
+      options.forEach(opt => opt.classList.remove("selected"));
+
+      // Seleccionar el clickeado
+      option.classList.add("selected");
+
+      // Guardar el puntaje
+      scores[category] = parseInt(option.getAttribute("data-score"));
+
+      // Calcular total y verificar selección completa
+      let total = 0;
+      let allSelected = true;
+      for (const key in scores) {
+        if (scores[key] === null) {
+          allSelected = false;
+          break;
+        }
+        total += scores[key];
+      }
+
+      if (allSelected) {
+        let interpretation = "";
+        if (total <= 7) {
+          interpretation = "Calidad de vida baja, alta necesidad de intervenciones médicas y psicosociales.";
+        } else if (total <= 15) {
+          interpretation = "Calidad de vida moderada, requiere seguimiento y rehabilitación adecuada.";
+        } else {
+          interpretation = "Buena calidad de vida, adecuada adaptación post-amputación.";
+        }
+        resultado.textContent = `Puntaje total: ${total} - ${interpretation}`;
+      } else {
+        resultado.textContent = "Puntaje total: N/A (Seleccione todas las categorías)";
+      }
+    });
+  });
+});
+</script>
+
+</body>
+</html>

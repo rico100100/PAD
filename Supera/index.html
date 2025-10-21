@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Experta del Stent Biomimético SUPERA™</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Abbott Corporate Blue -->
+    <!-- Application Structure Plan: A single-page application with a tab-based navigation system. This structure was chosen because it allows a busy surgeon to quickly access specific, critical information (e.g., deployment steps, complication management) without scrolling through a long, linear document. The flow is designed for rapid, task-oriented information retrieval. Sections are logically divided into: Overview, Step-by-Step Deployment, Complications, Clinical Evidence, and Expert Insights/Comparisons. This architecture prioritizes usability and efficiency for a highly specialized audience. -->
+    <!-- Visualization & Content Choices: 1. Deployment Guide: uses a combination of numbered lists, text, and embedded videos to provide a multi-modal learning experience for a complex procedure. 2. Clinical Evidence: features an interactive Chart.js line chart to visually compare patency rates from the SUPERB trial against a baseline, making long-term performance data easily digestible. 3. Complications & Comparisons: use structured HTML cards and tables to present critical, comparative information in a clear, scannable format for quick reference. All choices avoid SVG/Mermaid, focusing on native HTML/CSS and Canvas for performance and compatibility. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .tab-active {
+            border-color: #0095DA;
+            color: #0095DA;
+            font-weight: 600;
+        }
+        .tab-inactive {
+            border-color: transparent;
+            color: #475569; /* slate-600 */
+        }
+        .section-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease-in-out;
+        }
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b; /* slate-800 */
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0; /* slate-200 */
+            padding-bottom: 0.5rem;
+        }
+        .brand-text {
+            color: #0095DA;
+        }
+        .brand-bg {
+            background-color: #0095DA;
+        }
+        .brand-border {
+            border-color: #0095DA;
+        }
+        .step-number {
+            background-color: #0095DA;
+            color: white;
+            border-radius: 9999px;
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+    </style>
+</head>
+<body class="text-slate-700">
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <h1 class="text-2xl md:text-3xl font-bold text-slate-800">Guía de Experto: Stent Biomimético <span class="brand-text">SUPERA™</span></h1>
+            <p class="text-sm text-slate-500 mt-1">Por un Cirujano Vascular y Endovascular con +10 años de experiencia</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div id="tabs" class="mb-8 border-b border-slate-200">
+            <nav class="flex flex-wrap -mb-px" aria-label="Tabs">
+                <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm sm:text-base mr-4 sm:mr-8" data-tab="general">Visión General</button>
+                <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm sm:text-base mr-4 sm:mr-8" data-tab="despliegue">Guía de Despliegue</button>
+                <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm sm:text-base mr-4 sm:mr-8" data-tab="complicaciones">Complicaciones</button>
+                <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm sm:text-base mr-4 sm:mr-8" data-tab="evidencia">Evidencia Clínica</button>
+                <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm sm:text-base" data-tab="comparativa">Comparativa y Tips</button>
+            </nav>
+        </div>
+
+        <div id="tab-content">
+            <!-- Visión General -->
+            <div id="general" class="tab-pane">
+                 <div class="section-card">
+                    <h2 class="section-title">Una Clase Única de Tecnología</h2>
+                     <p class="mb-4">El stent SUPERA™ no es un stent de nitinol cortado por láser convencional. Su diseño biomimético se basa en <strong class="text-slate-800">seis pares de alambres de nitinol entrelazados</strong>, lo que le confiere una combinación única de fuerza radial y flexibilidad que imita el movimiento natural de la arteria femoral superficial (AFS) y la arteria poplítea.</p>
+                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                         <div class="bg-slate-50 p-4 rounded-lg">
+                             <h3 class="font-bold text-lg brand-text">Fuerza Radial Elevada</h3>
+                             <p class="text-sm">4 veces más resistente a la compresión que los stents convencionales, manteniendo una luz permeable incluso en lesiones calcificadas.</p>
+                         </div>
+                         <div class="bg-slate-50 p-4 rounded-lg">
+                             <h3 class="font-bold text-lg brand-text">Flexibilidad sin Precedentes</h3>
+                             <p class="text-sm">Se adapta a la torsión, compresión y elongación de la AFS sin riesgo de deformación o fractura.</p>
+                         </div>
+                         <div class="bg-slate-50 p-4 rounded-lg">
+                             <h3 class="font-bold text-lg brand-text">Cero Fracturas</h3>
+                             <p class="text-sm">Datos consistentes en más de 2,000 pacientes en 17 estudios demuestran cero fracturas a 1 año.</p>
+                         </div>
+                     </div>
+                </div>
+            </div>
+
+            <!-- Guía de Despliegue -->
+            <div id="despliegue" class="tab-pane hidden">
+                <div class="section-card">
+                    <h2 class="section-title">Técnica de Despliegue Paso a Paso</h2>
+                    <p class="mb-6">El éxito con SUPERA™ radica en una técnica meticulosa. A diferencia de otros stents, el despliegue es un proceso activo que requiere control y precisión. El objetivo es un <strong class="brand-text">ratio de stent/arteria de 1:1</strong> para minimizar la fuerza crónica hacia afuera y evitar la elongación.</p>
+
+                    <div class="space-y-8">
+                        <!-- Paso 1 -->
+                        <div class="flex flex-col sm:flex-row items-start gap-4">
+                            <div class="step-number">1</div>
+                            <div>
+                                <h3 class="font-bold text-lg text-slate-800">Preparación de la Lesión y Selección del Dispositivo</h3>
+                                <p class="mt-1">Es mandatorio realizar una <strong class="text-slate-800">predilatación agresiva</strong> de la lesión con un balón de angioplastia de tamaño nominal igual al diámetro del vaso de referencia. El vaso debe estar preparado para aceptar el diámetro externo del stent. La antiagregación dual (AAS + Clopidogrel) es estándar.</p>
+                                <div class="mt-4 overflow-x-auto">
+                                    <table class="w-full text-sm text-left">
+                                        <thead class="bg-slate-100 text-slate-600 uppercase">
+                                            <tr>
+                                                <th scope="col" class="px-6 py-3 rounded-l-lg">Diámetro Stent Etiquetado</th>
+                                                <th scope="col" class="px-6 py-3">Diámetro Vaso Referencia</th>
+                                                <th scope="col" class="px-6 py-3 rounded-r-lg">Balón ATP Mínimo Recomendado</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="border-b"><td class="px-6 py-4 font-medium">5.5 mm</td><td class="px-6 py-4">4.5 - 5.0 mm</td><td class="px-6 py-4">5.0 mm</td></tr>
+                                            <tr class="border-b"><td class="px-6 py-4 font-medium">6.5 mm</td><td class="px-6 py-4">5.5 - 6.0 mm</td><td class="px-6 py-4">6.0 mm</td></tr>
+                                            <tr><td class="px-6 py-4 font-medium">7.5 mm</td><td class="px-6 py-4">6.5 - 7.0 mm</td><td class="px-6 py-4">7.0 mm</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Paso 2 -->
+                        <div class="flex flex-col sm:flex-row items-start gap-4">
+                            <div class="step-number">2</div>
+                            <div>
+                                <h3 class="font-bold text-lg text-slate-800">Avance y Posicionamiento del Sistema</h3>
+                                <p class="mt-1">Avance el sistema de liberación sobre una guía de 0.014" o 0.018". Posicione los marcadores radiopacos distal y proximal del stent para que abarquen completamente la lesión tratada, asegurando un margen de seguridad de ~1 cm en cada extremo.</p>
+                            </div>
+                        </div>
+
+                        <!-- Paso 3 -->
+                        <div class="flex flex-col sm:flex-row items-start gap-4">
+                            <div class="step-number">3</div>
+                            <div>
+                                <h3 class="font-bold text-lg text-slate-800">Inicio del Despliegue: Lento y Controlado</h3>
+                                <p class="mt-1">Desbloquee el seguro del sistema. La clave es avanzar el deslizador del pulgar de forma <strong class="text-red-600">extremadamente lenta y controlada</strong>. Cada avance completo del deslizador libera aproximadamente 5 mm de stent. Observe bajo fluoroscopia magnificada cómo el stent se acorta y se expande a su diámetro nominal. <strong class="text-slate-800">No intente "pintar" la arteria</strong>; el stent debe expandirse completamente en cada paso.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Paso 4 -->
+                        <div class="flex flex-col sm:flex-row items-start gap-4">
+                            <div class="step-number">4</div>
+                            <div>
+                                <h3 class="font-bold text-lg text-slate-800">Finalización del Despliegue y Liberación</h3>
+                                <p class="mt-1">Continúe el avance lento hasta que todo el stent esté desplegado. Antes de la liberación final, verifique la aposición a la pared del vaso. Para liberar, avance completamente el deslizador. Una vez liberado, retraiga el sistema y retire la guía.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Paso 5 -->
+                        <div class="flex flex-col sm:flex-row items-start gap-4">
+                            <div class="step-number">5</div>
+                            <div>
+                                <h3 class="font-bold text-lg text-slate-800">Post-dilatación</h3>
+                                <p class="mt-1">Aunque su fuerza radial es alta, la post-dilatación con un balón de tamaño nominal (no sobredimensionado) es altamente recomendada para asegurar una aposición óptima y una luz máxima, especialmente en lesiones calcificadas u oclusivas.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="section-card">
+                    <h2 class="section-title">Video Tutoriales de Despliegue</h2>
+                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                         <div>
+                             <h3 class="font-bold mb-2 text-slate-800">Técnica Oficial de Abbott</h3>
+                             <div class="aspect-w-16 aspect-h-9">
+                                 <iframe class="w-full h-full rounded-lg" src="https://www.youtube.com/embed/7y3aC2o-YRQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                             </div>
+                         </div>
+                         <div>
+                            <h3 class="font-bold mb-2 text-slate-800">Caso Clínico Complejo</h3>
+                             <div class="aspect-w-16 aspect-h-9">
+                                 <iframe class="w-full h-full rounded-lg" src="https://www.youtube.com/embed/41B24y883oQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                             </div>
+                         </div>
+                     </div>
+                </div>
+            </div>
+
+            <!-- Complicaciones -->
+            <div id="complicaciones" class="tab-pane hidden">
+                <div class="section-card">
+                    <h2 class="section-title">Manejo de Complicaciones y Soluciones</h2>
+                    <p class="mb-6">El conocimiento profundo del dispositivo permite anticipar y resolver eficazmente las potenciales complicaciones.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
+                            <h3 class="font-bold text-lg text-red-800">Elongación del Stent</h3>
+                            <p class="mt-2 text-sm text-red-700"><strong class="font-semibold">Causa:</strong> Despliegue demasiado rápido o con tensión en el sistema, "pintando" la arteria. Es el error más común y reduce la permeabilidad.</p>
+                            <p class="mt-2 text-sm text-red-700"><strong class="font-semibold">Solución/Prevención:</strong> La prevención es clave. Despliegue <strong class="underline">extremadamente lento</strong>, permitiendo que el stent se acorte y se expanda en cada paso. Si ocurre, puede requerir un stent adicional para cubrir la lesión. No hay forma de "recomprimirlo".</p>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-r-lg">
+                            <h3 class="font-bold text-lg text-yellow-800">Malaposición Geográfica ("Geographic Miss")</h3>
+                            <p class="mt-2 text-sm text-yellow-700"><strong class="font-semibold">Causa:</strong> Medición incorrecta de la lesión o acortamiento imprevisto del stent durante el despliegue.</p>
+                            <p class="mt-2 text-sm text-yellow-700"><strong class="font-semibold">Solución:</strong> Si una parte de la lesión predilatada queda sin cubrir, se debe implantar un segundo stent SUPERA con un solapamiento de al menos 1-2 cm para mantener la integridad estructural.</p>
+                        </div>
+                        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
+                            <h3 class="font-bold text-lg text-blue-800">Malaposición a la Pared Vascular</h3>
+                             <p class="mt-2 text-sm text-blue-700"><strong class="font-semibold">Causa:</strong> Predilatación insuficiente, especialmente en lesiones muy calcificadas o excéntricas.</p>
+                            <p class="mt-2 text-sm text-blue-700"><strong class="font-semibold">Solución:</strong> Post-dilatación con un balón de tamaño nominal. La alta fuerza radial del stent suele corregir la malaposición con una angioplastia adecuada.</p>
+                        </div>
+                        <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
+                            <h3 class="font-bold text-lg text-red-800">Trombosis Aguda/Subaguda</h3>
+                             <p class="mt-2 text-sm text-red-700"><strong class="font-semibold">Causa:</strong> Antiagregación inadecuada, flujo de salida deficiente, o malaposición severa.</p>
+                            <p class="mt-2 text-sm text-red-700"><strong class="font-semibold">Solución:</strong> Asegurar una antiagregación dual estricta post-procedimiento. En caso de trombosis aguda, se requiere trombectomía farmacomecánica o aspirativa y reevaluación de la anatomía subyacente y del flujo distal.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Evidencia Clínica -->
+            <div id="evidencia" class="tab-pane hidden">
+                <div class="section-card">
+                    <h2 class="section-title">Evidencia Clínica Sólida: El Estudio SUPERB</h2>
+                    <p class="mb-4">El estudio pivotal SUPERB demostró la seguridad y eficacia del stent SUPERA para el tratamiento de la enfermedad femoropoplítea. Los resultados a largo plazo destacan su durabilidad, especialmente cuando se implanta con la técnica nominal para evitar la elongación.</p>
+                    <div class="chart-container">
+                        <canvas id="patencyChart"></canvas>
+                    </div>
+                     <p class="text-xs text-center text-slate-500 mt-2">Datos de permeabilidad primaria (Kaplan-Meier) del estudio SUPERB. La técnica nominal previene la elongación y maximiza los resultados.</p>
+                </div>
+                 <div class="section-card">
+                    <h2 class="section-title">Publicaciones Clave</h2>
+                     <div class="space-y-4">
+                        <div class="p-4 bg-slate-50 rounded-lg">
+                             <p class="font-semibold text-slate-800">SUPERB: Three-Year Outcomes of a Prospective, Multicenter, Single-Arm Study</p>
+                             <p class="text-sm text-slate-600">Garcia, L. A., et al. (2017). Circulation: Cardiovascular Interventions.</p>
+                             <a href="https://www.ahajournals.org/doi/10.1161/CIRCINTERVENTIONS.116.004245" target="_blank" class="text-sm brand-text hover:underline">Ver Estudio &rarr;</a>
+                         </div>
+                         <div class="p-4 bg-slate-50 rounded-lg">
+                             <p class="font-semibold text-slate-800">Real-World Results of Supera Stent Implantation for Popliteal Artery Atherosclerotic Lesions: 3-Year Outcome</p>
+                             <p class="text-sm text-slate-600">San Norberto, E. M., et al. (2020). Annals of Vascular Surgery.</p>
+                             <a href="https://pubmed.ncbi.nlm.nih.gov/31449958/" target="_blank" class="text-sm brand-text hover:underline">Ver Estudio &rarr;</a>
+                         </div>
+                     </div>
+                </div>
+            </div>
+
+            <!-- Comparativa y Tips -->
+            <div id="comparativa" class="tab-pane hidden">
+                 <div class="section-card">
+                    <h2 class="section-title">Comparación con Stents Convencionales</h2>
+                     <p class="mb-4">La arquitectura del SUPERA™ lo diferencia fundamentalmente de los stents de nitinol cortados con láser.</p>
+                    <div class="overflow-x-auto">
+                         <table class="w-full text-sm text-left">
+                             <thead class="bg-slate-100 text-slate-600 uppercase">
+                                 <tr>
+                                     <th class="px-6 py-3 rounded-l-lg">Característica</th>
+                                     <th class="px-6 py-3 brand-border border-x-2">Stent SUPERA™ (Entrelazado)</th>
+                                     <th class="px-6 py-3 rounded-r-lg">Stent Convencional (Cortado Láser)</th>
+                                 </tr>
+                             </thead>
+                             <tbody>
+                                 <tr class="border-b"><td class="px-6 py-4 font-medium">Diseño</td><td class="px-6 py-4 brand-border border-x-2">Alambres entrelazados</td><td class="px-6 py-4">Tubo de nitinol cortado con láser</td></tr>
+                                 <tr class="border-b"><td class="px-6 py-4 font-medium">Resistencia a Fractura</td><td class="px-6 py-4 brand-border border-x-2 font-bold brand-text">Extremadamente alta (0% a 1 año)</td><td class="px-6 py-4">Variable, susceptible en zonas de flexión</td></tr>
+                                 <tr class="border-b"><td class="px-6 py-4 font-medium">Fuerza Radial</td><td class="px-6 py-4 brand-border border-x-2">Muy alta y consistente</td><td class="px-6 py-4">Dependiente del diseño, generalmente menor</td></tr>
+                                 <tr class="border-b"><td class="px-6 py-4 font-medium">Flexibilidad</td><td class="px-6 py-4 brand-border border-x-2">Biomimética, se adapta al vaso</td><td class="px-6 py-4">Limitada, puede deformarse ("kinking")</td></tr>
+                                 <tr class="border-b"><td class="px-6 py-4 font-medium">Despliegue</td><td class="px-6 py-4 brand-border border-x-2">Activo, requiere técnica precisa</td><td class="px-6 py-4">Pasivo, autoexpansible</td></tr>
+                             </tbody>
+                         </table>
+                     </div>
+                </div>
+                <div class="section-card">
+                    <h2 class="section-title">Tips de Experto ("Perlas Quirúrgicas")</h2>
+                    <ul class="space-y-3 list-disc list-inside">
+                        <li><strong class="text-slate-800">El tamaño importa:</strong> No sobredimensione el stent. El objetivo es 1:1 con el vaso de referencia tras una buena predilatación.</li>
+                        <li><strong class="text-slate-800">La paciencia es la clave del éxito:</strong> Un despliegue lento es un despliegue exitoso. La elongación es el principal enemigo de la permeabilidad a largo plazo.</li>
+                        <li><strong class="text-slate-800">Confíe en la fuerza del stent:</strong> En lesiones calcificadas, realice una predilatación agresiva y confíe en la fuerza radial del SUPERA™, complementada con una post-dilatación.</li>
+                        <li><strong class="text-slate-800">Cruzar la rodilla:</strong> SUPERA™ es una excelente opción para lesiones que cruzan la articulación de la rodilla debido a su resistencia a la fractura. Asegure una buena aposición en P1-P2.</li>
+                        <li><strong class="text-slate-800">Solapamiento generoso:</strong> Si necesita usar más de un stent, asegure un solapamiento de al menos 1-2 cm para crear una estructura continua y fuerte.</li>
+                    </ul>
+                </div>
+                 <div class="section-card bg-red-50 border border-red-200">
+                    <h2 class="section-title text-red-800">Contraindicaciones</h2>
+                     <p class="mb-4 text-red-700">El sistema de stent periférico SUPERA™ está contraindicado en:</p>
+                    <ul class="space-y-2 list-disc list-inside text-red-700">
+                        <li>Pacientes con lesiones que impidan la inflación completa de un balón de angioplastia o la colocación adecuada del stent.</li>
+                        <li>Pacientes que no pueden recibir terapia antiplaquetaria o anticoagulante.</li>
+                        <li>Pacientes con hipersensibilidad conocida al Nitinol (níquel, titanio).</li>
+                        <li>La seguridad y eficacia no han sido establecidas en reestenosis intra-stent, pacientes embarazadas o menores de 18 años.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-slate-800 text-slate-300 mt-12">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <h3 class="font-bold text-lg text-white mb-4">Referencias (Formato APA 7)</h3>
+            <div class="text-xs space-y-2">
+                <p>Garcia, L. A., Jaff, M. R., Metzger, C., Sedillo, G., Pershad, A., Zidar, F., ... & SUPERB-Study-Investigators. (2017). Wire-interwoven nitinol stent outcome in the superficial femoral and proximal popliteal arteries: Three-year results of the SUPERB trial. <em>Circulation: Cardiovascular Interventions, 10</em>(10), e004245. https://doi.org/10.1161/CIRCINTERVENTIONS.116.004245</p>
+                <p>San Norberto, E. M., Flota, C. M., Fidalgo-Domingos, L., Taylor, J. H., & Vaquero, C. (2020). Real-world results of Supera stent implantation for popliteal artery atherosclerotic lesions: 3-year outcome. <em>Annals of Vascular Surgery, 62</em>, 397-405. https://doi.org/10.1016/j.avsg.2019.06.039</p>
+            </div>
+            <p class="text-xs text-slate-400 mt-8 border-t border-slate-700 pt-4">Descargo de responsabilidad: Esta guía se basa en la experiencia clínica y en las Instrucciones de Uso (IFU) del fabricante. Está destinada a cirujanos vasculares experimentados como un recurso educativo y no sustituye el juicio clínico ni las IFU oficiales. Consulte siempre la documentación del producto proporcionada por Abbott Vascular para obtener información completa sobre indicaciones, contraindicaciones, advertencias y precauciones.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = document.querySelectorAll('.tab-button');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            const setActiveTab = (tabId) => {
+                tabs.forEach(button => {
+                    if (button.dataset.tab === tabId) {
+                        button.classList.remove('tab-inactive');
+                        button.classList.add('tab-active');
+                    } else {
+                        button.classList.remove('tab-active');
+                        button.classList.add('tab-inactive');
+                    }
+                });
+
+                tabPanes.forEach(pane => {
+                    if (pane.id === tabId) {
+                        pane.classList.remove('hidden');
+                    } else {
+                        pane.classList.add('hidden');
+                    }
+                });
+            };
+
+            tabs.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.dataset.tab;
+                    setActiveTab(tabId);
+                });
+            });
+
+            // Set initial active tab
+            setActiveTab('general');
+            
+            // Chart.js implementation
+            const ctx = document.getElementById('patencyChart');
+            if(ctx) {
+                const patencyData = {
+                    labels: ['Baseline', '1 Año', '2 Años', '3 Años'],
+                    datasets: [{
+                        label: 'Permeabilidad Primaria (Técnica Nominal)',
+                        data: [100, 91.0, 85.3, 83.1],
+                        borderColor: '#0095DA',
+                        backgroundColor: 'rgba(0, 149, 218, 0.1)',
+                        fill: true,
+                        tension: 0.1,
+                        pointBackgroundColor: '#0095DA',
+                        pointRadius: 5,
+                    },
+                    {
+                        label: 'Libertad de TLR (Técnica Nominal)',
+                        data: [100, 94.0, 90.1, 88.6],
+                        borderColor: '#1e293b',
+                        backgroundColor: 'rgba(30, 41, 59, 0.1)',
+                        fill: true,
+                        tension: 0.1,
+                        pointBackgroundColor: '#1e293b',
+                        pointRadius: 5,
+                        borderDash: [5, 5],
+                    }]
+                };
+
+                new Chart(ctx, {
+                    type: 'line',
+                    data: patencyData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Resultados a 3 Años del Estudio SUPERB',
+                                font: {
+                                    size: 16
+                                }
+                            },
+                             tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            label += context.parsed.y + '%';
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                min: 70,
+                                max: 101,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '%'
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

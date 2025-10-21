@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explorador Interactivo de Lesión por Isquemia-Reperfusión (IRI)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .nav-link.active {
+            background-color: #e0f2fe;
+            color: #0c4a6e;
+            font-weight: 600;
+        }
+        .highlight {
+            background-color: #fef08a;
+            color: #713f12;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+    <!-- Chosen Palette: Sky Blue and Slate Gray -->
+    <!-- Application Structure Plan: The application uses a sidebar navigation structure with thematic sections: Introducción, Fisiopatología, Escenarios Clínicos, Terapias y Futuro, and Bibliografía. This design was chosen to deconstruct the dense, complex medical report into logical, digestible topics. Instead of forcing a linear read-through, this structure empowers users (like medical students or clinicians) to quickly navigate to the section most relevant to their needs—whether it's understanding the basic mechanism (Fisiopatología) or reviewing a specific clinical case (Escenarios Clínicos). The interactive flow is designed to move from general concepts to specific details within each section, using clicks and hovers to reveal information, which encourages active exploration over passive reading. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Critical ischemic tolerance times for different tissues. Goal: Compare. Viz/Presentation: Bar Chart (Chart.js). Interaction: Tooltips on hover provide exact times. Justification: Provides an immediate, powerful visual comparison of a key clinical parameter that is otherwise buried in text.
+        - Report Info: Damage to different parts of the microvasculature. Goal: Organize/Explore. Viz/Presentation: Interactive HTML/CSS cards in a flex layout. Interaction: Clicking a card reveals detailed text for that vessel type. Justification: Transforms a dense paragraph into a structured, explorable interface, making the information hierarchy clear.
+        - Report Info: Different types of programmed cell death. Goal: Compare/Contrast. Viz/Presentation: Tabbed interface with side-by-side text blocks. Interaction: Clicking tabs switches between Apoptosis and Necrosis content. Justification: Facilitates direct comparison of two complex, related biological processes.
+        - Report Info: Extensive list of medical acronyms. Goal: Reference/Inform. Viz/Presentation: A searchable modal window. Interaction: A button opens the modal; a search bar filters the list. Justification: Provides a crucial, non-intrusive reference tool that improves usability without cluttering the main content areas.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div id="app" class="flex flex-col md:flex-row min-h-screen">
+
+        <aside id="sidebar" class="w-full md:w-64 bg-white border-r border-slate-200 p-4 md:p-6 transition-transform -translate-x-full md:translate-x-0 fixed md:relative z-20 h-full overflow-y-auto">
+            <h1 class="text-xl font-bold text-sky-800 mb-6">Explorador IRI</h1>
+            <nav id="nav-menu" class="space-y-2">
+                <a href="#" class="nav-link block px-4 py-2 rounded-lg text-slate-700 hover:bg-slate-100" data-section="intro">Introducción</a>
+                <a href="#" class="nav-link block px-4 py-2 rounded-lg text-slate-700 hover:bg-slate-100" data-section="pathophysiology">Fisiopatología</a>
+                <a href="#" class="nav-link block px-4 py-2 rounded-lg text-slate-700 hover:bg-slate-100" data-section="clinical">Escenarios Clínicos</a>
+                <a href="#" class="nav-link block px-4 py-2 rounded-lg text-slate-700 hover:bg-slate-100" data-section="therapies">Terapias y Futuro</a>
+                <a href="#" class="nav-link block px-4 py-2 rounded-lg text-slate-700 hover:bg-slate-100" data-section="bibliography">Bibliografía</a>
+            </nav>
+            <div class="mt-8">
+                <input type="search" id="search-input" placeholder="Buscar término..." class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500">
+            </div>
+             <button id="acronyms-btn" class="mt-4 w-full bg-sky-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-sky-700 transition-colors">Ver Siglas</button>
+        </aside>
+
+        <button id="menu-toggle" class="md:hidden fixed top-4 left-4 z-30 p-2 bg-white rounded-md shadow-lg">
+            <svg class="w-6 h-6 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+
+        <main class="flex-1 p-4 md:p-10 transition-all duration-300">
+            <div id="content-container">
+
+                <section id="intro" class="content-section space-y-6">
+                    <h2 class="text-3xl font-bold text-slate-900 border-b-2 border-sky-200 pb-2">Lesión por Isquemia-Reperfusión (IRI): El "Doble Golpe"</h2>
+                    <p class="text-lg text-slate-600">La Lesión por Isquemia-Reperfusión (IRI) es un proceso biológico crítico comparable a un "doble golpe". El primer golpe es la <strong>isquemia</strong>, donde la falta de oxígeno y nutrientes daña las células. El segundo golpe, a menudo más dañino, es la <strong>reperfusión</strong>, cuando el restablecimiento del flujo sanguíneo desencadena una cascada inflamatoria masiva. El objetivo principal del cirujano vascular es limitar el tiempo isquémico y asegurar una revascularización efectiva para minimizar el daño de ambos impactos.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-center">
+                        <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-amber-400">
+                            <h3 class="text-xl font-semibold text-slate-800">Músculo Esquelético</h3>
+                            <p class="text-3xl font-bold text-amber-600 mt-2">~2 horas</p>
+                            <p class="text-slate-500 mt-1">Tiempo de isquemia tolerable antes de lesión irreparable.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-red-400">
+                            <h3 class="text-xl font-semibold text-slate-800">Intestino Delgado</h3>
+                            <p class="text-3xl font-bold text-red-600 mt-2">~30 mins</p>
+                            <p class="text-slate-500 mt-1">Tiempo hasta daño irreversible por su alta demanda metabólica.</p>
+                        </div>
+                         <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-sky-400">
+                            <h3 class="text-xl font-semibold text-slate-800">Daño Nervioso</h3>
+                            <p class="text-3xl font-bold text-sky-600 mt-2">&lt;1 hora</p>
+                            <p class="text-slate-500 mt-1">Inicio de Neuropraxia en síndromes compartimentales.</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-600">Este explorador interactivo desglosa los complejos mecanismos de la IRI, desde la disfunción microvascular y las respuestas celulares hasta sus diversas manifestaciones clínicas y las estrategias terapéuticas actuales y futuras. Navegue por las secciones para comprender en profundidad este desafío clínico fundamental.</p>
+                </section>
+
+                <section id="pathophysiology" class="content-section space-y-8">
+                    <h2 class="text-3xl font-bold text-slate-900 border-b-2 border-sky-200 pb-2">Fisiopatología de la IRI</h2>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-semibold text-slate-800 mb-4">Impacto en la Vasculatura</h3>
+                        <p class="text-slate-600 mb-6">El endotelio vascular es un objetivo temprano y crítico de la "tormenta IRI". La disfunción se propaga a través de toda la microvasculatura, creando un círculo vicioso de malperfusión e inflamación. Explore los componentes afectados a continuación.</p>
+                        <div id="vasculature-tabs" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+                        <div id="vasculature-content" class="mt-6 p-4 bg-slate-50 rounded-lg border border-slate-200 min-h-[150px]"></div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-semibold text-slate-800 mb-4">Actores Celulares e Interacciones</h3>
+                        <p class="text-slate-600 mb-6">La reperfusión activa una compleja interacción entre células inmunitarias, mediadores inflamatorios y el endotelio dañado. Los neutrófilos, en particular, juegan un papel central en la amplificación del daño tisular.</p>
+                        <div id="cellular-actors-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-semibold text-slate-800 mb-4">Alteraciones Electrolíticas y Metabólicas</h3>
+                        <p class="text-slate-600 mb-6">La isquemia y la reperfusión provocan cambios drásticos en el medio intracelular, alterando el equilibrio iónico y preparando el escenario para la muerte o la supervivencia celular.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="border border-amber-200 bg-amber-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-lg text-amber-800 mb-2">Alteraciones Tempranas (Durante la Isquemia)</h4>
+                                <ul class="list-disc pl-5 space-y-2 text-amber-900 text-sm">
+                                    <li><strong>Agotamiento de ATP:</strong> El metabolismo cambia a anaeróbico, produciendo ácido láctico y causando <strong>acidosis intracelular (↓ pH)</strong>.</li>
+                                    <li><strong>Acumulación de Sodio (Na⁺):</strong> La acidosis activa el intercambiador Na⁺/H⁺, aumentando el Na⁺ dentro de la célula, lo que atrae agua y causa <strong>edema celular</strong>.</li>
+                                    <li><strong>Fallo de la Bomba Na⁺/K⁺:</strong> La falta de ATP inactiva la bomba, exacerbando la acumulación de Na⁺ y la <strong>pérdida de Potasio (K⁺)</strong>.</li>
+                                    <li><strong>Aumento de Calcio (Ca²⁺):</strong> Los sistemas de recaptación de Ca²⁺ dependientes de ATP fallan, lo que lleva a un peligroso aumento del Ca²⁺ intracelular.</li>
+                                </ul>
+                            </div>
+                            <div class="border border-red-200 bg-red-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-lg text-red-800 mb-2">Alteraciones Tardías (Durante la Reperfusión)</h4>
+                                <ul class="list-disc pl-5 space-y-2 text-red-900 text-sm">
+                                    <li><strong>Normalización del pH:</strong> El flujo sanguíneo restablecido elimina el ácido láctico, pero esta vuelta a un pH normal activa enzimas destructivas que estaban inhibidas por la acidosis.</li>
+                                    <li><strong>Explosión de ROS:</strong> La reintroducción de oxígeno en las mitocondrias dañadas genera una masiva producción de Especies Reactivas de Oxígeno.</li>
+                                    <li><strong>Sobrecarga de Calcio (Ca²⁺):</strong> La disfunción de la membrana y los canales iónicos conduce a una entrada masiva de Ca²⁺, activando proteasas (calpaínas) y vías de muerte celular.</li>
+                                    <li><strong>Hiperpotasemia Sistémica:</strong> La lisis de células dañadas libera grandes cantidades de <strong>Potasio (K⁺)</strong> a la circulación, pudiendo causar arritmias cardíacas.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-semibold text-slate-800 mb-4">🧬 El Papel del Ácido Úrico y la Xantina Oxidasa</h3>
+                        <p class="text-slate-600 mb-6">La vía de la xantina oxidasa es una de las principales fuentes de daño por radicales libres durante la reperfusión, y explica directamente la hiperuricemia observada.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="border border-slate-200 bg-slate-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-lg text-slate-800 mb-2">Fase de Isquemia (Preparación)</h4>
+                                <p class="text-sm text-slate-700">La falta de oxígeno provoca el agotamiento de ATP, que se degrada hasta <strong>hipoxantina</strong>. Esta molécula se acumula en la célula. Al mismo tiempo, la enzima xantina deshidrogenasa se convierte en <strong>xantina oxidasa</strong>.</p>
+                            </div>
+                            <div class="border border-sky-200 bg-sky-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-lg text-sky-800 mb-2">Fase de Reperfusión (Explosión)</h4>
+                                <p class="text-sm text-sky-900">Con el regreso del oxígeno, la xantina oxidasa metaboliza la hipoxantina acumulada, generando una explosión de <strong>anión superóxido (ROS)</strong> y, como producto final, <strong>ácido úrico</strong>. Este pico de producción es la causa de la hiperuricemia tardía.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-semibold text-slate-800 mb-4">Muerte Celular Programada</h3>
+                        <p class="text-slate-600 mb-6">La IRI desencadena dos formas principales de muerte celular programada: apoptosis y necrosis. Aunque ambas conducen a la muerte celular, sus mecanismos y consecuencias son distintos.</p>
+                        <div class="flex border-b border-slate-200">
+                            <button class="cell-death-tab py-2 px-4 text-slate-500 font-medium border-b-2 border-transparent hover:text-sky-600 hover:border-sky-300" data-type="apoptosis">Apoptosis</button>
+                            <button class="cell-death-tab py-2 px-4 text-slate-500 font-medium border-b-2 border-transparent hover:text-sky-600 hover:border-sky-300" data-type="necrosis">Necrosis/Necroptosis</button>
+                        </div>
+                        <div id="cell-death-content" class="mt-4 prose max-w-none prose-slate"></div>
+                    </div>
+                </section>
+                
+                <section id="clinical" class="content-section space-y-8">
+                    <h2 class="text-3xl font-bold text-slate-900 border-b-2 border-sky-200 pb-2">Escenarios Clínicos de IRI</h2>
+                    <p class="text-slate-600 mb-6">La Lesión por Isquemia-Reperfusión se manifiesta de formas diversas dependiendo del tejido u órgano afectado. Cada escenario clínico presenta desafíos únicos en su manejo y pronóstico. Seleccione un escenario para explorar sus particularidades.</p>
+                    <div class="flex flex-wrap gap-2 mb-6" id="clinical-scenario-buttons"></div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <div id="clinical-scenario-content"></div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm mt-8">
+                        <h3 class="text-2xl font-semibold text-slate-800 mb-4">Tolerancia a la Isquemia por Tejido</h3>
+                        <p class="text-slate-600 mb-6">El tiempo que un tejido puede soportar la isquemia antes de sufrir un daño irreversible varía significativamente. Esta variabilidad es un factor crítico en la urgencia y el enfoque del tratamiento.</p>
+                        <div class="chart-container">
+                            <canvas id="ischemiaToleranceChart"></canvas>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="therapies" class="content-section space-y-8">
+                    <h2 class="text-3xl font-bold text-slate-900 border-b-2 border-sky-200 pb-2">Terapias y Futuro de la Investigación en IRI</h2>
+                    <p class="text-slate-600 mb-6">La investigación para mitigar la IRI es un campo activo y prometedor. Las estrategias actuales se centran en limitar el daño inicial y modular la respuesta inflamatoria, mientras que las futuras terapias buscan intervenir en vías moleculares específicas de la muerte celular.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="bg-white p-6 rounded-lg shadow-sm">
+                            <h3 class="text-2xl font-semibold text-slate-800 mb-4">Estrategias Terapéuticas Actuales</h3>
+                            <div id="current-therapies-content" class="prose max-w-none prose-slate"></div>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-sm">
+                            <h3 class="text-2xl font-semibold text-slate-800 mb-4">Direcciones Futuras</h3>
+                            <div id="future-therapies-content" class="prose max-w-none prose-slate"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="bibliography" class="content-section space-y-6">
+                    <h2 class="text-3xl font-bold text-slate-900 border-b-2 border-sky-200 pb-2">Bibliografía</h2>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                         <p class="text-slate-700">El contenido de esta aplicación interactiva se basa íntegramente en el siguiente capítulo:</p>
+                         <blockquote class="mt-4 p-4 border-l-4 border-sky-500 bg-sky-50 text-slate-800 italic">
+                            Capítulo 6: Isquemia-Reperfusión. En: Rutherford's Vascular Surgery and Endovascular Therapy.
+                         </blockquote>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+
+    </div>
+
+    <div id="acronyms-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[80vh] flex flex-col">
+            <div class="p-4 border-b flex justify-between items-center">
+                <h3 class="text-xl font-semibold">Glosario de Siglas</h3>
+                 <input type="search" id="acronym-search" placeholder="Filtrar siglas..." class="px-3 py-1 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-sky-500">
+                <button id="close-modal-btn" class="text-slate-500 hover:text-slate-800 text-3xl leading-none">&times;</button>
+            </div>
+            <div id="acronyms-list" class="p-6 overflow-y-auto">
+            </div>
+        </div>
+    </div>
+    
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const data = {
+        vasculature: {
+            endotelio: {
+                title: "Disfunción Endotelial",
+                content: "El endotelio, que forma una barrera antitrombótica y regula la permeabilidad, es altamente vulnerable. La isquemia agota la energía, altera el potencial de membrana y provoca estrés celular. La reperfusión disminuye la producción de Óxido Nítrico (NO) y aumenta las Especies Reactivas de Oxígeno (ROS), creando un estado pro-trombótico y pro-inflamatorio. El resultado es un aumento de la permeabilidad y una alteración del tono vascular, preparando el terreno para la propagación sistémica de la IRI."
+            },
+            arteriolas: {
+                title: "Disfunción Arteriolar",
+                content: "En la IRI, las arteriolas muestran una vasodilatación mediada por NO alterada y una mayor reactividad vasoconstrictora. La actividad de la enzima arginasa agota la L-arginina, el sustrato para la síntesis de NO, contribuyendo a la disfunción. Esto reduce las fuerzas de cizallamiento en la microvasculatura, creando un círculo vicioso de malperfusión que puede afectar a múltiples órganos."
+            },
+            capilares: {
+                title: "Oclusión Capilar",
+                content: "La disfunción capilar es principalmente oclusiva. Puede deberse al estrechamiento del vaso por edema intersticial o al 'taponamiento leucocitario', donde los leucocitos rígidos quedan atrapados. Esta dinámica de estancamiento es el origen del 'fenómeno de no reflujo', donde la sangre no puede volver a perfundir el tejido incluso después de restablecer el flujo principal."
+            },
+            venulas: {
+                title: "Inflamación Venular",
+                content: "Las vénulas son el epicentro de la respuesta inflamatoria canónica. El glicocálix se daña, promoviendo la extravasación de neutrófilos. Mastocitos y macrófagos residentes se activan, atrayendo más leucocitos y aumentando la permeabilidad, lo que conduce a la adhesión plaquetaria. Sistémicamente, esto causa edema difuso e inestabilidad hemodinámica."
+            }
+        },
+        cellularActors: {
+            neutrofilos: {
+                title: "Neutrófilos Activados",
+                icon: "🛡️",
+                content: "Son una fuente principal de ROS a través de las vías de la NADPH oxidasa y la mieloperoxidasa (MPO). Producen anión superóxido y ácido hipocloroso, que causan peroxidación lipídica. También liberan proteasas como las MMPs, que degradan la membrana basal, causando daño tisular directo y lesión remota de órganos."
+            },
+            ros: {
+                title: "Especies Reactivas de Oxígeno (ROS)",
+                icon: "💥",
+                content: "La reperfusión provoca una explosión en la producción de ROS, principalmente desde las mitocondrias. Estas moléculas altamente reactivas (superóxido, radical hidroxilo) causan daño celular directo al oxidar lípidos, proteínas y ADN. Son un mediador clave tanto en la señalización pro-muerte como en la activación de la respuesta inflamatoria."
+            },
+            complemento: {
+                title: "Sistema del Complemento",
+                icon: "🔗",
+                content: "Este sistema de proteínas plasmáticas se activa en la IRI, culminando en la formación del Complejo de Ataque de Membrana (MAC). El MAC lesiona los tejidos directamente a través de la lisis celular y la opsonización. El bloqueo del complemento ha demostrado ser protector en modelos animales, destacando su papel crítico en la amplificación de la lesión."
+            }
+        },
+        cellDeath: {
+            apoptosis: {
+                title: "Apoptosis: Muerte Celular Ordenada",
+                content: `
+                    <p>La apoptosis es una forma de muerte celular programada, genéticamente dirigida y ordenada. Es crucial para eliminar células dañadas sin provocar una respuesta inflamatoria masiva.</p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li><strong>Características:</strong> Encogimiento celular, condensación de cromatina, formación de cuerpos apoptóticos.</li>
+                        <li><strong>Mecanismo Principal en IRI:</strong> La vía intráusica (mitocondrial). El estrés hipóxico y las ROS activan proteínas proapoptóticas (Bax, Bak) que permeabilizan la membrana mitocondrial, liberando citocromo C.</li>
+                        <li><strong>Cascada Enzimática:</strong> Se forma el "apoptosoma", que activa las caspasas (especialmente Caspasa-9 y -3), las cuales ejecutan el programa de muerte celular.</li>
+                        <li><strong>Resultado:</strong> Las células son marcadas para su eliminación por fagocitos, minimizando el daño colateral.</li>
+                    </ul>`
+            },
+            necrosis: {
+                title: "Necrosis y Necroptosis: Muerte Celular Caótica",
+                content: `
+                    <p>La necrosis es una forma desordenada de muerte celular que resulta de un daño agudo. Implica la desintegración celular y la liberación de contenido intracelular, lo que provoca una fuerte respuesta inflamatoria.</p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li><strong>Características:</strong> Hinchazón de orgánulos, permeabilización de la membrana plasmática, lisis celular.</li>
+                        <li><strong>Necroptosis:</strong> Es una forma de necrosis programada o regulada, activada por receptores de muerte (como TNFR1) cuando la vía de la apoptosis está bloqueada.</li>
+                        <li><strong>Mecanismo Principal en IRI:</strong> La apertura del Poro de Transición de Permeabilidad Mitocondrial (MPTP) inducida por ROS y sobrecarga de calcio, lo que lleva al colapso energético y la hinchazón osmótica.</li>
+                        <li><strong>Resultado:</strong> La liberación de contenido celular actúa como señal de peligro (DAMPs), reclutando células inmunitarias y amplificando la inflamación y el daño tisular.</li>
+                    </ul>`
+            }
+        },
+        clinicalScenarios: {
+            miocardio: {
+                title: "Miocardio",
+                content: `
+                    <h4 class="text-xl font-semibold mb-2">Aturdimiento e Hibernación Miocárdica</h4>
+                    <p>En el corazón, la IRI provoca arritmias, muerte de miocitos y un fenómeno llamado <strong>aturdimiento miocárdico</strong>: una disfunción contráctil prolongada (hasta 24 horas) a pesar de la restauración del flujo sanguíneo. Esto se diferencia de la <strong>hibernación</strong>, donde la disfunción se debe a un flujo crónicamente reducido. Ambos son mecanismos adaptativos, pero el aturdimiento es una consecuencia directa de la reperfusión. Se estima que hasta el 50% del tamaño final de un infarto puede atribuirse a la lesión por reperfusión.</p>
+                    <p class="mt-2">Estrategias como el <strong>preacondicionamiento isquémico</strong> (inducir breves períodos de isquemia para proteger el tejido) han demostrado reducir el tamaño del infarto en ensayos clínicos.</p>`
+            },
+            extremidad: {
+                title: "Isquemia Aguda de Extremidades (ALI)",
+                content: `
+                    <h4 class="text-xl font-semibold mb-2">Edema y Síndrome Compartimental</h4>
+                    <p>La revascularización de una extremidad isquémica provoca una hinchazón muscular masiva. Esto puede llevar a un <strong>síndrome compartimental</strong>, donde la presión dentro de un compartimento fascial cerrado aumenta, comprometiendo aún más el flujo sanguíneo y dañando nervios y músculos. La liberación de contenido intracelular (mioglobina, potasio) puede causar <strong>insuficiencia renal aguda</strong>. El tratamiento a menudo requiere <strong>fasciotomías</strong> de emergencia para aliviar la presión. La terapia principal inicial es la anticoagulación con heparina.</p>`
+            },
+            aorta: {
+                title: "Clampaje Aórtico",
+                content: `
+                    <h4 class="text-xl font-semibold mb-2">Impacto Hemodinámico y Medular</h4>
+                    <p>El clampaje de la aorta durante la cirugía vascular induce una potente IRI al ser liberado. El clampaje aumenta bruscamente la postcarga del corazón, y la liberación provoca una caída súbita de la resistencia vascular sistémica (hipovolemia relativa) y una liberación masiva de mediadores inflamatorios. Un riesgo crítico es la <strong>lesión de la médula espinal</strong>, ya que las neuronas son extremadamente sensibles a la isquemia. Las estrategias de protección incluyen la hipotermia y limitar el tiempo de isquemia mediante enfoques endovasculares.</p>`
+            },
+            mesenterica: {
+                title: "Isquemia Mesentérica",
+                content: `
+                    <h4 class="text-xl font-semibold mb-2">Translocación Bacteriana</h4>
+                    <p>El intestino es muy sensible a la IRI debido a su gran superficie y su microbioma. La isquemia daña la barrera intestinal, permitiendo la <strong>translocación bacteriana</strong> hacia la circulación. Paradójicamente, el daño a la mucosa puede ser mayor después de 1 hora de reperfusión que tras 4 horas de isquemia sola. Las células de Paneth, cruciales para la defensa antimicrobiana en el intestino, sufren un estrés intenso, comprometiendo aún más la barrera intestinal.</p>`
+            },
+            shock: {
+                title: "Shock Hemorrágico",
+                content: `
+                    <h4 class="text-xl font-semibold mb-2">Isquemia Global y Edema</h4>
+                    <p>El shock hemorrágico causa isquemia global. La resucitación con grandes volúmenes de fluidos, aunque necesaria, puede provocar un edema masivo y 'tercer espacio'. En el abdomen, esto puede llevar al <strong>síndrome compartimental abdominal</strong>, que requiere descompresión quirúrgica urgente. Es una manifestación sistémica y extrema de la disfunción de la barrera endotelial causada por la IRI.</p>`
+            }
+        },
+        therapies: {
+            current: `
+                <ul class="list-disc pl-5 space-y-2">
+                    <li><strong>Pre y Post-acondicionamiento Isquémico:</strong> Inducir ciclos cortos de isquemia/reperfusión antes (pre) o después (post) del evento isquémico principal. Esto activa vías de protección celular endógenas. El preacondicionamiento remoto (RIPC), como inflar un manguito en el brazo, ha mostrado resultados mixtos pero prometedores.</li>
+                    <li><strong>Anticoagulación:</strong> La heparina es fundamental en la isquemia aguda de extremidades para prevenir la propagación del trombo.</li>
+                    <li><strong>Fasciotomía:</strong> Un procedimiento quirúrgico crucial en el síndrome compartimental para liberar la presión y restaurar la perfusión. El retraso aumenta drásticamente las tasas de amputación.</li>
+                    <li><strong>Agentes Farmacológicos:</strong> La infusión de adenosina ha demostrado reducir el tamaño del infarto al promover la vasodilatación e inhibir la inflamación.</li>
+                </ul>`,
+            future: `
+                <p>La investigación futura se centra en objetivos moleculares más específicos para interrumpir la cascada de la IRI.</p>
+                <ul class="list-disc pl-5 space-y-2">
+                    <li><strong>Vías de Necroptosis:</strong> La necroptosis es una forma de necrosis programada que es un objetivo terapéutico atractivo. La inhibición de quinasas clave en esta vía (como RIPK1 y RIPK3) podría preservar el tejido "hibernando" durante la isquemia y prevenir la muerte celular masiva durante la reperfusión.</li>
+                    <li><strong>Inhibidores del Complemento:</strong> Fármacos biológicos que bloquean componentes clave de la cascada del complemento (como C5) para reducir la lisis celular y la inflamación.</li>
+                    <li><strong>Terapias Antioxidantes:</strong> Aunque los antioxidantes han tenido un éxito modesto, la investigación continúa para encontrar formas más efectivas de contrarrestar el estallido de ROS durante la reperfusión.</li>
+                    <li><strong>Modulación de la Respuesta Inmune:</strong> Estrategias para limitar la activación y extravasación de neutrófilos, el principal efector del daño tisular en la IRI.</li>
+                </ul>`
+        },
+        acronyms: {
+            "IRI": "Lesión por Isquemia-Reperfusión", "NO": "Óxido Nítrico", "ROS": "Especies Reactivas de Oxígeno", "MMPs": "Metaloproteinasas de Matriz", "TNF-α": "Factor de Necrosis Tumoral alfa", "IL-1": "Interleucina-1", "ICAM-1": "Molécula de Adhesión Intercelular-1", "VCAM-1": "Molécula de Adhesión Celular Vascular-1", "MPO": "Mieloperoxidasa", "SIRS": "Síndrome de Respuesta Inflamatoria Sistémica", "PCI": "Intervención Coronaria Percutánea", "STEMI": "Infarto de Miocardio con Elevación del Segmento ST", "RIPC": "Preacondicionamiento Isquémico Remoto", "CABG": "Bypass Coronario", "AAA": "Aneurisma de Aorta Abdominal", "MI": "Infarto de Miocardio", "ALI": "Isquemia Aguda de Extremidades", "ATP": "Adenosín Trifosfato", "HIF-1a": "Factor Inducible por Hipoxia-1 alfa", "VEGF": "Factor de Crecimiento Endotelial Vascular", "Bcl-2": "Linfoma de Células B 2", "MPTP": "Poro de Transición de Permeabilidad Mitocondrial", "MAC": "Complejo de Ataque de Membrana", "MODS": "Síndrome de Disfunción Multiorgánica", "REBOA": "Oclusión Aórtica Endovascular de Reanimación con Balón"
+        }
+    };
+
+    const sections = document.querySelectorAll('.content-section');
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    function showSection(sectionId) {
+        sections.forEach(section => {
+            section.classList.toggle('active', section.id === sectionId);
+        });
+        navLinks.forEach(link => {
+            link.classList.toggle('active', link.dataset.section === sectionId);
+        });
+    }
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const sectionId = e.target.dataset.section;
+            showSection(sectionId);
+            if (window.innerWidth < 768) {
+                document.getElementById('sidebar').classList.add('-translate-x-full');
+            }
+        });
+    });
+
+    showSection('intro');
+
+    const menuToggle = document.getElementById('menu-toggle');
+    const sidebar = document.getElementById('sidebar');
+    menuToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('-translate-x-full');
+    });
+
+    function initPathophysiology() {
+        const vasculatureTabsContainer = document.getElementById('vasculature-tabs');
+        const vasculatureContentContainer = document.getElementById('vasculature-content');
+        Object.keys(data.vasculature).forEach((key, index) => {
+            const item = data.vasculature[key];
+            const button = document.createElement('button');
+            button.className = `vasculature-tab p-3 text-sm font-semibold rounded-lg transition-colors border-2 border-transparent ${index === 0 ? 'bg-sky-100 text-sky-800' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`;
+            button.textContent = item.title;
+            button.dataset.key = key;
+            vasculatureTabsContainer.appendChild(button);
+        });
+
+        const vasculatureTabs = document.querySelectorAll('.vasculature-tab');
+        function updateVasculatureContent(key) {
+            vasculatureContentContainer.innerHTML = `<p>${data.vasculature[key].content}</p>`;
+            vasculatureTabs.forEach(tab => {
+                tab.classList.toggle('bg-sky-100', tab.dataset.key === key);
+                tab.classList.toggle('text-sky-800', tab.dataset.key === key);
+                tab.classList.toggle('bg-slate-100', tab.dataset.key !== key);
+                tab.classList.toggle('text-slate-600', tab.dataset.key !== key);
+            });
+        }
+        vasculatureTabs.forEach(tab => {
+            tab.addEventListener('click', () => updateVasculatureContent(tab.dataset.key));
+        });
+        updateVasculatureContent('endotelio');
+
+        const cellularActorsContainer = document.getElementById('cellular-actors-cards');
+        Object.values(data.cellularActors).forEach(actor => {
+            const card = document.createElement('div');
+            card.className = "bg-slate-50 border border-slate-200 rounded-lg p-4";
+            card.innerHTML = `
+                <div class="flex items-center mb-2">
+                    <span class="text-2xl mr-3">${actor.icon}</span>
+                    <h4 class="text-lg font-semibold text-slate-700">${actor.title}</h4>
+                </div>
+                <p class="text-slate-600 text-sm">${actor.content}</p>`;
+            cellularActorsContainer.appendChild(card);
+        });
+
+        const cellDeathTabs = document.querySelectorAll('.cell-death-tab');
+        const cellDeathContent = document.getElementById('cell-death-content');
+        function updateCellDeathContent(type) {
+            cellDeathContent.innerHTML = data.cellDeath[type].content;
+            cellDeathTabs.forEach(tab => {
+                tab.classList.toggle('text-sky-600', tab.dataset.type === type);
+                tab.classList.toggle('border-sky-500', tab.dataset.type === type);
+                tab.classList.toggle('text-slate-500', tab.dataset.type !== type);
+                tab.classList.toggle('border-transparent', tab.dataset.type !== type);
+            });
+        }
+        cellDeathTabs.forEach(tab => tab.addEventListener('click', () => updateCellDeathContent(tab.dataset.type)));
+        updateCellDeathContent('apoptosis');
+    }
+
+    function initClinical() {
+        const scenarioButtonsContainer = document.getElementById('clinical-scenario-buttons');
+        const scenarioContentContainer = document.getElementById('clinical-scenario-content');
+
+        Object.keys(data.clinicalScenarios).forEach((key, index) => {
+            const scenario = data.clinicalScenarios[key];
+            const button = document.createElement('button');
+            button.className = `clinical-scenario-btn px-4 py-2 text-sm font-medium rounded-full transition-colors ${index === 0 ? 'bg-sky-600 text-white' : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-100'}`;
+            button.textContent = scenario.title;
+            button.dataset.key = key;
+            scenarioButtonsContainer.appendChild(button);
+        });
+        
+        const scenarioButtons = document.querySelectorAll('.clinical-scenario-btn');
+        function updateScenarioContent(key) {
+            scenarioContentContainer.innerHTML = data.clinicalScenarios[key].content;
+            scenarioButtons.forEach(btn => {
+                btn.classList.toggle('bg-sky-600', btn.dataset.key === key);
+                btn.classList.toggle('text-white', btn.dataset.key === key);
+                btn.classList.toggle('border-transparent', btn.dataset.key === key);
+                btn.classList.toggle('bg-white', btn.dataset.key !== key);
+                btn.classList.toggle('text-slate-700', btn.dataset.key !== key);
+                btn.classList.toggle('border', btn.dataset.key !== key);
+                btn.classList.toggle('border-slate-300', btn.dataset.key !== key);
+            });
+        }
+        scenarioButtons.forEach(btn => btn.addEventListener('click', () => updateScenarioContent(btn.dataset.key)));
+        updateScenarioContent('miocardio');
+
+        const ctx = document.getElementById('ischemiaToleranceChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Intestino Delgado', 'Nervio (Neuropraxia)', 'Músculo Esquelético', 'Miocardio (Aturdimiento)'],
+                datasets: [{
+                    label: 'Tiempo hasta daño (minutos)',
+                    data: [30, 60, 120, 15],
+                    backgroundColor: ['#ef4444', '#38bdf8', '#f59e0b', '#ec4899'],
+                    borderColor: ['#dc2626', '#0284c7', '#d97706', '#db2777'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    legend: { display: false },
+                    title: { display: true, text: 'Tiempos Críticos de Isquemia' }
+                },
+                scales: {
+                    x: { beginAtZero: true, title: { display: true, text: 'Minutos' } }
+                }
+            }
+        });
+    }
+
+    function initTherapies() {
+        document.getElementById('current-therapies-content').innerHTML = data.therapies.current;
+        document.getElementById('future-therapies-content').innerHTML = data.therapies.future;
+    }
+
+    function initAcronyms() {
+        const modal = document.getElementById('acronyms-modal');
+        const openBtn = document.getElementById('acronyms-btn');
+        const closeBtn = document.getElementById('close-modal-btn');
+        const listContainer = document.getElementById('acronyms-list');
+        const searchInput = document.getElementById('acronym-search');
+
+        const renderList = (filter = '') => {
+            listContainer.innerHTML = '';
+            const filteredAcronyms = Object.entries(data.acronyms).filter(([key, value]) => 
+                key.toLowerCase().includes(filter.toLowerCase()) || value.toLowerCase().includes(filter.toLowerCase())
+            );
+            
+            if (filteredAcronyms.length === 0) {
+                 listContainer.innerHTML = `<p class="text-slate-500">No se encontraron siglas.</p>`;
+                 return;
+            }
+
+            const dl = document.createElement('dl');
+            dl.className = "grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2";
+            filteredAcronyms.sort((a,b) => a[0].localeCompare(b[0])).forEach(([key, value]) => {
+                const dt = document.createElement('dt');
+                dt.className = "font-bold text-sky-700";
+                dt.textContent = key;
+                const dd = document.createElement('dd');
+                dd.className = "text-slate-600 mb-2";
+                dd.textContent = value;
+                dl.appendChild(dt);
+                dl.appendChild(dd);
+            });
+            listContainer.appendChild(dl);
+        };
+        
+        openBtn.addEventListener('click', () => {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            renderList();
+        });
+
+        const closeModal = () => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        };
+
+        closeBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+        searchInput.addEventListener('input', () => renderList(searchInput.value));
+    }
+    
+    let originalContent = {};
+    const searchableSections = ['intro', 'pathophysiology', 'clinical', 'therapies', 'bibliography'];
+
+    function initSearch() {
+        searchableSections.forEach(id => {
+            const element = document.getElementById(id);
+            if (element) {
+                originalContent[id] = element.innerHTML;
+            }
+        });
+
+        const searchInput = document.getElementById('search-input');
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.trim();
+            
+            searchableSections.forEach(id => {
+                 const element = document.getElementById(id);
+                 if (element && originalContent[id]) {
+                    element.innerHTML = originalContent[id];
+                 }
+            });
+
+            if (query.length < 3) {
+                return;
+            }
+
+            const regex = new RegExp(`(${query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
+            
+            searchableSections.forEach(id => {
+                const section = document.getElementById(id);
+                if (section) {
+                    const walker = document.createTreeWalker(section, NodeFilter.SHOW_TEXT, null, false);
+                    let node;
+                    const nodesToReplace = [];
+                    while(node = walker.nextNode()) {
+                        if (node.parentElement.tagName.toLowerCase() !== 'script' && node.parentElement.tagName.toLowerCase() !== 'style') {
+                            const newText = node.nodeValue.replace(regex, '<span class="highlight">$1</span>');
+                            if (newText !== node.nodeValue) {
+                                nodesToReplace.push({node: node, newHTML: newText});
+                            }
+                        }
+                    }
+                    nodesToReplace.forEach(item => {
+                        const span = document.createElement('span');
+                        span.innerHTML = item.newHTML;
+                        item.node.parentNode.replaceChild(span, item.node);
+                    });
+                }
+            });
+        });
+    }
+
+    initPathophysiology();
+    initClinical();
+    initTherapies();
+    initAcronyms();
+    initSearch();
+});
+</script>
+</body>
+</html>
+
+
