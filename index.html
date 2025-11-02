@@ -14,17 +14,19 @@
             theme: {
                 extend: {
                     colors: {
-                        // Esquema de color azul profesional
+                        // Esquema de color azul profesional y corporativo
                         'brand-dark': '#0f172a',       // Slate-900 (Para texto y fondos oscuros)
-                        'brand-blue-primary': '#1e40af', // Blue-800 (Color principal serio)
-                        'brand-blue-accent': '#3b82f6',  // Blue-500 (Para acentos y hover)
-                        'background-site': '#f8fafc',    // Slate-50 (Fondo muy claro y limpio)
+                        'brand-blue-primary': '#1d4ed8', // Blue-700 (Color principal vibrante pero serio)
+                        'brand-blue-hover': '#1e40af',   // Blue-800 (Para hover más oscuro)
+                        'brand-accent': '#3b82f6',       // Blue-500 (Para acentos e iconos)
+                        'background-site': '#f8fafc',    // Slate-50 (Fondo muy claro)
+                        'border-subtle': '#e2e8f0',      // Slate-200
                     },
                     boxShadow: {
-                        // Sombras personalizadas para un look moderno y profundo
-                        'soft-glow': '0 4px 15px rgba(0, 0, 0, 0.05)',
-                        // Sombra intensa con un ligero tinte azul
-                        'intense-lift': '0 20px 25px -5px rgba(30, 64, 175, 0.1), 0 10px 10px -5px rgba(30, 64, 175, 0.04)',
+                        // Sombras personalizadas para profundidad
+                        'soft-md': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                        // Sombra intensa y elevada para el hover
+                        'intense-xl': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(30, 64, 175, 0.04)',
                     }
                 }
             }
@@ -37,132 +39,120 @@
                 @apply bg-background-site text-brand-dark antialiased;
                 font-family: 'Inter', sans-serif;
             }
+            h1, h2, h3 {
+                @apply font-bold;
+            }
         }
         @layer components {
-            /* Componente: Tarjeta del Repositorio */
-            .card-repo {
-                /* Estilos base: fondo blanco, padding, bordes redondeados grandes, sombra suave, borde sutil */
-                @apply bg-white p-6 rounded-xl shadow-soft-glow border border-slate-200 transition duration-300 ease-in-out;
+            /* Componente: Tarjeta de Directorio */
+            .card-directory {
+                /* Estilos base: fondo blanco, padding generoso, bordes muy redondeados, sombra suave, borde sutil */
+                @apply bg-white p-6 rounded-2xl shadow-soft-md border border-border-subtle transition-all duration-300 ease-in-out;
             }
-            .card-repo:hover {
-                /* Efecto hover: sombra intensa azulada, ligero desplazamiento hacia arriba */
-                @apply shadow-intense-lift transform -translate-y-1 border-brand-blue-accent;
+            .card-directory:hover {
+                /* Efecto hover: sombra intensa, ligero desplazamiento, borde más visible */
+                @apply shadow-intense-xl transform -translate-y-1 border-brand-accent;
             }
             /* Título de la tarjeta */
             .card-title {
-                @apply text-xl font-bold text-brand-blue-primary mt-3 mb-2;
+                @apply text-xl text-brand-dark mt-3 mb-2;
             }
-            /* Icono de la tarjeta */
+            /* Descripción de la tarjeta */
+            .card-description {
+                 @apply text-slate-500 text-sm;
+            }
+            /* Icono de la tarjeta (con fondo sutil) */
             .card-icon {
-                @apply text-brand-blue-accent h-8 w-8;
+                @apply text-brand-accent h-10 w-10 p-2 bg-blue-100 rounded-full;
             }
             /* Botón principal */
             .btn-primary {
-                 @apply text-sm bg-brand-blue-primary hover:bg-brand-blue-accent text-white font-semibold py-2 px-5 rounded-lg shadow-md transition duration-200;
+                 @apply text-sm bg-brand-blue-primary hover:bg-brand-blue-hover text-white font-semibold py-2 px-5 rounded-lg shadow-md transition duration-200;
             }
         }
     </style>
 </head>
 <body>
 
-    <header class="bg-white shadow-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto py-5 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-            <div>
+    <header class="bg-white shadow-sm sticky top-0 z-50 border-b border-border-subtle">
+        <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-brand-blue-primary" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+                </svg>
                 <h1 class="text-2xl font-extrabold text-brand-dark">
-                    GitHub: <span class="text-brand-blue-primary">rico100100/PAD</span>
+                    rico100100 / PAD
                 </h1>
             </div>
             <a href="https://github.com/rico100100/PAD" target="_blank" class="btn-primary">
-                Ver Repositorio
+                Ir al Repositorio
             </a>
         </div>
     </header>
 
-    <main class="py-12">
+    <main class="py-16">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="px-4 sm:px-0">
-                <h2 class="text-3xl font-bold mb-10 text-brand-dark">Explorador de Contenidos</h2>
+                <h2 class="text-3xl mb-12 text-brand-dark border-b pb-4">Índice de Prácticas</h2>
                 
-                <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                <div class="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3">
 
-                    <a href="#" class="block group">
-                        <div class="card-repo">
+                    <a href="./P1/index.html" class="block group"> <div class="card-directory">
                             <div>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="card-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
-                            <h3 class="card-title">P1: Fundamentos Iniciales</h3>
-                            <p class="text-slate-600 text-sm">
-                                (Título simulado) Configuración del entorno, estructura básica del proyecto y primeros pasos con HTML5.
+                            <h3 class="card-title">P1: Introducción a HTML5</h3> <p class="card-description">
+                                (Simulado) Estructura básica, etiquetas semánticas y configuración inicial del proyecto.
                             </p>
                         </div>
                     </a>
 
-                    <a href="#" class="block group">
-                        <div class="card-repo">
+                    <a href="./P2/index.html" class="block group"> <div class="card-directory">
                             <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="card-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                                 <svg xmlns="http://www.w3.org/2000/svg" class="card-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
                                 </svg>
                             </div>
-                            <h3 class="card-title">P2: Estilos y Diseño CSS</h3>
-                            <p class="text-slate-600 text-sm">
-                                (Título simulado) Desarrollo de la interfaz de usuario, manejo de Flexbox/Grid y diseño responsivo básico.
+                            <h3 class="card-title">P2: Fundamentos de CSS</h3> <p class="card-description">
+                                (Simulado) Selectores, modelo de caja, Flexbox y principios de diseño responsivo.
                             </p>
                         </div>
                     </a>
 
-                    <a href="#" class="block group">
-                        <div class="card-repo">
+                    <a href="./P3/index.html" class="block group"> <div class="card-directory">
                             <div>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="card-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                                 </svg>
                             </div>
-                            <h3 class="card-title">P3: Interactividad con JavaScript</h3>
-                            <p class="text-slate-600 text-sm">
-                                (Título simulado) Implementación de la lógica del lado del cliente, manejo del DOM y eventos.
+                            <h3 class="card-title">P3: JavaScript y el DOM</h3> <p class="card-description">
+                                (Simulado) Interactividad básica, manejo de eventos y manipulación de elementos HTML.
                             </p>
                         </div>
                     </a>
                     
-                    <a href="#" class="block group">
-                         <div class="card-repo">
+                    <a href="./Examenes/index.html" class="block group"> <div class="card-directory">
                             <div>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="card-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                   <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                 </svg>
                             </div>
-                            <h3 class="card-title">Exámenes y Evaluaciones</h3>
-                            <p class="text-slate-600 text-sm">
-                                (Título simulado) Colección de evaluaciones, pruebas parciales y exámenes finales del curso.
+                            <h3 class="card-title">Exámenes y Evaluaciones</h3> <p class="card-description">
+                                (Simulado) Colección de pruebas, exámenes parciales y material de evaluación.
                             </p>
                         </div>
                     </a>
 
-                    <a href="#" class="block group">
-                        <div class="card-repo">
-                           <div>
-                               <svg xmlns="http://www.w3.org/2000/svg" class="card-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                                </svg>
-                           </div>
-                           <h3 class="card-title">Proyecto Final Integrado</h3>
-                           <p class="text-slate-600 text-sm">
-                               (Título simulado) Código fuente completo, integración de todas las prácticas y despliegue final.
-                           </p>
-                       </div>
-                   </a>
-
-                </div>
+                    </div>
             </div>
         </div>
     </main>
 
-    <footer class="bg-brand-dark mt-16">
+    <footer class="bg-brand-dark mt-20">
         <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center text-sm text-slate-400">
-            &copy; 2025 - Índice generado profesionalmente con Tailwind CSS para rico100100/PAD.
+            &copy; 2025 - Interfaz profesional creada con Tailwind CSS. Repositorio: rico100100/PAD.
         </div>
     </footer>
 
