@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repositorio PAD - rico100100</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Esquema de color azul profesional
+                        'brand-dark': '#0f172a',       // Slate-900 (Para texto y fondos oscuros)
+                        'brand-blue-primary': '#1e40af', // Blue-800 (Color principal serio)
+                        'brand-blue-accent': '#3b82f6',  // Blue-500 (Para acentos y hover)
+                        'background-site': '#f8fafc',    // Slate-50 (Fondo muy claro y limpio)
+                    },
+                    boxShadow: {
+                        // Sombras personalizadas para un look moderno y profundo
+                        'soft-glow': '0 4px 15px rgba(0, 0, 0, 0.05)',
+                        // Sombra intensa con un ligero tinte azul
+                        'intense-lift': '0 20px 25px -5px rgba(30, 64, 175, 0.1), 0 10px 10px -5px rgba(30, 64, 175, 0.04)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply bg-background-site text-brand-dark antialiased;
+                font-family: 'Inter', sans-serif;
+            }
+        }
+        @layer components {
+            /* Componente: Tarjeta del Repositorio */
+            .card-repo {
+                /* Estilos base: fondo blanco, padding, bordes redondeados grandes, sombra suave, borde sutil */
+                @apply bg-white p-6 rounded-xl shadow-soft-glow border border-slate-200 transition duration-300 ease-in-out;
+            }
+            .card-repo:hover {
+                /* Efecto hover: sombra intensa azulada, ligero desplazamiento hacia arriba */
+                @apply shadow-intense-lift transform -translate-y-1 border-brand-blue-accent;
+            }
+            /* Título de la tarjeta */
+            .card-title {
+                @apply text-xl font-bold text-brand-blue-primary mt-3 mb-2;
+            }
+            /* Icono de la tarjeta */
+            .card-icon {
+                @apply text-brand-blue-accent h-8 w-8;
+            }
+            /* Botón principal */
+            .btn-primary {
+                 @apply text-sm bg-brand-blue-primary hover:bg-brand-blue-accent text-white font-semibold py-2 px-5 rounded-lg shadow-md transition duration-200;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto py-5 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-extrabold text-brand-dark">
+                    GitHub: <span class="text-brand-blue-primary">rico100100/PAD</span>
+                </h1>
+            </div>
+            <a href="https://github.com/rico100100/PAD" target="_blank" class="btn-primary">
+                Ver Repositorio
+            </a>
+        </div>
+    </header>
+
+    <main class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="px-4 sm:px-0">
+                <h2 class="text-3xl font-bold mb-10 text-brand-dark">Explorador de Contenidos</h2>
+                
+                <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+
+                    <a href="#" class="block group">
+                        <div class="card-repo">
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="card-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                                </svg>
+                            </div>
+                            <h3 class="card-title">P1: Fundamentos Iniciales</h3>
+                            <p class="text-slate-600 text-sm">
+                                (Título simulado) Configuración del entorno, estructura básica del proyecto y primeros pasos con HTML5.
+                            </p>
+                        </div>
+                    </a>
+
+                    <a href="#" class="block group">
+                        <div class="card-repo">
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="card-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                                </svg>
+                            </div>
+                            <h3 class="card-title">P2: Estilos y Diseño CSS</h3>
+                            <p class="text-slate-600 text-sm">
+                                (Título simulado) Desarrollo de la interfaz de usuario, manejo de Flexbox/Grid y diseño responsivo básico.
+                            </p>
+                        </div>
+                    </a>
+
+                    <a href="#" class="block group">
+                        <div class="card-repo">
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="card-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                                </svg>
+                            </div>
+                            <h3 class="card-title">P3: Interactividad con JavaScript</h3>
+                            <p class="text-slate-600 text-sm">
+                                (Título simulado) Implementación de la lógica del lado del cliente, manejo del DOM y eventos.
+                            </p>
+                        </div>
+                    </a>
+                    
+                    <a href="#" class="block group">
+                         <div class="card-repo">
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="card-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                            </div>
+                            <h3 class="card-title">Exámenes y Evaluaciones</h3>
+                            <p class="text-slate-600 text-sm">
+                                (Título simulado) Colección de evaluaciones, pruebas parciales y exámenes finales del curso.
+                            </p>
+                        </div>
+                    </a>
+
+                    <a href="#" class="block group">
+                        <div class="card-repo">
+                           <div>
+                               <svg xmlns="http://www.w3.org/2000/svg" class="card-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                                </svg>
+                           </div>
+                           <h3 class="card-title">Proyecto Final Integrado</h3>
+                           <p class="text-slate-600 text-sm">
+                               (Título simulado) Código fuente completo, integración de todas las prácticas y despliegue final.
+                           </p>
+                       </div>
+                   </a>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-brand-dark mt-16">
+        <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center text-sm text-slate-400">
+            &copy; 2025 - Índice generado profesionalmente con Tailwind CSS para rico100100/PAD.
+        </div>
+    </footer>
+
+</body>
+</html>
