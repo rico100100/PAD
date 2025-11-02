@@ -1,160 +1,452 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Repositorio PAD - rico100100</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PAD — Índice de contenidos</title>
+  <meta name="description" content="Índice automático de los HTML en las subcarpetas del repo PAD." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%230F6AE0' d='M6 8a4 4 0 0 1 4-4h4.2a3 3 0 0 1 2.1.9l2.1 2.2A3 3 0 0 0 20.6 8H26a4 4 0 0 1 4 4v10a6 6 0 0 1-6 6H12a6 6 0 0 1-6-6V8z'/%3E%3C/svg%3E" />
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        // Esquema de color azul profesional y corporativo
-                        'brand-dark': '#0f172a',       // Slate-900 (Para texto y fondos oscuros)
-                        'brand-blue-primary': '#1d4ed8', // Blue-700 (Color principal vibrante pero serio)
-                        'brand-blue-hover': '#1e40af',   // Blue-800 (Para hover más oscuro)
-                        'brand-accent': '#3b82f6',       // Blue-500 (Para acentos e iconos)
-                        'background-site': '#f8fafc',    // Slate-50 (Fondo muy claro)
-                        'border-subtle': '#e2e8f0',      // Slate-200
-                    },
-                    boxShadow: {
-                        // Sombras personalizadas para profundidad
-                        'soft-md': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-                        // Sombra intensa y elevada para el hover
-                        'intense-xl': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(30, 64, 175, 0.04)',
-                    }
-                }
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Tailwind theme: azules claros profesionales
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50:  '#f3f8ff',
+              100: '#e6f0ff',
+              200: '#cfe2ff',
+              300: '#a9ccff',
+              400: '#7bb0ff',
+              500: '#4e94ff',
+              600: '#2f78e6',
+              700: '#235fb8',
+              800: '#1c4c92',
+              900: '#153869'
             }
+          },
+          boxShadow: {
+            soft: '0 10px 25px -10px rgba(16,112,224,.25)',
+            softHover: '0 16px 40px -12px rgba(16,112,224,.35)'
+          }
         }
-    </script>
-
-    <style type="text/tailwindcss">
-        @layer base {
-            body {
-                @apply bg-background-site text-brand-dark antialiased;
-                font-family: 'Inter', sans-serif;
-            }
-            h1, h2, h3 {
-                @apply font-bold;
-            }
-        }
-        @layer components {
-            /* Componente: Tarjeta de Directorio */
-            .card-directory {
-                /* Estilos base: fondo blanco, padding generoso, bordes muy redondeados, sombra suave, borde sutil */
-                @apply bg-white p-6 rounded-2xl shadow-soft-md border border-border-subtle transition-all duration-300 ease-in-out;
-            }
-            .card-directory:hover {
-                /* Efecto hover: sombra intensa, ligero desplazamiento, borde más visible */
-                @apply shadow-intense-xl transform -translate-y-1 border-brand-accent;
-            }
-            /* Título de la tarjeta */
-            .card-title {
-                @apply text-xl text-brand-dark mt-3 mb-2;
-            }
-            /* Descripción de la tarjeta */
-            .card-description {
-                 @apply text-slate-500 text-sm;
-            }
-            /* Icono de la tarjeta (con fondo sutil) */
-            .card-icon {
-                @apply text-brand-accent h-10 w-10 p-2 bg-blue-100 rounded-full;
-            }
-            /* Botón principal */
-            .btn-primary {
-                 @apply text-sm bg-brand-blue-primary hover:bg-brand-blue-hover text-white font-semibold py-2 px-5 rounded-lg shadow-md transition duration-200;
-            }
-        }
-    </style>
+      }
+    }
+  </script>
+  <style>
+    /* Mejora del scroll en móviles */
+    html { scroll-behavior: smooth; }
+    /* Evita saltos al cambiar a/from scrollbar */
+    :root { scrollbar-gutter: stable both-edges; }
+  </style>
 </head>
-<body>
 
-    <header class="bg-white shadow-sm sticky top-0 z-50 border-b border-border-subtle">
-        <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-brand-blue-primary" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+<body class="min-h-dvh bg-gradient-to-b from-brand-50 to-white text-slate-800 antialiased">
+  <!-- Header -->
+  <header class="sticky top-0 z-40 backdrop-blur bg-white/70 border-b border-slate-200/60">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3">
+      <div class="flex items-center gap-3">
+        <!-- Logo -->
+        <div class="shrink-0 rounded-xl bg-brand-100 p-2 shadow-soft">
+          <svg class="h-6 w-6" viewBox="0 0 24 24" aria-hidden="true" fill="#2f78e6">
+            <path d="M3 7a4 4 0 0 1 4-4h4.2a3 3 0 0 1 2.1.9l2.1 2.1A3 3 0 0 0 18.6 7H21a3 3 0 0 1 3 3v7a6 6 0 0 1-6 6H9a6 6 0 0 1-6-6V7z"/>
+          </svg>
+        </div>
+        <div class="flex-1">
+          <h1 class="text-lg sm:text-xl font-semibold tracking-tight text-slate-800">
+            PAD — Índice de contenidos
+          </h1>
+          <p class="text-sm text-slate-600">HTML detectados en las subcarpetas del repositorio</p>
+        </div>
+
+        <!-- Contador -->
+        <div class="hidden sm:flex items-center gap-2">
+          <span class="text-xs uppercase tracking-wide text-slate-500">Total</span>
+          <span id="countBadge" class="inline-flex items-center justify-center rounded-full bg-brand-100 text-brand-800 text-sm font-medium h-7 min-w-7 px-3 shadow-soft">0</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Controles -->
+  <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6">
+    <div class="flex flex-col md:flex-row gap-3 md:items-center">
+      <!-- Búsqueda -->
+      <label class="relative flex-1">
+        <span class="sr-only">Buscar</span>
+        <input id="searchInput" type="search" inputmode="search" placeholder="Buscar por título, carpeta o archivo…"
+          class="w-full rounded-xl border border-slate-300/70 bg-white/90 px-4 py-3 pl-10 shadow-soft focus:outline-none focus:ring-4 focus:ring-brand-200 focus:border-brand-400"
+          autocomplete="off" />
+        <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15z"/>
+        </svg>
+      </label>
+
+      <!-- Agrupar -->
+      <div class="flex items-center gap-2">
+        <button id="groupToggle" type="button"
+          class="inline-flex items-center gap-2 rounded-xl border border-brand-200 bg-brand-50 px-4 py-2 text-brand-800 shadow-soft hover:shadow-softHover active:scale-[.99] select-none">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M3 7h8v6H3V7zm10 0h8v6h-8V7zM3 15h8v6H3v-6zm10 0h8v6h-8v-6z"/>
+          </svg>
+          <span class="font-medium">Agrupar por carpeta</span>
+        </button>
+        <button id="clearSearch" type="button"
+          class="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-2 text-slate-700 hover:bg-slate-50 active:scale-[.99]">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18"/>
+          </svg>
+          Limpiar
+        </button>
+      </div>
+    </div>
+
+    <!-- Avisos / Token -->
+    <details class="mt-3 rounded-xl border border-slate-200 bg-white/80 p-4 shadow-soft">
+      <summary class="cursor-pointer select-none font-medium text-slate-800">¿Límite de peticiones de GitHub? (opcional) Añadir token</summary>
+      <p class="mt-2 text-sm text-slate-600">
+        Este índice usa la API pública de GitHub para leer carpetas y títulos de cada HTML. Sin autenticar, el límite suele ser ~60 peticiones/hora.
+        Si ves avisos de rate limit, pega un token (solo lectura) y se guardará en tu navegador.
+      </p>
+      <div class="mt-3 flex flex-col sm:flex-row gap-2">
+        <input id="tokenInput" type="password" class="flex-1 rounded-lg border border-slate-300 px-3 py-2" placeholder="ghp_xxx (token personal de GitHub)" />
+        <button id="saveToken" class="rounded-lg bg-brand-600 text-white px-4 py-2 hover:shadow-softHover">Guardar token</button>
+        <button id="clearToken" class="rounded-lg border border-slate-300 bg-white px-4 py-2">Quitar token</button>
+      </div>
+      <p id="tokenMsg" class="mt-2 text-sm"></p>
+    </details>
+  </section>
+
+  <!-- Contenido -->
+  <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-16">
+    <!-- Loader -->
+    <div id="loader" class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <!-- Tarjetas fantasma -->
+      <div class="h-28 rounded-xl bg-white/70 shadow-soft animate-pulse"></div>
+      <div class="h-28 rounded-xl bg-white/70 shadow-soft animate-pulse"></div>
+      <div class="h-28 rounded-xl bg-white/70 shadow-soft animate-pulse"></div>
+      <div class="h-28 rounded-xl bg-white/70 shadow-soft animate-pulse"></div>
+      <div class="h-28 rounded-xl bg-white/70 shadow-soft animate-pulse"></div>
+      <div class="h-28 rounded-xl bg-white/70 shadow-soft animate-pulse"></div>
+    </div>
+
+    <div id="content" class="mt-8"></div>
+
+    <!-- Estado / Errores -->
+    <div id="status" class="mt-6 hidden rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-800"></div>
+  </main>
+
+  <!-- Volver arriba -->
+  <a href="#top" class="fixed bottom-5 right-5 inline-flex items-center gap-2 rounded-full bg-brand-600 text-white px-4 py-2 shadow-soft hover:shadow-softHover focus:ring-4 focus:ring-brand-300">
+    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 5l7 7H5l7-7zm0 7v7"/></svg>
+    <span class="hidden sm:inline">Arriba</span>
+  </a>
+
+  <script>
+    // ====== Config ======
+    const OWNER  = 'rico100100';
+    const REPO   = 'PAD';
+    const BRANCH = 'main';
+    const API    = `https://api.github.com/repos/${OWNER}/${REPO}/contents`;
+
+    // ====== Estado en memoria ======
+    let GROUPED = true;  // vista agrupada por carpeta
+    let ALL = [];        // [{title, path, file, folder, url}]
+    let RATE = null;
+
+    // ====== Utilidades ======
+    const $ = (sel, el=document) => el.querySelector(sel);
+    const createEl = (tag, attrs={}) => Object.assign(document.createElement(tag), attrs);
+    const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+    function getToken() { return localStorage.getItem('gh_pat') || ''; }
+    function setToken(tok) {
+      if (tok) localStorage.setItem('gh_pat', tok);
+      else localStorage.removeItem('gh_pat');
+    }
+
+    async function fetchJSON(url) {
+      const headers = {
+        'Accept': 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28'
+      };
+      const token = getToken();
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
+      const res = await fetch(url, { headers });
+      // Guarda información de rate limit si hay
+      try {
+        RATE = {
+          limit: res.headers.get('x-ratelimit-limit'),
+          remaining: res.headers.get('x-ratelimit-remaining'),
+          reset: res.headers.get('x-ratelimit-reset')
+        };
+      } catch {}
+      if (!res.ok) {
+        const text = await res.text().catch(() => '');
+        throw new Error(`HTTP ${res.status}: ${text || url}`);
+      }
+      return res.json();
+    }
+
+    // Limita concurrencia al descargar/parsear HTML para evitar rate limit y saturación
+    async function mapWithLimit(arr, limit, fn) {
+      const out = [];
+      let i = 0;
+      const workers = new Array(Math.min(limit, arr.length)).fill(0).map(async () => {
+        while (i < arr.length) {
+          const cur = i++;
+          out[cur] = await fn(arr[cur], cur);
+        }
+      });
+      await Promise.all(workers);
+      return out;
+    }
+
+    function getRelativeUrl(path) {
+      // En GitHub Pages o cualquier hosting estático servirá ./carpeta/archivo.html
+      return `./${path}`;
+    }
+
+    async function extractTitleFromHTML(downloadUrl) {
+      // Descarga el HTML y detecta <title> o primer <h1>.
+      const res = await fetch(downloadUrl);
+      const html = await res.text();
+      const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+      if (titleMatch && titleMatch[1]) return sanitize(titleMatch[1]);
+      const h1Match = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
+      if (h1Match && h1Match[1]) return sanitize(h1Match[1]);
+      return '';
+    }
+
+    function sanitize(s) {
+      return (s || '').replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+    }
+
+    // ====== Carga de datos ======
+    async function loadAll() {
+      // 1) Listar contenido raíz y quedarse solo con directorios
+      const root = await fetchJSON(`${API}?ref=${BRANCH}`);
+      const dirs = root.filter(x => x.type === 'dir').map(x => x.path);
+
+      const found = [];
+
+      for (const dir of dirs) {
+        const entries = await fetchJSON(`${API}/${encodeURIComponent(dir)}?ref=${BRANCH}`);
+        const htmlFiles = entries.filter(e => e.type === 'file' && /\.html?$/i.test(e.name));
+
+        // 2) Obtener títulos con concurrencia limitada
+        const items = await mapWithLimit(htmlFiles, 4, async (f) => {
+          let title = '';
+          try {
+            title = await extractTitleFromHTML(f.download_url);
+          } catch (e) {
+            // ignorar; habrá fallback
+          }
+          return {
+            title: title || f.name.replace(/\.html?$/i,''),
+            path: f.path,     // carpeta/archivo.html
+            file: f.name,
+            folder: dir.split('/').pop(),
+            url: getRelativeUrl(f.path),
+            download_url: f.download_url
+          };
+        });
+
+        found.push(...items);
+        // Micro-respiro entre carpetas (ayuda con rate limit en navegadores agresivos)
+        await sleep(120);
+      }
+
+      ALL = found.sort((a,b) => a.title.localeCompare(b.title, 'es', {sensitivity:'base'}));
+      setCount(ALL.length);
+      render();
+    }
+
+    // ====== Renderizado ======
+    function setCount(n) { $('#countBadge').textContent = n; }
+
+    function render() {
+      $('#loader').classList.add('hidden');
+      const q = $('#searchInput').value.trim().toLowerCase();
+
+      const arr = q
+        ? ALL.filter(i =>
+            (i.title && i.title.toLowerCase().includes(q)) ||
+            (i.folder && i.folder.toLowerCase().includes(q)) ||
+            (i.file && i.file.toLowerCase().includes(q)))
+        : ALL.slice();
+
+      setCount(arr.length);
+
+      const container = $('#content');
+      container.innerHTML = '';
+
+      if (GROUPED) {
+        // Agrupar por carpeta
+        const groups = {};
+        for (const item of arr) {
+          (groups[item.folder] ||= []).push(item);
+        }
+        const groupNames = Object.keys(groups).sort((a,b) => a.localeCompare(b, 'es', {sensitivity:'base'}));
+
+        for (const g of groupNames) {
+          const section = createEl('section', { className: 'mb-8' });
+
+          // Cabecera de carpeta
+          const header = `
+            <div class="mb-3 flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="rounded-lg bg-brand-100 p-2">
+                  <svg class="h-5 w-5 text-brand-700" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 6a2 2 0 0 1 2-2h4.2a2 2 0 0 1 1.4.6l1.8 1.8A2 2 0 0 0 14.6 7H19a2 2 0 0 1 2 2v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V6z"/></svg>
+                </div>
+                <h2 class="text-base sm:text-lg font-semibold text-slate-800">${g}</h2>
+                <span class="text-xs text-slate-500">(${groups[g].length})</span>
+              </div>
+            </div>
+          `;
+          section.insertAdjacentHTML('afterbegin', header);
+
+          // Grid de tarjetas
+          const grid = createEl('div', { className: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4' });
+
+          for (const it of groups[g].sort((a,b)=>a.title.localeCompare(b.title,'es',{sensitivity:'base'}))) {
+            const card = createEl('a', {
+              href: it.url,
+              target: '_blank',
+              rel: 'noopener noreferrer',
+              className: 'group block rounded-xl bg-white/90 border border-slate-200/70 p-4 shadow-soft hover:shadow-softHover focus:outline-none focus:ring-4 focus:ring-brand-200 active:scale-[.995]',
+              title: `Abrir: ${it.title}`
+            });
+            card.innerHTML = `
+              <div class="flex items-start gap-3">
+                <div class="mt-1 rounded-md bg-brand-50 p-2">
+                  <svg class="h-5 w-5 text-brand-700" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M5 4h14a2 2 0 0 1 2 2v12.5a1.5 1.5 0 0 1-1.5 1.5H6.5A3.5 3.5 0 0 1 3 16.5V6a2 2 0 0 1 2-2zm3 4h8v1H8V8z"/>
+                  </svg>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <h3 class="truncate text-slate-800 font-medium group-hover:text-brand-800">${it.title}</h3>
+                  <p class="mt-1 text-sm text-slate-500 truncate">${it.path}</p>
+                </div>
+                <div class="ml-2 shrink-0 opacity-80 group-hover:opacity-100">
+                  <svg class="h-5 w-5 text-brand-700" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M14 3h7v7h-2V6.4l-7.9 7.9-1.4-1.4L17.6 5H14V3zM5 5h6v2H7v10h10v-4h2v6H5V5z"/>
+                  </svg>
+                </div>
+              </div>
+            `;
+            grid.appendChild(card);
+          }
+
+          section.appendChild(grid);
+          container.appendChild(section);
+        }
+
+        if (!groupNames.length) {
+          container.innerHTML = `<p class="text-slate-600">No se encontraron HTML que coincidan con tu búsqueda.</p>`;
+        }
+      } else {
+        // Vista plana
+        const list = createEl('div', { className: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4' });
+        for (const it of arr) {
+          const card = createEl('a', {
+            href: it.url,
+            target: '_blank',
+            rel: 'noopener noreferrer',
+            className: 'group block rounded-xl bg-white/90 border border-slate-200/70 p-4 shadow-soft hover:shadow-softHover focus:outline-none focus:ring-4 focus:ring-brand-200 active:scale-[.995]',
+          });
+          card.innerHTML = `
+            <div class="flex items-start gap-3">
+              <div class="mt-1 rounded-md bg-brand-50 p-2">
+                <svg class="h-5 w-5 text-brand-700" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M5 4h14a2 2 0 0 1 2 2v12.5a1.5 1.5 0 0 1-1.5 1.5H6.5A3.5 3.5 0 0 1 3 16.5V6a2 2 0 0 1 2-2zm3 4h8v1H8V8z"/>
                 </svg>
-                <h1 class="text-2xl font-extrabold text-brand-dark">
-                    rico100100 / PAD
-                </h1>
+              </div>
+              <div class="min-w-0 flex-1">
+                <h3 class="truncate text-slate-800 font-medium group-hover:text-brand-800">${it.title}</h3>
+                <p class="text-xs text-slate-500">${it.folder}</p>
+                <p class="mt-1 text-sm text-slate-500 truncate">${it.path}</p>
+              </div>
+              <div class="ml-2 shrink-0 opacity-80 group-hover:opacity-100">
+                <svg class="h-5 w-5 text-brand-700" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M14 3h7v7h-2V6.4l-7.9 7.9-1.4-1.4L17.6 5H14V3zM5 5h6v2H7v10h10v-4h2v6H5V5z"/>
+                </svg>
+              </div>
             </div>
-            <a href="https://github.com/rico100100/PAD" target="_blank" class="btn-primary">
-                Ir al Repositorio
-            </a>
+          `;
+          list.appendChild(card);
+        }
+        $('#content').appendChild(list);
+      }
+
+      renderStatus();
+    }
+
+    function renderStatus() {
+      const box = $('#status');
+      if (!RATE) { box.classList.add('hidden'); return; }
+      const { limit, remaining, reset } = RATE;
+      const when = reset ? new Date(parseInt(reset,10)*1000) : null;
+      box.innerHTML = `
+        <div class="flex items-start gap-3">
+          <svg class="h-5 w-5 text-amber-600 mt-0.5" viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+          <div>
+            <p class="text-sm"><strong>Límite API GitHub:</strong> ${remaining ?? '?'} / ${limit ?? '?'} restantes${when ? ` (resetea ${when.toLocaleTimeString()})` : ''}.</p>
+            <p class="text-xs text-slate-500">Consejo: añade un token personal en el panel superior si alcanzas el límite.</p>
+          </div>
         </div>
-    </header>
+      `;
+      box.classList.remove('hidden');
+    }
 
-    <main class="py-16">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="px-4 sm:px-0">
-                <h2 class="text-3xl mb-12 text-brand-dark border-b pb-4">Índice de Prácticas</h2>
-                
-                <div class="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3">
+    // ====== Eventos UI ======
+    $('#groupToggle').addEventListener('click', () => { GROUPED = !GROUPED;
+      $('#groupToggle').querySelector('span').textContent = GROUPED ? 'Agrupar por carpeta' : 'Ver lista plana';
+      render();
+    });
 
-                    <a href="./P1/index.html" class="block group"> <div class="card-directory">
-                            <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="card-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </div>
-                            <h3 class="card-title">P1: Introducción a HTML5</h3> <p class="card-description">
-                                (Simulado) Estructura básica, etiquetas semánticas y configuración inicial del proyecto.
-                            </p>
-                        </div>
-                    </a>
+    $('#clearSearch').addEventListener('click', () => {
+      $('#searchInput').value = '';
+      render();
+    });
 
-                    <a href="./P2/index.html" class="block group"> <div class="card-directory">
-                            <div>
-                                 <svg xmlns="http://www.w3.org/2000/svg" class="card-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-                                </svg>
-                            </div>
-                            <h3 class="card-title">P2: Fundamentos de CSS</h3> <p class="card-description">
-                                (Simulado) Selectores, modelo de caja, Flexbox y principios de diseño responsivo.
-                            </p>
-                        </div>
-                    </a>
+    $('#searchInput').addEventListener('input', () => render());
 
-                    <a href="./P3/index.html" class="block group"> <div class="card-directory">
-                            <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="card-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                                </svg>
-                            </div>
-                            <h3 class="card-title">P3: JavaScript y el DOM</h3> <p class="card-description">
-                                (Simulado) Interactividad básica, manejo de eventos y manipulación de elementos HTML.
-                            </p>
-                        </div>
-                    </a>
-                    
-                    <a href="./Examenes/index.html" class="block group"> <div class="card-directory">
-                            <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="card-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                </svg>
-                            </div>
-                            <h3 class="card-title">Exámenes y Evaluaciones</h3> <p class="card-description">
-                                (Simulado) Colección de pruebas, exámenes parciales y material de evaluación.
-                            </p>
-                        </div>
-                    </a>
+    $('#saveToken').addEventListener('click', () => {
+      const tok = $('#tokenInput').value.trim();
+      setToken(tok);
+      $('#tokenMsg').textContent = tok ? 'Token guardado localmente.' : 'Se quitó el token.';
+      $('#tokenMsg').className = 'mt-2 text-sm ' + (tok ? 'text-green-700' : 'text-slate-600');
+      renderStatus();
+    });
+    $('#clearToken').addEventListener('click', () => {
+      setToken('');
+      $('#tokenInput').value = '';
+      $('#tokenMsg').textContent = 'Token eliminado.';
+      $('#tokenMsg').className = 'mt-2 text-sm text-slate-600';
+      renderStatus();
+    });
 
-                    </div>
-            </div>
-        </div>
-    </main>
-
-    <footer class="bg-brand-dark mt-20">
-        <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center text-sm text-slate-400">
-            &copy; 2025 - Interfaz profesional creada con Tailwind CSS. Repositorio: rico100100/PAD.
-        </div>
-    </footer>
-
+    // ====== Inicio ======
+    (async function init() {
+      try {
+        await loadAll();
+      } catch (err) {
+        console.error(err);
+        $('#loader').classList.add('hidden');
+        const s = $('#status');
+        s.innerHTML = `<div class="text-red-700">
+          <p class="font-medium">Error cargando el índice</p>
+          <p class="text-sm mt-1"><code>${String(err).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]))}</code></p>
+          <p class="text-sm mt-2 text-slate-600">Prueba a recargar, añadir un token o habilitar GitHub Pages para servir este archivo.</p>
+        </div>`;
+        s.className = 'mt-6 rounded-xl border border-red-200 bg-red-50 p-4';
+      }
+    })();
+  </script>
 </body>
 </html>
