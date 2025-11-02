@@ -4,62 +4,49 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>PAD — Índice de contenidos</title>
-  <meta name="description" content="Índice automático de los HTML en las subcarpetas del repo PAD." />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%230F6AE0' d='M6 8a4 4 0 0 1 4-4h4.2a3 3 0 0 1 2.1.9l2.1 2.2A3 3 0 0 0 20.6 8H26a4 4 0 0 1 4 4v10a6 6 0 0 1-6 6H12a6 6 0 0 1-6-6V8z'/%3E%3C/svg%3E" />
+  <meta name="description" content="Índice estático de los HTML en las subcarpetas del repositorio PAD." />
+
+  <!-- Favicon inline -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%23377CF2' d='M6 8a4 4 0 0 1 4-4h4.2a3 3 0 0 1 2.1.9l2.1 2.2A3 3 0 0 0 20.6 8H26a4 4 0 0 1 4 4v10a6 6 0 0 1-6 6H12a6 6 0 0 1-6-6V8z'/%3E%3C/svg%3E" />
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    // Tailwind theme: azules claros profesionales
     tailwind.config = {
       theme: {
         extend: {
           colors: {
             brand: {
-              50:  '#f3f8ff',
-              100: '#e6f0ff',
-              200: '#cfe2ff',
-              300: '#a9ccff',
-              400: '#7bb0ff',
-              500: '#4e94ff',
-              600: '#2f78e6',
-              700: '#235fb8',
-              800: '#1c4c92',
-              900: '#153869'
+              50:'#f3f8ff',100:'#e7f0ff',200:'#cfdefe',300:'#a8c6fd',400:'#7eadfb',
+              500:'#5896f5',600:'#377cf2',700:'#2c63c6',800:'#234e9f',900:'#1b3b79'
             }
           },
           boxShadow: {
-            soft: '0 10px 25px -10px rgba(16,112,224,.25)',
-            softHover: '0 16px 40px -12px rgba(16,112,224,.35)'
+            soft:'0 10px 25px -10px rgba(55,124,242,.25)',
+            softHover:'0 16px 40px -12px rgba(55,124,242,.35)'
           }
         }
       }
     }
   </script>
   <style>
-    /* Mejora del scroll en móviles */
     html { scroll-behavior: smooth; }
-    /* Evita saltos al cambiar a/from scrollbar */
     :root { scrollbar-gutter: stable both-edges; }
   </style>
 </head>
-
 <body class="min-h-dvh bg-gradient-to-b from-brand-50 to-white text-slate-800 antialiased">
   <!-- Header -->
   <header class="sticky top-0 z-40 backdrop-blur bg-white/70 border-b border-slate-200/60">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3">
       <div class="flex items-center gap-3">
-        <!-- Logo -->
         <div class="shrink-0 rounded-xl bg-brand-100 p-2 shadow-soft">
-          <svg class="h-6 w-6" viewBox="0 0 24 24" aria-hidden="true" fill="#2f78e6">
+          <svg class="h-6 w-6" viewBox="0 0 24 24" aria-hidden="true" fill="#377cf2">
             <path d="M3 7a4 4 0 0 1 4-4h4.2a3 3 0 0 1 2.1.9l2.1 2.1A3 3 0 0 0 18.6 7H21a3 3 0 0 1 3 3v7a6 6 0 0 1-6 6H9a6 6 0 0 1-6-6V7z"/>
           </svg>
         </div>
         <div class="flex-1">
-          <h1 class="text-lg sm:text-xl font-semibold tracking-tight text-slate-800">
-            PAD — Índice de contenidos
-          </h1>
-          <p class="text-sm text-slate-600">HTML detectados en las subcarpetas del repositorio</p>
+          <h1 class="text-lg sm:text-xl font-semibold tracking-tight">PAD — Índice de contenidos</h1>
+          <p class="text-sm text-slate-600">Listados estáticos de los HTML por carpeta</p>
         </div>
 
         <!-- Contador -->
@@ -103,40 +90,11 @@
         </button>
       </div>
     </div>
-
-    <!-- Avisos / Token -->
-    <details class="mt-3 rounded-xl border border-slate-200 bg-white/80 p-4 shadow-soft">
-      <summary class="cursor-pointer select-none font-medium text-slate-800">¿Límite de peticiones de GitHub? (opcional) Añadir token</summary>
-      <p class="mt-2 text-sm text-slate-600">
-        Este índice usa la API pública de GitHub para leer carpetas y títulos de cada HTML. Sin autenticar, el límite suele ser ~60 peticiones/hora.
-        Si ves avisos de rate limit, pega un token (solo lectura) y se guardará en tu navegador.
-      </p>
-      <div class="mt-3 flex flex-col sm:flex-row gap-2">
-        <input id="tokenInput" type="password" class="flex-1 rounded-lg border border-slate-300 px-3 py-2" placeholder="ghp_xxx (token personal de GitHub)" />
-        <button id="saveToken" class="rounded-lg bg-brand-600 text-white px-4 py-2 hover:shadow-softHover">Guardar token</button>
-        <button id="clearToken" class="rounded-lg border border-slate-300 bg-white px-4 py-2">Quitar token</button>
-      </div>
-      <p id="tokenMsg" class="mt-2 text-sm"></p>
-    </details>
   </section>
 
   <!-- Contenido -->
   <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-16">
-    <!-- Loader -->
-    <div id="loader" class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      <!-- Tarjetas fantasma -->
-      <div class="h-28 rounded-xl bg-white/70 shadow-soft animate-pulse"></div>
-      <div class="h-28 rounded-xl bg-white/70 shadow-soft animate-pulse"></div>
-      <div class="h-28 rounded-xl bg-white/70 shadow-soft animate-pulse"></div>
-      <div class="h-28 rounded-xl bg-white/70 shadow-soft animate-pulse"></div>
-      <div class="h-28 rounded-xl bg-white/70 shadow-soft animate-pulse"></div>
-      <div class="h-28 rounded-xl bg-white/70 shadow-soft animate-pulse"></div>
-    </div>
-
     <div id="content" class="mt-8"></div>
-
-    <!-- Estado / Errores -->
-    <div id="status" class="mt-6 hidden rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-800"></div>
   </main>
 
   <!-- Volver arriba -->
@@ -146,139 +104,45 @@
   </a>
 
   <script>
-    // ====== Config ======
-    const OWNER  = 'rico100100';
-    const REPO   = 'PAD';
-    const BRANCH = 'main';
-    const API    = `https://api.github.com/repos/${OWNER}/${REPO}/contents`;
+    // ====== Datos estáticos (extraídos de indice.pdf) ======
+    // Cada enlace abre en nueva pestaña hacia ./<carpeta>/ (sirve index.html implícitamente).
+    const DATA = [
+      { folder: 'Backtable-Aplicaciones-para-Dispositivos-BTK-Avanzados', title: 'Análisis de Video: Aplicaci…', file: 'index.html', url: './Backtable-Aplicaciones-para-Dispositivos-BTK-Avanzados/' },
+      { folder: 'Backtable-Managing-Heavy-Calcification-with-Advanced-Tools', title: 'Análisis de Video: Manejo …', file: 'index.html', url: './Backtable-Managing-Heavy-Calcification-with-Advanced-Tools/' },
+      { folder: 'calc-calidad-vida-tras-amputacion', title: 'Calculadora Interactiva de…', file: 'index.html', url: './calc-calidad-vida-tras-amputacion/' },
+      { folder: 'calc-riesgo-vasc', title: 'Calculadoras de Riesgo Ca…', file: 'index.html', url: './calc-riesgo-vasc/' },
+      { folder: 'cap-func-MET-eq-metabolicos', title: 'index', file: 'index.html', url: './cap-func-MET-eq-metabolicos/' },
+      { folder: 'comparacion-farmacos-hipolipemiantes', title: 'Comparación de Fármaco…', file: 'index.html', url: './comparacion-farmacos-hipolipemiantes/' },
+      { folder: 'comparativo-estudios-randomizados-2015-2025-PAD', title: 'Comparativo de Estudios …', file: 'index.html', url: './comparativo-estudios-randomizados-2015-2025-PAD/' },
+      { folder: 'cuadro-comparativo-calidad-vida-tras-amputacion', title: 'Calidad de Vida tras Amp…', file: 'index.html', url: './cuadro-comparativo-calidad-vida-tras-amputacion/' },
+      { folder: 'escalas-riesgo-sangrado-anticoagulacion', title: 'Escalas de Riesgo de Sang…', file: 'index.html', url: './escalas-riesgo-sangrado-anticoagulacion/' },
+      { folder: 'ESVS2024-asymptomatic-PAD', title: 'Guía de Práctica Clínica ES…', file: 'index.html', url: './ESVS2024-asymptomatic-PAD/' },
+      { folder: 'GLASS', title: 'GLASS: Flujograma, Tablas…', file: 'index.html', url: './GLASS/' },
+      { folder: 'Indice de Raynolds', title: 'El Número de Reynolds en…', file: 'index.html', url: './Indice de Raynolds/' },
+      { folder: 'isquemia-reperfusion-estudio-DANAMI', title: 'DANAMI-3 en STEMI mult…', file: 'index.html', url: './isquemia-reperfusion-estudio-DANAMI/' },
+      { folder: 'la-brecha-evidencia-aterectomia', title: 'Análisis Clínico de la Evide…', file: 'index.html', url: './la-brecha-evidencia-aterectomia/' },
+      { folder: 'lesion-por-isquemia-reperfusion', title: 'Explorador Interactivo de …', file: 'index.html', url: './lesion-por-isquemia-reperfusion/' },
+      { folder: 'sistema-evaluacion-seleccion-apositos-ulceras', title: 'Sistema de Evaluación y S…', file: 'index.html', url: './sistema-evaluacion-seleccion-apositos-ulceras/' },
+      { folder: 'sistemas-clasificacion-infeccion-protesis-vasc', title: 'Sistemas de Clasificación …', file: 'index.html', url: './sistemas-clasificacion-infeccion-protesis-vasc/' },
+      { folder: 'Supera', title: 'Guía Experta del Stent Bio…', file: 'index.html', url: './Supera/' },
+      { folder: 'Tipos-ulceras', title: 'Tipos de Úlceras', file: 'index.html', url: './Tipos-ulceras/' },
+    ];
 
-    // ====== Estado en memoria ======
+    // ====== Estado/UI ======
     let GROUPED = true;  // vista agrupada por carpeta
-    let ALL = [];        // [{title, path, file, folder, url}]
-    let RATE = null;
-
-    // ====== Utilidades ======
     const $ = (sel, el=document) => el.querySelector(sel);
     const createEl = (tag, attrs={}) => Object.assign(document.createElement(tag), attrs);
-    const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
-    function getToken() { return localStorage.getItem('gh_pat') || ''; }
-    function setToken(tok) {
-      if (tok) localStorage.setItem('gh_pat', tok);
-      else localStorage.removeItem('gh_pat');
-    }
-
-    async function fetchJSON(url) {
-      const headers = {
-        'Accept': 'application/vnd.github+json',
-        'X-GitHub-Api-Version': '2022-11-28'
-      };
-      const token = getToken();
-      if (token) headers['Authorization'] = `Bearer ${token}`;
-
-      const res = await fetch(url, { headers });
-      // Guarda información de rate limit si hay
-      try {
-        RATE = {
-          limit: res.headers.get('x-ratelimit-limit'),
-          remaining: res.headers.get('x-ratelimit-remaining'),
-          reset: res.headers.get('x-ratelimit-reset')
-        };
-      } catch {}
-      if (!res.ok) {
-        const text = await res.text().catch(() => '');
-        throw new Error(`HTTP ${res.status}: ${text || url}`);
-      }
-      return res.json();
-    }
-
-    // Limita concurrencia al descargar/parsear HTML para evitar rate limit y saturación
-    async function mapWithLimit(arr, limit, fn) {
-      const out = [];
-      let i = 0;
-      const workers = new Array(Math.min(limit, arr.length)).fill(0).map(async () => {
-        while (i < arr.length) {
-          const cur = i++;
-          out[cur] = await fn(arr[cur], cur);
-        }
-      });
-      await Promise.all(workers);
-      return out;
-    }
-
-    function getRelativeUrl(path) {
-      // En GitHub Pages o cualquier hosting estático servirá ./carpeta/archivo.html
-      return `./${path}`;
-    }
-
-    async function extractTitleFromHTML(downloadUrl) {
-      // Descarga el HTML y detecta <title> o primer <h1>.
-      const res = await fetch(downloadUrl);
-      const html = await res.text();
-      const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
-      if (titleMatch && titleMatch[1]) return sanitize(titleMatch[1]);
-      const h1Match = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
-      if (h1Match && h1Match[1]) return sanitize(h1Match[1]);
-      return '';
-    }
-
-    function sanitize(s) {
-      return (s || '').replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
-    }
-
-    // ====== Carga de datos ======
-    async function loadAll() {
-      // 1) Listar contenido raíz y quedarse solo con directorios
-      const root = await fetchJSON(`${API}?ref=${BRANCH}`);
-      const dirs = root.filter(x => x.type === 'dir').map(x => x.path);
-
-      const found = [];
-
-      for (const dir of dirs) {
-        const entries = await fetchJSON(`${API}/${encodeURIComponent(dir)}?ref=${BRANCH}`);
-        const htmlFiles = entries.filter(e => e.type === 'file' && /\.html?$/i.test(e.name));
-
-        // 2) Obtener títulos con concurrencia limitada
-        const items = await mapWithLimit(htmlFiles, 4, async (f) => {
-          let title = '';
-          try {
-            title = await extractTitleFromHTML(f.download_url);
-          } catch (e) {
-            // ignorar; habrá fallback
-          }
-          return {
-            title: title || f.name.replace(/\.html?$/i,''),
-            path: f.path,     // carpeta/archivo.html
-            file: f.name,
-            folder: dir.split('/').pop(),
-            url: getRelativeUrl(f.path),
-            download_url: f.download_url
-          };
-        });
-
-        found.push(...items);
-        // Micro-respiro entre carpetas (ayuda con rate limit en navegadores agresivos)
-        await sleep(120);
-      }
-
-      ALL = found.sort((a,b) => a.title.localeCompare(b.title, 'es', {sensitivity:'base'}));
-      setCount(ALL.length);
-      render();
-    }
-
-    // ====== Renderizado ======
     function setCount(n) { $('#countBadge').textContent = n; }
 
     function render() {
-      $('#loader').classList.add('hidden');
       const q = $('#searchInput').value.trim().toLowerCase();
-
       const arr = q
-        ? ALL.filter(i =>
+        ? DATA.filter(i =>
             (i.title && i.title.toLowerCase().includes(q)) ||
             (i.folder && i.folder.toLowerCase().includes(q)) ||
-            (i.file && i.file.toLowerCase().includes(q)))
-        : ALL.slice();
+            (`${i.folder}/${i.file}`.toLowerCase().includes(q)))
+        : DATA.slice();
 
       setCount(arr.length);
 
@@ -288,32 +152,25 @@
       if (GROUPED) {
         // Agrupar por carpeta
         const groups = {};
-        for (const item of arr) {
-          (groups[item.folder] ||= []).push(item);
-        }
-        const groupNames = Object.keys(groups).sort((a,b) => a.localeCompare(b, 'es', {sensitivity:'base'}));
+        for (const item of arr) (groups[item.folder] ||= []).push(item);
+        const groupNames = Object.keys(groups).sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
 
         for (const g of groupNames) {
           const section = createEl('section', { className: 'mb-8' });
-
-          // Cabecera de carpeta
-          const header = `
-            <div class="mb-3 flex items-center justify-between">
-              <div class="flex items-center gap-3">
-                <div class="rounded-lg bg-brand-100 p-2">
-                  <svg class="h-5 w-5 text-brand-700" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 6a2 2 0 0 1 2-2h4.2a2 2 0 0 1 1.4.6l1.8 1.8A2 2 0 0 0 14.6 7H19a2 2 0 0 1 2 2v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V6z"/></svg>
-                </div>
-                <h2 class="text-base sm:text-lg font-semibold text-slate-800">${g}</h2>
-                <span class="text-xs text-slate-500">(${groups[g].length})</span>
+          section.innerHTML = `
+            <div class="mb-3 flex items-center gap-3">
+              <div class="rounded-lg bg-brand-100 p-2">
+                <svg class="h-5 w-5 text-brand-700" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M3 6a2 2 0 0 1 2-2h4.2a2 2 0 0 1 1.4.6l1.8 1.8A2 2 0 0 0 14.6 7H19a2 2 0 0 1 2 2v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V6z"/>
+                </svg>
               </div>
+              <h2 class="text-base sm:text-lg font-semibold text-slate-800">${g}</h2>
+              <span class="text-xs text-slate-500">(${groups[g].length})</span>
             </div>
           `;
-          section.insertAdjacentHTML('afterbegin', header);
-
-          // Grid de tarjetas
           const grid = createEl('div', { className: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4' });
 
-          for (const it of groups[g].sort((a,b)=>a.title.localeCompare(b.title,'es',{sensitivity:'base'}))) {
+          for (const it of groups[g]) {
             const card = createEl('a', {
               href: it.url,
               target: '_blank',
@@ -330,7 +187,7 @@
                 </div>
                 <div class="min-w-0 flex-1">
                   <h3 class="truncate text-slate-800 font-medium group-hover:text-brand-800">${it.title}</h3>
-                  <p class="mt-1 text-sm text-slate-500 truncate">${it.path}</p>
+                  <p class="mt-1 text-sm text-slate-500 truncate">${it.folder}/${it.file}</p>
                 </div>
                 <div class="ml-2 shrink-0 opacity-80 group-hover:opacity-100">
                   <svg class="h-5 w-5 text-brand-700" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -369,7 +226,7 @@
               <div class="min-w-0 flex-1">
                 <h3 class="truncate text-slate-800 font-medium group-hover:text-brand-800">${it.title}</h3>
                 <p class="text-xs text-slate-500">${it.folder}</p>
-                <p class="mt-1 text-sm text-slate-500 truncate">${it.path}</p>
+                <p class="mt-1 text-sm text-slate-500 truncate">${it.folder}/${it.file}</p>
               </div>
               <div class="ml-2 shrink-0 opacity-80 group-hover:opacity-100">
                 <svg class="h-5 w-5 text-brand-700" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -382,71 +239,25 @@
         }
         $('#content').appendChild(list);
       }
-
-      renderStatus();
     }
 
-    function renderStatus() {
-      const box = $('#status');
-      if (!RATE) { box.classList.add('hidden'); return; }
-      const { limit, remaining, reset } = RATE;
-      const when = reset ? new Date(parseInt(reset,10)*1000) : null;
-      box.innerHTML = `
-        <div class="flex items-start gap-3">
-          <svg class="h-5 w-5 text-amber-600 mt-0.5" viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
-          <div>
-            <p class="text-sm"><strong>Límite API GitHub:</strong> ${remaining ?? '?'} / ${limit ?? '?'} restantes${when ? ` (resetea ${when.toLocaleTimeString()})` : ''}.</p>
-            <p class="text-xs text-slate-500">Consejo: añade un token personal en el panel superior si alcanzas el límite.</p>
-          </div>
-        </div>
-      `;
-      box.classList.remove('hidden');
-    }
-
-    // ====== Eventos UI ======
-    $('#groupToggle').addEventListener('click', () => { GROUPED = !GROUPED;
+    // ====== Eventos ======
+    $('#groupToggle').addEventListener('click', () => {
+      GROUPED = !GROUPED;
       $('#groupToggle').querySelector('span').textContent = GROUPED ? 'Agrupar por carpeta' : 'Ver lista plana';
       render();
     });
-
-    $('#clearSearch').addEventListener('click', () => {
-      $('#searchInput').value = '';
-      render();
-    });
-
-    $('#searchInput').addEventListener('input', () => render());
-
-    $('#saveToken').addEventListener('click', () => {
-      const tok = $('#tokenInput').value.trim();
-      setToken(tok);
-      $('#tokenMsg').textContent = tok ? 'Token guardado localmente.' : 'Se quitó el token.';
-      $('#tokenMsg').className = 'mt-2 text-sm ' + (tok ? 'text-green-700' : 'text-slate-600');
-      renderStatus();
-    });
-    $('#clearToken').addEventListener('click', () => {
-      setToken('');
-      $('#tokenInput').value = '';
-      $('#tokenMsg').textContent = 'Token eliminado.';
-      $('#tokenMsg').className = 'mt-2 text-sm text-slate-600';
-      renderStatus();
+    $('#clearSearch').addEventListener('click', () => { $('#searchInput').value = ''; render(); });
+    $('#searchInput').addEventListener('input', render);
+    window.addEventListener('keydown', (e) => {
+      if (e.key === '/' && !e.target.matches('input,textarea')) {
+        e.preventDefault(); $('#searchInput').focus();
+      }
     });
 
     // ====== Inicio ======
-    (async function init() {
-      try {
-        await loadAll();
-      } catch (err) {
-        console.error(err);
-        $('#loader').classList.add('hidden');
-        const s = $('#status');
-        s.innerHTML = `<div class="text-red-700">
-          <p class="font-medium">Error cargando el índice</p>
-          <p class="text-sm mt-1"><code>${String(err).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]))}</code></p>
-          <p class="text-sm mt-2 text-slate-600">Prueba a recargar, añadir un token o habilitar GitHub Pages para servir este archivo.</p>
-        </div>`;
-        s.className = 'mt-6 rounded-xl border border-red-200 bg-red-50 p-4';
-      }
-    })();
+    setCount(DATA.length);
+    render();
   </script>
 </body>
 </html>
