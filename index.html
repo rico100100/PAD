@@ -3,23 +3,19 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PAD — Índice de contenidos</title>
-  <meta name="description" content="Índice estático de los HTML por carpeta (PAD - Vasos periféricos / Diabetes)." />
+  <title>PAD — Índice</title>
+  <meta name="description" content="Índice limpio de contenidos (títulos únicamente)." />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%23377CF2' d='M6 8a4 4 0 0 1 4-4h4.2a3 3 0 0 1 2.1.9l2.1 2.2A3 3 0 0 0 20.6 8H26a4 4 0 0 1 4 4v10a6 6 0 0 1-6 6H12a6 6 0 0 1-6-6V8z'/%3E%3C/svg%3E" />
-  <meta property="og:title" content="PAD — Índice de contenidos">
-  <meta property="og:description" content="Listados estáticos de los HTML por carpeta.">
   <meta name="theme-color" content="#377cf2" />
 
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            brand: {
-              50:'#f3f8ff',100:'#e7f0ff',200:'#cfdefe',300:'#a8c6fd',400:'#7eadfb',
-              500:'#5896f5',600:'#377cf2',700:'#2c63c6',800:'#234e9f',900:'#1b3b79'
-            }
+            brand: {50:'#f3f8ff',100:'#e7f0ff',200:'#cfdefe',300:'#a8c6fd',400:'#7eadfb',500:'#5896f5',600:'#377cf2',700:'#2c63c6',800:'#234e9f',900:'#1b3b79'}
           },
           boxShadow: {
             soft:'0 10px 25px -10px rgba(55,124,242,.25)',
@@ -35,54 +31,43 @@
   </style>
 </head>
 <body class="min-h-dvh bg-gradient-to-b from-brand-50 to-white text-slate-800 antialiased" id="top">
-  <!-- Header -->
+  <!-- Header limpio -->
   <header class="sticky top-0 z-40 backdrop-blur bg-white/70 border-b border-slate-200/60">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-4">
       <div class="flex items-center gap-3">
-        <div class="shrink-0 rounded-xl bg-brand-100 p-2 shadow-soft" aria-hidden="true">
-          <svg class="h-6 w-6" viewBox="0 0 24 24" aria-hidden="true" fill="#377cf2">
+        <div class="rounded-xl bg-brand-100 p-2 shadow-soft" aria-hidden="true">
+          <svg class="h-6 w-6" viewBox="0 0 24 24" fill="#377cf2" aria-hidden="true">
             <path d="M3 7a4 4 0 0 1 4-4h4.2a3 3 0 0 1 2.1.9l2.1 2.1A3 3 0 0 0 18.6 7H21a3 3 0 0 1 3 3v7a6 6 0 0 1-6 6H9a6 6 0 0 1-6-6V7z"/>
           </svg>
         </div>
-        <div class="flex-1 min-w-0">
-          <h1 class="text-lg sm:text-xl font-semibold tracking-tight truncate">PAD — Índice de contenidos</h1>
-          <p class="text-sm text-slate-600 truncate">Listados estáticos (títulos largos únicamente)</p>
-        </div>
-        <!-- Contador -->
-        <div class="hidden sm:flex items-center gap-2">
-          <span class="text-xs uppercase tracking-wide text-slate-500">Entradas</span>
-          <span id="countBadge" class="inline-flex items-center justify-center rounded-full bg-brand-100 text-brand-800 text-sm font-medium h-7 min-w-7 px-3 shadow-soft">0</span>
-        </div>
+        <h1 class="text-lg sm:text-xl font-semibold tracking-tight">PAD — Índice</h1>
       </div>
     </div>
   </header>
 
-  <!-- Controles -->
-  <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6">
-    <div class="flex flex-col md:flex-row gap-3 md:items-center">
-      <label class="relative flex-1" aria-label="Buscar contenido">
-        <span class="sr-only">Buscar</span>
-        <input id="searchInput" type="search" inputmode="search" placeholder="Buscar por título…"
-               class="w-full rounded-xl border border-slate-300/70 bg-white/90 px-4 py-3 pl-10 shadow-soft focus:outline-none focus:ring-4 focus:ring-brand-200 focus:border-brand-400"
-               autocomplete="off" />
-        <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15z"/>
-        </svg>
-      </label>
-
-      <div class="flex items-center gap-2">
-        <button id="clearSearch" type="button"
-                class="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-2 text-slate-700 hover:bg-slate-50 active:scale-[.99]"
-                title="Limpiar búsqueda">
-          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
-          Limpiar
-        </button>
-      </div>
+  <!-- Búsqueda (por título únicamente) -->
+  <section class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pt-6">
+    <label class="relative block" aria-label="Buscar por título">
+      <span class="sr-only">Buscar</span>
+      <input id="searchInput" type="search" inputmode="search" placeholder="Buscar por título…"
+             class="w-full rounded-xl border border-slate-300/70 bg-white/90 px-4 py-3 pl-10 shadow-soft focus:outline-none focus:ring-4 focus:ring-brand-200 focus:border-brand-400"
+             autocomplete="off" />
+      <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15z"/>
+      </svg>
+    </label>
+    <div class="mt-3">
+      <button id="clearSearch" type="button"
+              class="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-2 text-slate-700 hover:bg-slate-50 active:scale-[.99]"
+              title="Limpiar búsqueda">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        Limpiar
+      </button>
     </div>
   </section>
 
   <!-- Contenido -->
-  <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-20">
+  <main class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pb-20">
     <div id="content" class="mt-8"></div>
   </main>
 
@@ -93,20 +78,20 @@
   </a>
 
   <script>
-    // ====== Utilidades ======
+    // ===== Utilidades =====
     const $ = (sel, el=document) => el.querySelector(sel);
     const createEl = (tag, attrs={}) => Object.assign(document.createElement(tag), attrs);
     const diacritics = s => s?.normalize('NFD').replace(/\p{Diacritic}/gu, '') ?? '';
     const cmp = (a,b) => a.localeCompare(b, 'es', { sensitivity: 'base' });
 
-    // Base path para GitHub Pages
+    // Base path para GitHub Pages (repo/subcarpeta)
     const basePath = (() => {
       const p = location.pathname.replace(/index\.html?$/,'');
       return p.endsWith('/') ? p : p + '/';
     })();
-
     const encodePath = (path) => path.split('/').map(encodeURIComponent).join('/');
 
+    // Enlaces seguros (no se muestran carpetas, sólo se usan para link)
     const toHref = (item) => {
       if (item.url) {
         try {
@@ -119,7 +104,7 @@
       return basePath + (folder ? folder + '/' : '') + file;
     };
 
-    // ====== Datos (carpetas ocultas visualmente) ======
+    // ===== Datos =====
     const DATA = [
       { folder: 'ESVS2024-asymptomatic-PAD', title: 'ESVS 2025 Guía de Práctica Clínica para PAD asintomático', file: 'index.html', url: './ESVS2024-asymptomatic-PAD/' },
       { folder: 'Backtable-Aplicaciones-para-Dispositivos-BTK-Avanzados', title: 'Backtable - Aplicaciones para Dispositivos BTK Avanzados', file: 'index.html', url: './Backtable-Aplicaciones-para-Dispositivos-BTK-Avanzados/' },
@@ -142,35 +127,20 @@
       { folder: 'cuadro-comparativo-calidad-vida-tras-amputacion', title: 'Calidad de Vida tras Amputación', file: 'index.html', url: './cuadro-comparativo-calidad-vida-tras-amputacion/' },
     ];
 
-    // ====== Render (sólo títulos) ======
-    function setCount(n) { $('#countBadge').textContent = n; }
-
+    // ===== Render limpio (sólo títulos) =====
     function filtered() {
-      const qRaw = $('#searchInput').value.trim();
-      const q = diacritics(qRaw.toLowerCase());
-      return q
-        ? DATA.filter(i => {
-            const title = diacritics(i.title?.toLowerCase() || '');
-            const folder = diacritics(i.folder?.toLowerCase() || '');
-            const ff = diacritics(`${i.folder}/${i.file}`.toLowerCase());
-            return title.includes(q) || folder.includes(q) || ff.includes(q);
-          })
-        : DATA.slice();
+      const q = diacritics($('#searchInput').value.trim().toLowerCase());
+      return (q ? DATA.filter(i => diacritics((i.title||'').toLowerCase()).includes(q)) : DATA.slice())
+             .sort((a,b) => cmp(a.title||'', b.title||''));
     }
 
     function render() {
-      const arr = filtered().sort((a,b) => {
-        const r = (a.title||'').localeCompare(b.title||'', 'es', { sensitivity: 'base' });
-        return r !== 0 ? r : (a.folder||'').localeCompare(b.folder||'', 'es', { sensitivity: 'base' });
-      });
-
-      setCount(arr.length);
-
+      const arr = filtered();
       const container = $('#content');
       container.innerHTML = '';
 
       if (!arr.length) {
-        container.innerHTML = `<p class="text-slate-600">No se encontraron HTML que coincidan con tu búsqueda.</p>`;
+        container.innerHTML = `<p class="text-slate-600">No se encontraron títulos que coincidan con tu búsqueda.</p>`;
         return;
       }
 
@@ -184,6 +154,7 @@
           className: 'group block rounded-xl bg-white/90 border border-slate-200/70 p-4 shadow-soft hover:shadow-softHover focus:outline-none focus:ring-4 focus:ring-brand-200 active:scale-[.995]',
           title: `Abrir: ${it.title}`
         });
+
         card.innerHTML = `
           <div class="flex items-start gap-3">
             <div class="mt-1 rounded-md bg-brand-50 p-2" aria-hidden="true">
@@ -207,7 +178,7 @@
       container.appendChild(grid);
     }
 
-    // ====== Eventos ======
+    // Eventos
     $('#clearSearch').addEventListener('click', () => { $('#searchInput').value = ''; render(); });
     $('#searchInput').addEventListener('input', render);
     window.addEventListener('keydown', (e) => {
@@ -217,7 +188,6 @@
     });
 
     // Inicio
-    setCount(DATA.length);
     render();
   </script>
 </body>
