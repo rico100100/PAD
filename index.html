@@ -5,16 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>PAD — Índice de contenidos</title>
   <meta name="description" content="Índice estático de los HTML por carpeta (PAD - Vasos periféricos / Diabetes)." />
-
-  <!-- Favicon simple -->
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%23377CF2' d='M6 8a4 4 0 0 1 4-4h4.2a3 3 0 0 1 2.1.9l2.1 2.2A3 3 0 0 0 20.6 8H26a4 4 0 0 1 4 4v10a6 6 0 0 1-6 6H12a6 6 0 0 1-6-6V8z'/%3E%3C/svg%3E" />
-
-  <!-- SEO / Social -->
   <meta property="og:title" content="PAD — Índice de contenidos">
   <meta property="og:description" content="Listados estáticos de los HTML por carpeta.">
   <meta name="theme-color" content="#377cf2" />
 
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -49,22 +44,14 @@
             <path d="M3 7a4 4 0 0 1 4-4h4.2a3 3 0 0 1 2.1.9l2.1 2.1A3 3 0 0 0 18.6 7H21a3 3 0 0 1 3 3v7a6 6 0 0 1-6 6H9a6 6 0 0 1-6-6V7z"/>
           </svg>
         </div>
-
         <div class="flex-1 min-w-0">
           <h1 class="text-lg sm:text-xl font-semibold tracking-tight truncate">PAD — Índice de contenidos</h1>
-          <p class="text-sm text-slate-600 truncate">Listados estáticos de los HTML por carpeta</p>
+          <p class="text-sm text-slate-600 truncate">Listados estáticos (títulos largos únicamente)</p>
         </div>
-
-        <!-- Contadores -->
-        <div class="hidden sm:flex items-center gap-4">
-          <div class="flex items-center gap-2">
-            <span class="text-xs uppercase tracking-wide text-slate-500">Entradas</span>
-            <span id="countBadge" class="inline-flex items-center justify-center rounded-full bg-brand-100 text-brand-800 text-sm font-medium h-7 min-w-7 px-3 shadow-soft">0</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <span class="text-xs uppercase tracking-wide text-slate-500">Carpetas</span>
-            <span id="folderBadge" class="inline-flex items-center justify-center rounded-full bg-slate-100 text-slate-800 text-sm font-medium h-7 min-w-7 px-3 shadow-soft">0</span>
-          </div>
+        <!-- Contador -->
+        <div class="hidden sm:flex items-center gap-2">
+          <span class="text-xs uppercase tracking-wide text-slate-500">Entradas</span>
+          <span id="countBadge" class="inline-flex items-center justify-center rounded-full bg-brand-100 text-brand-800 text-sm font-medium h-7 min-w-7 px-3 shadow-soft">0</span>
         </div>
       </div>
     </div>
@@ -73,10 +60,9 @@
   <!-- Controles -->
   <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6">
     <div class="flex flex-col md:flex-row gap-3 md:items-center">
-      <!-- Búsqueda -->
       <label class="relative flex-1" aria-label="Buscar contenido">
         <span class="sr-only">Buscar</span>
-        <input id="searchInput" type="search" inputmode="search" placeholder="Buscar por título, carpeta o archivo…"
+        <input id="searchInput" type="search" inputmode="search" placeholder="Buscar por título…"
                class="w-full rounded-xl border border-slate-300/70 bg-white/90 px-4 py-3 pl-10 shadow-soft focus:outline-none focus:ring-4 focus:ring-brand-200 focus:border-brand-400"
                autocomplete="off" />
         <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -84,24 +70,7 @@
         </svg>
       </label>
 
-      <!-- Orden / Agrupar -->
-      <div class="flex flex-wrap items-center gap-2">
-        <button id="sortToggle" type="button"
-                class="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-2 text-slate-700 hover:bg-slate-50 active:scale-[.99] select-none"
-                title="Cambiar orden (Título/Carpeta)">
-          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 6h10v2H7V6zm-2 5h14v2H5v-2zm4 5h6v2H9v-2z"/></svg>
-          <span class="font-medium"><span class="hidden sm:inline">Orden:</span> Título</span>
-        </button>
-
-        <button id="groupToggle" type="button"
-                class="inline-flex items-center gap-2 rounded-xl border border-brand-200 bg-brand-50 px-4 py-2 text-brand-800 shadow-soft hover:shadow-softHover active:scale-[.99] select-none"
-                title="Alternar vista agrupada">
-          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M3 7h8v6H3V7zm10 0h8v6h-8V7zM3 15h8v6H3v-6zm10 0h8v6h-8v-6z"/>
-          </svg>
-          <span class="font-medium">Agrupar por carpeta</span>
-        </button>
-
+      <div class="flex items-center gap-2">
         <button id="clearSearch" type="button"
                 class="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-2 text-slate-700 hover:bg-slate-50 active:scale-[.99]"
                 title="Limpiar búsqueda">
@@ -130,32 +99,27 @@
     const diacritics = s => s?.normalize('NFD').replace(/\p{Diacritic}/gu, '') ?? '';
     const cmp = (a,b) => a.localeCompare(b, 'es', { sensitivity: 'base' });
 
-    // Base path para GitHub Pages (respeta /user.github.io/repo/)
+    // Base path para GitHub Pages
     const basePath = (() => {
-      // Si hay 'index.html' en la ruta, lo quitamos
       const p = location.pathname.replace(/index\.html?$/,'');
-      // Evita doble slash al construir URLs
       return p.endsWith('/') ? p : p + '/';
     })();
 
-    // Convierte "carpeta/sub carpeta" -> "carpeta/sub%20carpeta"
     const encodePath = (path) => path.split('/').map(encodeURIComponent).join('/');
 
-    // Construye URL segura. Si item.url viene dado, lo respeta; si no, usa folder/file
     const toHref = (item) => {
       if (item.url) {
-        // Normaliza relativa a basePath
         try {
           const u = new URL(item.url, location.origin + basePath);
           return u.pathname + (u.search||'') + (u.hash||'');
-        } catch { /* fallback */ }
+        } catch {}
       }
       const folder = encodePath(item.folder || '');
       const file = item.file ? encodeURIComponent(item.file) : 'index.html';
       return basePath + (folder ? folder + '/' : '') + file;
     };
 
-    // ====== Datos (corregido string roto) ======
+    // ====== Datos (carpetas ocultas visualmente) ======
     const DATA = [
       { folder: 'ESVS2024-asymptomatic-PAD', title: 'ESVS 2025 Guía de Práctica Clínica para PAD asintomático', file: 'index.html', url: './ESVS2024-asymptomatic-PAD/' },
       { folder: 'Backtable-Aplicaciones-para-Dispositivos-BTK-Avanzados', title: 'Backtable - Aplicaciones para Dispositivos BTK Avanzados', file: 'index.html', url: './Backtable-Aplicaciones-para-Dispositivos-BTK-Avanzados/' },
@@ -178,18 +142,13 @@
       { folder: 'cuadro-comparativo-calidad-vida-tras-amputacion', title: 'Calidad de Vida tras Amputación', file: 'index.html', url: './cuadro-comparativo-calidad-vida-tras-amputacion/' },
     ];
 
-    // ====== Estado/UI ======
-    let GROUPED = true; // vista agrupada por carpeta
-    let SORT_BY = 'title'; // 'title' | 'folder'
-
+    // ====== Render (sólo títulos) ======
     function setCount(n) { $('#countBadge').textContent = n; }
-    function setFolderCount(n) { $('#folderBadge').textContent = n; }
 
-    function filteredAndSorted() {
+    function filtered() {
       const qRaw = $('#searchInput').value.trim();
       const q = diacritics(qRaw.toLowerCase());
-
-      let arr = q
+      return q
         ? DATA.filter(i => {
             const title = diacritics(i.title?.toLowerCase() || '');
             const folder = diacritics(i.folder?.toLowerCase() || '');
@@ -197,144 +156,58 @@
             return title.includes(q) || folder.includes(q) || ff.includes(q);
           })
         : DATA.slice();
-
-      // Ordenar
-      arr.sort((a,b) => {
-        if (SORT_BY === 'folder') {
-          const r = cmp(a.folder || '', b.folder || '');
-          return r !== 0 ? r : cmp(a.title || '', b.title || '');
-        }
-        // por título
-        const r = cmp(a.title || '', b.title || '');
-        return r !== 0 ? r : cmp(a.folder || '', b.folder || '');
-      });
-
-      return arr;
     }
 
     function render() {
-      const arr = filteredAndSorted();
-      setCount(arr.length);
+      const arr = filtered().sort((a,b) => {
+        const r = (a.title||'').localeCompare(b.title||'', 'es', { sensitivity: 'base' });
+        return r !== 0 ? r : (a.folder||'').localeCompare(b.folder||'', 'es', { sensitivity: 'base' });
+      });
 
-      const folders = new Set(arr.map(i => i.folder));
-      setFolderCount(folders.size);
+      setCount(arr.length);
 
       const container = $('#content');
       container.innerHTML = '';
 
-      if (GROUPED) {
-        // Agrupar por carpeta
-        const groups = {};
-        for (const item of arr) (groups[item.folder] ||= []).push(item);
-        const groupNames = Object.keys(groups).sort(cmp);
-
-        if (!groupNames.length) {
-          container.innerHTML = `<p class="text-slate-600">No se encontraron HTML que coincidan con tu búsqueda.</p>`;
-          return;
-        }
-
-        for (const g of groupNames) {
-          const section = createEl('section', { className: 'mb-8' });
-          section.innerHTML = `
-            <div class="mb-3 flex items-center gap-3">
-              <div class="rounded-lg bg-brand-100 p-2" aria-hidden="true">
-                <svg class="h-5 w-5 text-brand-700" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M3 6a2 2 0 0 1 2-2h4.2a2 2 0 0 1 1.4.6l1.8 1.8A2 2 0 0 0 14.6 7H19a2 2 0 0 1 2 2v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V6z"/>
-                </svg>
-              </div>
-              <h2 class="text-base sm:text-lg font-semibold text-slate-800">${g}</h2>
-              <span class="text-xs text-slate-500">(${groups[g].length})</span>
-            </div>
-          `;
-          const grid = createEl('div', { className: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4' });
-
-          for (const it of groups[g]) {
-            const card = createEl('a', {
-              href: toHref(it),
-              target: '_blank',
-              rel: 'noopener noreferrer',
-              className: 'group block rounded-xl bg-white/90 border border-slate-200/70 p-4 shadow-soft hover:shadow-softHover focus:outline-none focus:ring-4 focus:ring-brand-200 active:scale-[.995]',
-              title: `Abrir: ${it.title}`
-            });
-            card.innerHTML = `
-              <div class="flex items-start gap-3">
-                <div class="mt-1 rounded-md bg-brand-50 p-2" aria-hidden="true">
-                  <svg class="h-5 w-5 text-brand-700" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M5 4h14a2 2 0 0 1 2 2v12.5a1.5 1.5 0 0 1-1.5 1.5H6.5A3.5 3.5 0 0 1 3 16.5V6a2 2 0 0 1 2-2zm3 4h8v1H8V8z"/>
-                  </svg>
-                </div>
-                <div class="min-w-0 flex-1">
-                  <h3 class="truncate text-slate-800 font-medium group-hover:text-brand-800">${it.title}</h3>
-                  <p class="mt-1 text-sm text-slate-500 truncate">${it.folder}/${it.file || 'index.html'}</p>
-                </div>
-                <div class="ml-2 shrink-0 opacity-80 group-hover:opacity-100" aria-hidden="true">
-                  <svg class="h-5 w-5 text-brand-700" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M14 3h7v7h-2V6.4l-7.9 7.9-1.4-1.4L17.6 5H14V3zM5 5h6v2H7v10h10v-4h2v6H5V5z"/>
-                  </svg>
-                </div>
-              </div>
-            `;
-            grid.appendChild(card);
-          }
-
-          section.appendChild(grid);
-          container.appendChild(section);
-        }
-      } else {
-        // Vista plana
-        if (!arr.length) {
-          container.innerHTML = `<p class="text-slate-600">No se encontraron HTML que coincidan con tu búsqueda.</p>`;
-          return;
-        }
-
-        const list = createEl('div', { className: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4' });
-        for (const it of arr) {
-          const card = createEl('a', {
-            href: toHref(it),
-            target: '_blank',
-            rel: 'noopener noreferrer',
-            className: 'group block rounded-xl bg-white/90 border border-slate-200/70 p-4 shadow-soft hover:shadow-softHover focus:outline-none focus:ring-4 focus:ring-brand-200 active:scale-[.995]',
-            title: `Abrir: ${it.title}`
-          });
-          card.innerHTML = `
-            <div class="flex items-start gap-3">
-              <div class="mt-1 rounded-md bg-brand-50 p-2" aria-hidden="true">
-                <svg class="h-5 w-5 text-brand-700" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M5 4h14a2 2 0 0 1 2 2v12.5a1.5 1.5 0 0 1-1.5 1.5H6.5A3.5 3.5 0 0 1 3 16.5V6a2 2 0 0 1 2-2zm3 4h8v1H8V8z"/>
-                </svg>
-              </div>
-              <div class="min-w-0 flex-1">
-                <h3 class="truncate text-slate-800 font-medium group-hover:text-brand-800">${it.title}</h3>
-                <p class="text-xs text-slate-500 truncate">${it.folder}</p>
-                <p class="mt-1 text-sm text-slate-500 truncate">${it.folder}/${it.file || 'index.html'}</p>
-              </div>
-              <div class="ml-2 shrink-0 opacity-80 group-hover:opacity-100" aria-hidden="true">
-                <svg class="h-5 w-5 text-brand-700" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M14 3h7v7h-2V6.4l-7.9 7.9-1.4-1.4L17.6 5H14V3zM5 5h6v2H7v10h10v-4h2v6H5V5z"/>
-                </svg>
-              </div>
-            </div>
-          `;
-          list.appendChild(card);
-        }
-        $('#content').appendChild(list);
+      if (!arr.length) {
+        container.innerHTML = `<p class="text-slate-600">No se encontraron HTML que coincidan con tu búsqueda.</p>`;
+        return;
       }
+
+      const grid = createEl('div', { className: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4' });
+
+      for (const it of arr) {
+        const card = createEl('a', {
+          href: toHref(it),
+          target: '_blank',
+          rel: 'noopener noreferrer',
+          className: 'group block rounded-xl bg-white/90 border border-slate-200/70 p-4 shadow-soft hover:shadow-softHover focus:outline-none focus:ring-4 focus:ring-brand-200 active:scale-[.995]',
+          title: `Abrir: ${it.title}`
+        });
+        card.innerHTML = `
+          <div class="flex items-start gap-3">
+            <div class="mt-1 rounded-md bg-brand-50 p-2" aria-hidden="true">
+              <svg class="h-5 w-5 text-brand-700" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M5 4h14a2 2 0 0 1 2 2v12.5a1.5 1.5 0 0 1-1.5 1.5H6.5A3.5 3.5 0 0 1 3 16.5V6a2 2 0 0 1 2-2zm3 4h8v1H8V8z"/>
+              </svg>
+            </div>
+            <div class="min-w-0 flex-1">
+              <h3 class="text-slate-800 font-medium group-hover:text-brand-800">${it.title}</h3>
+            </div>
+            <div class="ml-2 shrink-0 opacity-80 group-hover:opacity-100" aria-hidden="true">
+              <svg class="h-5 w-5 text-brand-700" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M14 3h7v7h-2V6.4l-7.9 7.9-1.4-1.4L17.6 5H14V3zM5 5h6v2H7v10h10v-4h2v6H5V5z"/>
+              </svg>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      }
+
+      container.appendChild(grid);
     }
 
     // ====== Eventos ======
-    $('#groupToggle').addEventListener('click', () => {
-      GROUPED = !GROUPED;
-      $('#groupToggle').querySelector('span').textContent = GROUPED ? 'Agrupar por carpeta' : 'Ver lista plana';
-      render();
-    });
-
-    $('#sortToggle').addEventListener('click', () => {
-      SORT_BY = SORT_BY === 'title' ? 'folder' : 'title';
-      $('#sortToggle').querySelector('span').innerHTML =
-        '<span class="hidden sm:inline">Orden:</span> ' + (SORT_BY === 'title' ? 'Título' : 'Carpeta');
-      render();
-    });
-
     $('#clearSearch').addEventListener('click', () => { $('#searchInput').value = ''; render(); });
     $('#searchInput').addEventListener('input', render);
     window.addEventListener('keydown', (e) => {
@@ -343,11 +216,8 @@
       }
     });
 
-    // ====== Inicio ======
-    // Orden inicial por título para que “sea legible según los títulos”
-    SORT_BY = 'title';
+    // Inicio
     setCount(DATA.length);
-    setFolderCount(new Set(DATA.map(i => i.folder)).size);
     render();
   </script>
 </body>
