@@ -1,0 +1,6 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.pill { @apply inline-flex items-center gap-2 rounded-full px-2 py-0.5 font-semibold; }
