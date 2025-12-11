@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculadora de predicción de Isquemia Mesentérica Crónica según Guías ESVS 2025">
+    <meta name="keywords" content="isquemia mesentérica, calculadora médica, ESVS 2025, CMI">
+    <title>Calculadora IMC - Guías ESVS 2025</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary-blue: #1e40af;
+            --secondary-blue: #3b82f6;
+            --light-blue: #60a5fa;
+            --bg-cream: #f8f9fa;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(30, 64, 175, 0.15);
+        }
+        
+        .radio-custom {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #3b82f6;
+            border-radius: 50%;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .radio-custom:checked {
+            background-color: #3b82f6;
+            border-color: #1e40af;
+        }
+        
+        .radio-custom:checked::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: white;
+        }
+        
+        .radio-label {
+            cursor: pointer;
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 2px solid #e5e7eb;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+        
+        .radio-label:hover {
+            border-color: #60a5fa;
+            background-color: #f0f9ff;
+        }
+        
+        .radio-custom:checked + .radio-label {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+            font-weight: 600;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .collapse-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+        
+        .collapse-content.active {
+            max-height: 2000px;
+        }
+        
+        .chevron {
+            transition: transform 0.3s ease;
+        }
+        
+        .chevron.rotated {
+            transform: rotate(180deg);
+        }
+        
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
+        
+        .result-low {
+            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+        }
+        
+        .result-medium {
+            background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+        }
+        
+        .result-high {
+            background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+        }
+        
+        input[type="radio"] {
+            min-width: 20px;
+            min-height: 20px;
+        }
+        
+        label {
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header Section -->
+    <header class="gradient-bg text-white py-12 md:py-16 shadow-lg">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">Calculadora de Predicción de Isquemia Mesentérica Crónica</h1>
+                <p class="text-xl md:text-2xl mb-4 text-blue-100">Guías ESVS 2025</p>
+                <p class="text-base md:text-lg text-blue-50 max-w-2xl mx-auto">Herramienta clínica basada en evidencia para estimar el riesgo de isquemia mesentérica crónica en pacientes con dolor abdominal y estenosis de arterias mesentéricas.</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 md:px-6 py-8 md:py-12">
+        <!-- Calculator Section -->
+        <section class="max-w-4xl mx-auto mb-12">
+            <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6 text-center">Calculadora de Riesgo</h2>
+                
+                <form id="calculatorForm" class="space-y-6">
+                    <!-- Weight Loss -->
+                    <div class="bg-gray-50 rounded-lg p-5 md:p-6 card-hover shadow-md">
+                        <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-4">Pérdida de peso (&gt;5% del peso corporal)</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <input type="radio" id="weightLoss0" name="weightLoss" value="0" class="radio-custom">
+                                <label for="weightLoss0" class="radio-label flex-1 ml-3">No (0 puntos)</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" id="weightLoss5" name="weightLoss" value="5" class="radio-custom">
+                                <label for="weightLoss5" class="radio-label flex-1 ml-3">Sí (5 puntos)</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cardiovascular Disease -->
+                    <div class="bg-gray-50 rounded-lg p-5 md:p-6 card-hover shadow-md">
+                        <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-4">Enfermedad cardiovascular</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <input type="radio" id="cvd0" name="cvd" value="0" class="radio-custom">
+                                <label for="cvd0" class="radio-label flex-1 ml-3">No (0 puntos)</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" id="cvd4" name="cvd" value="4" class="radio-custom">
+                                <label for="cvd4" class="radio-label flex-1 ml-3">Sí (4 puntos)</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Celiac Artery Stenosis -->
+                    <div class="bg-gray-50 rounded-lg p-5 md:p-6 card-hover shadow-md">
+                        <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-4">Grado de estenosis de arteria celíaca (CA)</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <input type="radio" id="ca0" name="caStenosis" value="0" class="radio-custom">
+                                <label for="ca0" class="radio-label flex-1 ml-3">&lt;50% (0 puntos)</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" id="ca3" name="caStenosis" value="3" class="radio-custom">
+                                <label for="ca3" class="radio-label flex-1 ml-3">50-69% (3 puntos)</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" id="ca6" name="caStenosis" value="6" class="radio-custom">
+                                <label for="ca6" class="radio-label flex-1 ml-3">≥70% (6 puntos)</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" id="ca7" name="caStenosis" value="7" class="radio-custom">
+                                <label for="ca7" class="radio-label flex-1 ml-3">Oclusión (7 puntos)</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SMA Stenosis -->
+                    <div class="bg-gray-50 rounded-lg p-5 md:p-6 card-hover shadow-md">
+                        <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-4">Grado de estenosis de arteria mesentérica superior (AMS)</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <input type="radio" id="sma0" name="smaStenosis" value="0" class="radio-custom">
+                                <label for="sma0" class="radio-label flex-1 ml-3">&lt;50% (0 puntos)</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" id="sma4" name="smaStenosis" value="4" class="radio-custom">
+                                <label for="sma4" class="radio-label flex-1 ml-3">50-69% (4 puntos)</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" id="sma8" name="smaStenosis" value="8" class="radio-custom">
+                                <label for="sma8" class="radio-label flex-1 ml-3">≥70% (8 puntos)</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" id="sma9" name="smaStenosis" value="9" class="radio-custom">
+                                <label for="sma9" class="radio-label flex-1 ml-3">Oclusión (9 puntos)</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reset Button -->
+                    <div class="flex justify-center pt-4">
+                        <button type="button" id="resetBtn" class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-8 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105">
+                            Reiniciar Calculadora
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section id="resultsSection" class="max-w-4xl mx-auto mb-12 hidden">
+            <div id="resultsCard" class="rounded-xl shadow-lg p-6 md:p-8 text-white fade-in">
+                <h2 class="text-2xl md:text-3xl font-bold mb-6 text-center">Resultados</h2>
+                
+                <div class="text-center mb-6">
+                    <div class="text-6xl md:text-7xl font-bold mb-2" id="scoreDisplay">0</div>
+                    <div class="text-xl md:text-2xl font-semibold mb-2">puntos totales</div>
+                </div>
+                
+                <div class="bg-white bg-opacity-20 rounded-lg p-6 backdrop-blur-sm">
+                    <h3 class="text-xl md:text-2xl font-bold mb-3" id="riskCategory"></h3>
+                    <p class="text-lg md:text-xl mb-3">Riesgo absoluto de IMC: <span id="riskPercentage" class="font-bold"></span></p>
+                    <p class="text-base md:text-lg leading-relaxed" id="interpretation"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Educational Sections -->
+        <section class="max-w-4xl mx-auto mb-12">
+            <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6">Información Clínica</h2>
+                
+                <!-- What is CMI -->
+                <div class="mb-6 border-b border-gray-200 pb-6">
+                    <button class="collapse-trigger w-full flex justify-between items-center text-left" data-target="cmi-info">
+                        <h3 class="text-xl md:text-2xl font-semibold text-blue-900">¿Qué es la Isquemia Mesentérica Crónica?</h3>
+                        <svg class="chevron w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div id="cmi-info" class="collapse-content mt-4">
+                        <p class="text-gray-700 leading-relaxed text-base md:text-lg">
+                            La isquemia mesentérica crónica (IMC) es una condición clínica causada por un flujo sanguíneo intestinal insuficiente, típicamente debido a estenosis aterosclerótica de las arterias mesentéricas (arteria celíaca, arteria mesentérica superior y arteria mesentérica inferior).
+                        </p>
+                        <div class="mt-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Síntomas característicos:</h4>
+                            <ul class="list-disc pl-6 space-y-2 text-gray-700">
+                                <li><strong>Dolor abdominal postprandial:</strong> Comienza 20-30 minutos después de comer y dura 1-2 horas</li>
+                                <li><strong>Pérdida de peso significativa:</strong> &gt;5% del peso corporal debido al miedo a comer (sitofobia)</li>
+                                <li><strong>Adaptación alimentaria:</strong> Porciones más pequeñas y cambios en el patrón de comidas</li>
+                            </ul>
+                        </div>
+                        <p class="text-gray-700 leading-relaxed mt-4 text-base md:text-lg">
+                            <strong>Importancia del diagnóstico temprano:</strong> Es crucial para evitar la progresión a isquemia mesentérica aguda, una emergencia quirúrgica con alta mortalidad (40-70%).
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Result Interpretation -->
+                <div class="mb-6 border-b border-gray-200 pb-6">
+                    <button class="collapse-trigger w-full flex justify-between items-center text-left" data-target="interpretation-info">
+                        <h3 class="text-xl md:text-2xl font-semibold text-blue-900">Interpretación de los Resultados</h3>
+                        <svg class="chevron w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div id="interpretation-info" class="collapse-content mt-4">
+                        <div class="space-y-6">
+                            <!-- Low Risk -->
+                            <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded">
+                                <h4 class="font-bold text-green-900 mb-2 text-lg">Riesgo Bajo (0-8 puntos): 19% probabilidad</h4>
+                                <p class="text-gray-700 leading-relaxed">
+                                    Probabilidad baja de isquemia mesentérica crónica. El paciente presenta características clínicas y anatómicas asociadas con bajo riesgo de IMC. Se recomienda seguimiento clínico y considerar diagnósticos alternativos si los síntomas persisten.
+                                </p>
+                                <p class="text-gray-700 mt-2">
+                                    <strong>Manejo sugerido:</strong> Evaluación de otras causas de dolor abdominal, optimización de factores de riesgo cardiovascular, seguimiento clínico.
+                                </p>
+                            </div>
+
+                            <!-- Intermediate Risk -->
+                            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded">
+                                <h4 class="font-bold text-yellow-900 mb-2 text-lg">Riesgo Intermedio (9-18 puntos): 45% probabilidad</h4>
+                                <p class="text-gray-700 leading-relaxed">
+                                    Probabilidad moderada de isquemia mesentérica crónica. Se recomienda completar la evaluación diagnóstica con pruebas funcionales adicionales si están disponibles.
+                                </p>
+                                <p class="text-gray-700 mt-2">
+                                    <strong>Estudios recomendados:</strong>
+                                </p>
+                                <ul class="list-disc pl-6 mt-2 space-y-1 text-gray-700">
+                                    <li>Angiografía por TC con protocolo específico para arterias mesentéricas</li>
+                                    <li>Tonometría gástrica (si está disponible)</li>
+                                    <li>Espectroscopia del intestino delgado visible (si está disponible)</li>
+                                    <li>Considerar revascularización si la evaluación funcional es positiva</li>
+                                </ul>
+                            </div>
+
+                            <!-- High Risk -->
+                            <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded">
+                                <h4 class="font-bold text-red-900 mb-2 text-lg">Riesgo Alto (19-28 puntos): 92% probabilidad</h4>
+                                <p class="text-gray-700 leading-relaxed">
+                                    Probabilidad alta de isquemia mesentérica crónica. El paciente presenta criterios diagnósticos altamente sugestivos de IMC con indicación fuerte para revascularización.
+                                </p>
+                                <p class="text-gray-700 mt-2">
+                                    <strong>Manejo urgente recomendado:</strong>
+                                </p>
+                                <ul class="list-disc pl-6 mt-2 space-y-1 text-gray-700">
+                                    <li>Evaluación multidisciplinaria urgente (cirujano vascular, gastroenterólogo, radiólogo intervencionista)</li>
+                                    <li>Planificación de revascularización: endovascular como primera opción en lesiones adecuadas</li>
+                                    <li>Cirugía abierta en casos complejos o anatomía no favorable para tratamiento endovascular</li>
+                                    <li>Objetivo: prevenir la progresión a isquemia mesentérica aguda</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Model Criteria -->
+                <div class="mb-6 border-b border-gray-200 pb-6">
+                    <button class="collapse-trigger w-full flex justify-between items-center text-left" data-target="criteria-info">
+                        <h3 class="text-xl md:text-2xl font-semibold text-blue-900">Criterios y Variables del Modelo</h3>
+                        <svg class="chevron w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div id="criteria-info" class="collapse-content mt-4">
+                        <div class="space-y-6">
+                            <!-- Weight Loss -->
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-blue-900 mb-2">Pérdida de peso (&gt;5% del peso corporal) - 5 puntos</h4>
+                                <p class="text-gray-700 leading-relaxed">
+                                    La pérdida de peso es uno de los síntomas más alarmantes y específicos de la IMC. Ocurre en 61-94% de los pacientes y se debe al miedo a comer (sitofobia) causado por el dolor postprandial predecible. Una pérdida de peso &gt;5% del peso corporal en pacientes con dolor abdominal debe siempre levantar la sospecha de IMC.
+                                </p>
+                            </div>
+
+                            <!-- CVD -->
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-blue-900 mb-2">Enfermedad cardiovascular - 4 puntos</h4>
+                                <p class="text-gray-700 leading-relaxed">
+                                    La presencia de enfermedad cardiovascular (infarto de miocardio previo, angina, enfermedad arterial periférica, accidente cerebrovascular) aumenta significativamente la probabilidad de IMC porque la aterosclerosis mesentérica y la enfermedad cardiovascular comparten los mismos factores de riesgo y mecanismos fisiopatológicos. El 54% de los pacientes con IMC aterosclerótica tienen antecedentes de enfermedad cardiovascular.
+                                </p>
+                            </div>
+
+                            <!-- CA Stenosis -->
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-blue-900 mb-2">Estenosis de arteria celíaca (CA) - 0-7 puntos</h4>
+                                <p class="text-gray-700 leading-relaxed">
+                                    La arteria celíaca irriga el estómago, duodeno, hígado, páncreas y bazo. Las estenosis se clasifican según el grado de estrechamiento luminal:
+                                </p>
+                                <ul class="list-disc pl-6 mt-2 space-y-1 text-gray-700">
+                                    <li>&lt;50% = 0 puntos (no hemodinámicamente significativa)</li>
+                                    <li>50-69% = 3 puntos (estenosis moderada)</li>
+                                    <li>≥70% = 6 puntos (hemodinámicamente significativa)</li>
+                                    <li>Oclusión = 7 puntos (máxima reducción del flujo)</li>
+                                </ul>
+                                <p class="text-gray-700 mt-2">
+                                    Una estenosis ≥70% se considera hemodinámicamente significativa.
+                                </p>
+                            </div>
+
+                            <!-- SMA Stenosis -->
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-blue-900 mb-2">Estenosis de arteria mesentérica superior (AMS) - 0-9 puntos</h4>
+                                <p class="text-gray-700 leading-relaxed">
+                                    La arteria mesentérica superior es la más importante para la perfusión intestinal, irrigando desde el yeyuno hasta el colon transverso proximal. Recibe la puntuación más alta del modelo porque su compromiso tiene el mayor impacto clínico.
+                                </p>
+                                <ul class="list-disc pl-6 mt-2 space-y-1 text-gray-700">
+                                    <li>&lt;50% = 0 puntos</li>
+                                    <li>50-69% = 4 puntos</li>
+                                    <li>≥70% = 8 puntos</li>
+                                    <li>Oclusión = 9 puntos (máxima puntuación del modelo)</li>
+                                </ul>
+                                <p class="text-gray-700 mt-2">
+                                    Los síntomas de IMC raramente se desarrollan a menos que la CA y la AMS tengan estenosis significativas (≥70%), aunque puede ocurrir con enfermedad de un solo vaso, particularmente de la AMS.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Abbreviations -->
+                <div class="mb-6">
+                    <button class="collapse-trigger w-full flex justify-between items-center text-left" data-target="abbreviations-info">
+                        <h3 class="text-xl md:text-2xl font-semibold text-blue-900">Abreviaturas y Definiciones</h3>
+                        <svg class="chevron w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div id="abbreviations-info" class="collapse-content mt-4">
+                        <div class="grid gap-4 md:grid-cols-2">
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-gray-800">IMC / CMI</h4>
+                                <p class="text-gray-700">Isquemia Mesentérica Crónica (Chronic Mesenteric Ischemia)</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-gray-800">CA</h4>
+                                <p class="text-gray-700">Arteria Celíaca (Celiac Artery) - Primera rama visceral de la aorta abdominal</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-gray-800">AMS / SMA</h4>
+                                <p class="text-gray-700">Arteria Mesentérica Superior (Superior Mesenteric Artery) - Segunda rama visceral de la aorta abdominal</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-gray-800">AMI / IMA</h4>
+                                <p class="text-gray-700">Arteria Mesentérica Inferior (Inferior Mesenteric Artery) - Tercera rama visceral de la aorta abdominal</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-gray-800">ESVS</h4>
+                                <p class="text-gray-700">European Society for Vascular Surgery - Sociedad Europea de Cirugía Vascular</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-gray-800">CTA / ATC</h4>
+                                <p class="text-gray-700">Angiotomografía Computarizada (Computed Tomography Angiography) - Estudio gold standard</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-gray-800">DUS</h4>
+                                <p class="text-gray-700">Ecografía Doppler Duplex (Duplex Ultrasound) - Prueba de detección no invasiva</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-gray-800">MAOD</h4>
+                                <p class="text-gray-700">Mesenteric Artery Occlusive Disease - Enfermedad oclusiva de las arterias mesentéricas</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bibliography Section -->
+        <section class="max-w-4xl mx-auto mb-12">
+            <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6">Bibliografía (Formato APA 7)</h2>
+                <div class="space-y-4 text-gray-700">
+                    <div class="border-l-4 border-blue-600 pl-4 py-2">
+                        <p class="text-sm md:text-base leading-relaxed">
+                            Koelemay, M. J., Geelkerken, R. H., Kärkkäinen, J., Leone, N., Iborra, E., Antoniou, G., de Bruin, J. L., Gombert, A., Gottsäter, A., Haulon, S., Korsnes, M., Lindström, D., Matsi, P., Mazzitelli, G., Resch, T., Ricco, J. B., Tolonen, M., Tulamo, R., Wanhainen, A., ... Verhagen, H. J. M. (2025). European Society for Vascular Surgery (ESVS) 2025 clinical practice guidelines on the management of diseases of the mesenteric and renal arteries and veins. <em>European Journal of Vascular and Endovascular Surgery, 70</em>(2), 153-218. https://doi.org/10.1016/j.ejvs.2025.06.010
+                        </p>
+                    </div>
+                    <div class="border-l-4 border-blue-600 pl-4 py-2">
+                        <p class="text-sm md:text-base leading-relaxed">
+                            van Dijk, L. J. D., van Noord, D., Geelkerken, R. H., Harki, J., Berendsen, S. A., de Vries, A. C., Moelker, A., Vergouwe, Y., Verhagen, H. J. M., Kolkman, J. J., &amp; Bruno, M. J. (2019). Validation of a score chart to predict the risk of chronic mesenteric ischemia and development of an updated score chart. <em>British Journal of Surgery, 106</em>(9), 1261-1270. https://doi.org/10.1002/bjs.11148
+                        </p>
+                    </div>
+                    <div class="border-l-4 border-blue-600 pl-4 py-2">
+                        <p class="text-sm md:text-base leading-relaxed">
+                            Terlouw, L. G., Moelker, A., Abrahamsen, J., Acosta, S., Bakker, O. J., Baumgartner, I., Bjorck, M., Bjorses, K., Blandamura, P. V., Geelkerken, R. H., Illuminati, G., Klomp, H. M., Kärkkäinen, J. M., Laukontaus, S. J., Nuzzo, A., Pecoraro, F., Resch, T. A., Ryer, E. J., Sivamurthy, N., ... Verhagen, H. J. M. (2020). European guidelines on chronic mesenteric ischaemia - Joint United European Gastroenterology, European Society for Vascular Surgery, European Society of Gastrointestinal and Abdominal Radiology, and European Society of Gastrointestinal Endoscopy workshop. <em>Journal of Gastrointestinal and Liver Diseases, 29</em>(2), 193-217.
+                        </p>
+                    </div>
+                    <div class="border-l-4 border-blue-600 pl-4 py-2">
+                        <p class="text-sm md:text-base leading-relaxed">
+                            Huber, T. S., Björck, M., Chandra, A., Clouse, W. D., Dalsing, M. C., Oderich, G. S., Smeds, M. R., &amp; Murad, M. H. (2021). Chronic mesenteric ischemia: Clinical practice guidelines from the Society for Vascular Surgery. <em>Journal of Vascular Surgery, 73</em>(1S), 87S-115S. https://doi.org/10.1016/j.jvs.2020.10.029
+                        </p>
+                    </div>
+                    <div class="border-l-4 border-blue-600 pl-4 py-2">
+                        <p class="text-sm md:text-base leading-relaxed">
+                            Terlouw, L. G., van Noord, D., van Walsum, T., Bruno, M. J., &amp; Moelker, A. (2020). Mesenteric artery calcium scoring: A potential screening method for chronic mesenteric ischemia. <em>European Radiology, 31</em>, 3886-3895. https://doi.org/10.1007/s00330-020-07473-4
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-yellow-600 text-white p-4 rounded-lg mb-6">
+                    <p class="font-semibold mb-2">⚠️ Aviso Importante</p>
+                    <p class="text-sm md:text-base">Esta herramienta es para uso educativo y de apoyo clínico. No sustituye el juicio clínico ni la evaluación médica completa. Las decisiones terapéuticas deben individualizarse según cada paciente.</p>
+                </div>
+                <div class="text-center text-gray-400 text-sm">
+                    <p>&copy; 2025 - Calculadora IMC basada en Guías ESVS 2025</p>
+                    <p class="mt-2">Última actualización: Noviembre 2025</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Calculator state
+        let formState = {
+            weightLoss: null,
+            cvd: null,
+            caStenosis: null,
+            smaStenosis: null
+        };
+
+        // Add event listeners to all radio buttons
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', handleInputChange);
+        });
+
+        function handleInputChange(e) {
+            const name = e.target.name;
+            const value = parseInt(e.target.value);
+            formState[name] = value;
+            
+            // Check if all fields are filled
+            if (isFormComplete()) {
+                calculateScore();
+            }
+        }
+
+        function isFormComplete() {
+            return formState.weightLoss !== null &&
+                   formState.cvd !== null &&
+                   formState.caStenosis !== null &&
+                   formState.smaStenosis !== null;
+        }
+
+        function calculateScore() {
+            const totalScore = formState.weightLoss + formState.cvd + 
+                             formState.caStenosis + formState.smaStenosis;
+            
+            let riskCategory, riskPercentage, interpretation, colorClass;
+            
+            if (totalScore >= 0 && totalScore <= 8) {
+                riskCategory = 'Riesgo Bajo';
+                riskPercentage = '19%';
+                interpretation = 'Probabilidad baja de isquemia mesentérica crónica. El paciente presenta características clínicas y anatómicas asociadas con bajo riesgo de IMC. Se recomienda seguimiento clínico y considerar diagnósticos alternativos si los síntomas persisten.';
+                colorClass = 'result-low';
+            } else if (totalScore >= 9 && totalScore <= 18) {
+                riskCategory = 'Riesgo Intermedio';
+                riskPercentage = '45%';
+                interpretation = 'Probabilidad moderada de isquemia mesentérica crónica. Se recomienda completar la evaluación diagnóstica con pruebas funcionales adicionales (tonometría gástrica, espectroscopia del intestino delgado visible) si están disponibles. La angiografía por TC con protocolo específico para arterias mesentéricas es fundamental. Considerar revascularización si la evaluación funcional es positiva y se confirma la estenosis significativa.';
+                colorClass = 'result-medium';
+            } else {
+                riskCategory = 'Riesgo Alto';
+                riskPercentage = '92%';
+                interpretation = 'Probabilidad alta de isquemia mesentérica crónica. El paciente presenta criterios diagnósticos altamente sugestivos de IMC con indicación fuerte para revascularización. Se recomienda evaluación multidisciplinaria urgente (cirujano vascular, gastroenterólogo, radiólogo intervencionista) y planificación de revascularización (endovascular como primera opción en lesiones adecuadas, o quirúrgica abierta en casos complejos). El objetivo es prevenir la progresión a isquemia mesentérica aguda.';
+                colorClass = 'result-high';
+            }
+            
+            displayResults(totalScore, riskCategory, riskPercentage, interpretation, colorClass);
+        }
+
+        function displayResults(score, category, percentage, interpretation, colorClass) {
+            const resultsSection = document.getElementById('resultsSection');
+            const resultsCard = document.getElementById('resultsCard');
+            
+            // Update content
+            document.getElementById('scoreDisplay').textContent = score;
+            document.getElementById('riskCategory').textContent = category;
+            document.getElementById('riskPercentage').textContent = percentage;
+            document.getElementById('interpretation').textContent = interpretation;
+            
+            // Update colors
+            resultsCard.className = 'rounded-xl shadow-lg p-6 md:p-8 text-white fade-in ' + colorClass;
+            
+            // Show results section
+            resultsSection.classList.remove('hidden');
+            
+            // Smooth scroll to results
+            setTimeout(() => {
+                resultsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+        }
+
+        // Reset button
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            // Reset form
+            document.getElementById('calculatorForm').reset();
+            
+            // Reset state
+            formState = {
+                weightLoss: null,
+                cvd: null,
+                caStenosis: null,
+                smaStenosis: null
+            };
+            
+            // Hide results
+            document.getElementById('resultsSection').classList.add('hidden');
+            
+            // Scroll to top of calculator
+            document.getElementById('calculatorForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+
+        // Collapsible sections
+        document.querySelectorAll('.collapse-trigger').forEach(trigger => {
+            trigger.addEventListener('click', () => {
+                const targetId = trigger.getAttribute('data-target');
+                const content = document.getElementById(targetId);
+                const chevron = trigger.querySelector('.chevron');
+                
+                content.classList.toggle('active');
+                chevron.classList.toggle('rotated');
+            });
+        });
+    </script>
+</body>
+</html>
