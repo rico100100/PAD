@@ -1,0 +1,63 @@
+{
+  "procedimiento_standard": "\nPROCEDIMIENTO ESTÁNDAR DE TROMBECTOMÍA CON LIGHTNING BOLT 7\n\nI. PREPARACIÓN PRE-PROCEDIMIENTO\n   1. Evaluación del paciente\n      - Confirmación diagnóstica por angiografía/CTA\n      - Clasificación Rutherford (para ALI)\n      - Laboratorios: Creatinina, eGFR, coagulación\n      - Consentimiento informado\n\n   2. Materiales necesarios\n      - Sistema Lightning Bolt 7 (catéter + tubing)\n      - Penumbra ENGINE (bomba de aspiración)\n      - Vaina introductora 7-8 French (45-55 cm)\n      - Alambre guía 0.014\"-0.038\"\n      - Catéter diagnóstico 5F (ej. Kumpe)\n      - Contraste iodado\n      - Jeringas 5cc y 10cc\n      - Solución salina\n      - Canister desechable para aspiración\n      - Separator 7 (opcional)\n\n   3. Configuración del sistema\n      - Conectar Penumbra ENGINE a canister\n      - Conectar Lightning Bolt Aspiration Tubing\n      - Verificar alcance de vacío máximo (-29 in Hg)\n      - Posicionar tubing en OFF\n      - Verificar indicadores LED (verde sólido)\n\nII. ACCESO VASCULAR\n   1. Anestesia local ± sedación consciente\n   2. Acceso guiado por ecografía (femoral común típicamente)\n   3. Introducir vaina 7-8F (up-and-over si es necesario)\n   4. Angiografía diagnóstica con catéter 5F\n   5. Documentar extensión y localización del trombo\n\nIII. DESPLIEGUE DEL CATÉTER LIGHTNING BOLT 7\n   1. Avanzar alambre guía más allá de la oclusión (si es posible)\n      - Alternativa: posicionar proximal al trombo\n   2. Cargar catéter Lightning Bolt 7 sobre alambre guía\n   3. Avanzar catéter hasta zona proximal del trombo\n   4. Verificar posición con fluoroscopia\n\nIV. TROMBECTOMÍA\n   1. Activar aspiración:\n      - Cambiar Lightning Bolt Tubing a posición ON\n      - Luces LED cambian a verde parpadeante (modo muestreo)\n\n   2. Avanzar lentamente el catéter a través del trombo\n      - Al detectar coágulo: LED cambia a amarillo parpadeante\n      - Sistema activa automáticamente BOLT MODE\n      - Modulación 12 veces/segundo inicia\n      - Señales auditivas confirman detección\n\n   3. Realizar pases de aspiración:\n      - Avanzar a través de trombo con aspiración activa\n      - Retraer lentamente manteniendo aspiración\n      - Típicamente 1-3 pases necesarios\n      - Duración promedio: 5-10 minutos\n\n   4. Monitorización:\n      - Observar cambios en LED/audio\n      - Controlar pérdida sanguínea en canister\n      - Realizar angiografías de control\n\nV. POST-ASPIRACIÓN\n   1. Cambiar tubing a OFF\n   2. Angiografía de control\n   3. Evaluar:\n      - Grado de revascularización (TICI/eTICI)\n      - Flujo distal\n      - Presencia de trombo residual\n   4. Si trombo residual >10%: considerar pase adicional\n   5. Si flujo subóptimo: considerar angioplastia/stent\n\nVI. FINALIZACIÓN\n   1. Retirar catéter Lightning Bolt 7\n   2. Angiografía final completa\n   3. Retirar vaina\n   4. Hemostasia (compresión manual o dispositivo cierre)\n   5. Documentar:\n      - Tiempo puerta-reperfusión\n      - Pérdida sanguínea total\n      - Grado revascularización\n      - Complicaciones\n\nVII. MANEJO POST-PROCEDIMIENTO\n   1. Monitorización hemodinámica\n   2. Evaluación neurovascular extremidad (si ALI)\n   3. Anticoagulación según protocolo\n   4. Laboratorios control (función renal, hemograma)\n   5. Seguimiento doppler/angio-TC a 24-48h\n",
+  "casos_clinicos": [
+    {
+      "titulo": "Caso 1: Isquemia Aguda de Extremidad - Oclusión Poplítea",
+      "paciente": "Varón 50s años",
+      "presentacion": "Isquemia arterial extremidad inferior izquierda por evento cardioembólico. Pie frío tras múltiples horas de lisis sin respuesta. Amputación inminente.",
+      "procedimiento": "Acceso femoral con vaina 7F. Lightning Bolt 7 avanzado hasta arteria poplítea. Aspiración iniciada proximal al coágulo. Catéter avanzado hasta fondo de stent previamente colocado. Con aspiración ON, retracción hasta parte superior del stent.",
+      "tiempo_dispositivo": "5 minutos (2 pases)",
+      "resultados": {
+        "resolucion_coagulo": ">90% tras primer pase, 100% tras segundo pase",
+        "perdida_sangre": "150 mL",
+        "tiempo_total": "Procedimiento completo en minutos",
+        "resultado_clinico": "Salvamento de extremidad. Pulsos palpables inmediatos. Mejoría clínica significativa a las pocas horas."
+      },
+      "comentario": "Lightning Bolt 7 con Bolt Mode removió completamente la carga trombótica tras fallo de lisis, evitando cirugía abierta y amputación.",
+      "fuente": "EVToday 2023 - Dra. Patricia Furey"
+    },
+    {
+      "titulo": "Caso 2: Trombosis Poplítea a Tronco Tibioperoneal",
+      "paciente": "Paciente con ALI Rutherford IIb",
+      "presentacion": "Oclusión desde arteria poplítea hasta tronco tibioperoneal. Reconstitución de arteria peronea y tibial anterior por colaterales.",
+      "procedimiento": "Acceso con vaina Terumo Destination 7F-45cm up-and-over. Imaging con catéter Kumpe 5F. Lightning Bolt 7 posicionado proximal al coágulo en poplítea, activado y avanzado lentamente a través del trombo. Segundo pase en arteria tibial anterior.",
+      "tiempo_dispositivo": "<10 minutos aspiración total ambos vasos",
+      "resultados": {
+        "revascularizacion": "Flujo restablecido en minutos",
+        "perfusion_distal": "Perfusión vigorosa a través de arteria peronea hacia pie",
+        "perdida_sangre": "<200 mL",
+        "resultado_clinico": "Mejoría clínica inmediata. Evitada cirugía abierta."
+      },
+      "comentario": "Algoritmos duales de detección tan eficientes que solo pequeña muestra de sangre necesaria. Retroalimentación auditiva facilitó uso.",
+      "fuente": "EVToday 2023 - Cooper Health"
+    },
+    {
+      "titulo": "Caso 3: Embolismo Arteria Renal",
+      "paciente": "Varón 70s años con fibrilación auricular",
+      "presentacion": "Dolor agudo flanco izquierdo (4h evolución). CTA reveló émbolo en arteria renal izquierda. Creatinina 2.02 mg/dL, eGFR 35 mL/min. Riesgo de diálisis.",
+      "procedimiento": "Acceso femoral. Lightning Bolt 7 avanzado hasta arteria renal. Aspiración activada con sistema en Bolt Mode. Trombectomía completada.",
+      "tiempo_dispositivo": "<1 hora procedimiento completo",
+      "resultados": {
+        "revascularizacion": "Angiografía confirmó remoción completa trombo y restauración flujo distal",
+        "funcion_renal": "Cr 1.54 mg/dL, eGFR 48 al alta (día 5). Diálisis evitada.",
+        "resultado_clinico": "Recuperación completa función renal. Alta sin necesidad diálisis."
+      },
+      "comentario": "Paciente evitó líticos (reducción riesgo sangrado) y terapia dialítica. Estancia hospitalaria acortada.",
+      "fuente": "Penumbra Case Study 2025 - Dr. Allan Hoffman"
+    },
+    {
+      "titulo": "Caso 4: ALI Rutherford IIb - Injerto Aortobifemoral",
+      "paciente": "Mujer con injerto aortobifemoral previo",
+      "presentacion": "ALI Rutherford IIb extremidad inferior. Trombosis desde arteria femoral común hasta pie.",
+      "procedimiento": "Catéter Lightning Bolt 7 usado desde arteria femoral común hasta pie. Aspiración continua durante avance.",
+      "tiempo_dispositivo": "Minutos",
+      "resultados": {
+        "revascularizacion": "Completa",
+        "pulsos": "Palpables al finalizar procedimiento",
+        "resultado_clinico": "Paciente reportó mejoría significativa pierna/pie pocas horas después. Aspecto clínico muy mejorado."
+      },
+      "comentario": "Algoritmo dual de detección (presión + flujo) permitió detección rápida coágulo y flujo permeable, minimizando pérdida sangre.",
+      "fuente": "Vascular Specialist Online 2024 - Dr. Reichard"
+    }
+  ]
+}

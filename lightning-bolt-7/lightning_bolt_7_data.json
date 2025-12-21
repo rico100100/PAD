@@ -1,0 +1,67 @@
+{
+  "especificaciones_tecnicas": {
+    "compatibilidad_vaina": "7 French (7 F)",
+    "longitud_trabajo": "130 cm (punta TORQ)",
+    "plataforma_alambre": "0.014\" - 0.038\"",
+    "diametro_interno": "2.1 mm (maximizado)",
+    "diametro_externo": "7 F (2.33 mm)",
+    "material": "Acero inoxidable, hipótubo láser-cortado",
+    "tipo_punta": "TORQ - atraumática, barrido circunferencial 28.3 mm",
+    "tecnologia_cateter": "MaxID (Maximum Inner Diameter)",
+    "compatibilidad": "Separator 7"
+  },
+  "componentes_sistema": {
+    "motor": "Penumbra ENGINE",
+    "tubo_aspiracion": "Lightning Bolt Aspiration Tubing",
+    "cateter": "CAT7 con hipótubo láser-cortado",
+    "algoritmos": "Dual Clot Detection (presión diferencial + flujo)",
+    "modos": "Bolt Mode - aspiración modulada"
+  },
+  "caracteristicas_bolt_mode": {
+    "frecuencia_modulacion": "Hasta 12 veces por segundo",
+    "vacio_maximo": "-29 in Hg (proporcionado por Penumbra ENGINE)",
+    "presion_ambiente": "+29 in Hg (a nivel del mar)",
+    "mecanismo": "Modulación rápida entre vacío puro y presión ambiente",
+    "objetivo": "Romper fricción estática en punta del catéter",
+    "beneficio": "Mantener flujo dinámico para eliminación rápida de trombos"
+  },
+  "algoritmos_deteccion": {
+    "tipo_1": "Basado en presión diferencial",
+    "tipo_2": "Basado en flujo",
+    "funciones": [
+      "Detección más rápida de coágulo",
+      "Detección más rápida de flujo permeable",
+      "Control automático de válvulas",
+      "Minimización de pérdida sanguínea"
+    ]
+  },
+  "retroalimentacion_audiovisual": {
+    "indicadores_LED": {
+      "verde_solido": "Tubing encendido en posición OFF, listo para usar",
+      "verde_parpadeante": "Tubing encendido en posición ON (modo muestreo)",
+      "amarillo_parpadeante": "Detección de coágulo - Bolt Mode activado"
+    },
+    "señales_auditivas": "Cambios distintivos al detectar coágulo vs flujo permeable"
+  },
+  "indicaciones_clinicas": [
+    "Isquemia Aguda de Extremidades (ALI - Acute Limb Ischemia)",
+    "Trombo hibernante (Hibernating thrombus)",
+    "Oclusiones viscerales",
+    "Embolismo cardioembólico arterial",
+    "Trombosis de injerto de bypass",
+    "Oclusión de arteria poplítea",
+    "Oclusión de arteria renal"
+  ],
+  "aprobaciones": {
+    "FDA": "Marzo 2023",
+    "CE_Mark": "Septiembre 2024",
+    "codigo_ICD_PCS": "Trombectomía asistida por ordenador (Computer-Aided Thrombectomy - CAT)"
+  },
+  "datos_clinicos": {
+    "salvamento_extremidad_30_dias": ">98%",
+    "tiempo_procedimiento_promedio": "22 minutos",
+    "mortalidad_30_dias": "3%",
+    "perdida_sangre_tipica": "150-200 mL",
+    "exito_revascularizacion": "82.5% - 96.5%"
+  }
+}

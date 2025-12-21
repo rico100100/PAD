@@ -1,0 +1,115 @@
+{
+  "distribucion_espana": {
+    "distribuidor_exclusivo": {
+      "nombre": "Mercé V. Electromedicina",
+      "informacion": "Distribuidor exclusivo de tecnología Penumbra en España",
+      "productos_disponibles": [
+        "Indigo System Lightning Bolt 7",
+        "Indigo System Lightning Bolt 12",
+        "Lightning Flash 2.0",
+        "Penumbra System (productos neurovasculares)",
+        "Sistema de espirales Ruby"
+      ],
+      "casos_pioneros_espana": [
+        {
+          "fecha": "16 mayo 2022",
+          "hospital": "Hospital Universitario Virgen de las Nieves (Granada)",
+          "procedimiento": "Primera trombectomía pulmonar con Lightning 12 en España",
+          "servicio": "Radiología Vascular Intervencionista",
+          "resultado": "Exitoso - baja pérdida hemática y gran navegabilidad"
+        },
+        {
+          "fecha": "11 septiembre 2025",
+          "hospital": "Complejo Hospitalario Universitario Insular",
+          "procedimiento": "Primera vez Lightning BOLT 12 en España (segundo caso en Europa)",
+          "indicacion": "Tromboembolismo venoso profundo - Síndrome May-Thurner",
+          "resultado": "Reducción carga trombótica >95%. Rapidez y seguridad destacadas"
+        }
+      ]
+    },
+    "aprobaciones_europa": {
+      "lightning_7": "CE Mark - Abril 2022",
+      "lightning_bolt_7": "CE Mark - Septiembre 2024",
+      "lightning_bolt_12": "CE Mark - Septiembre 2024",
+      "lightning_flash_2_0": "CE Mark - Septiembre 2024",
+      "status": "Único sistema CAVT disponible en Europa"
+    },
+    "estimacion_costos": {
+      "nota_importante": "Los precios varían según hospital, volumen de compra y negociaciones locales",
+      "referencias_internacionales": {
+        "sistema_penumbra_completo_usa": "$8,000-$10,000 USD por catéter + tubing",
+        "lightning_bolt_7_usa_estimado": "$8,995-$10,000 USD",
+        "lightning_8_usa_referencia": "$8,999 USD",
+        "motor_penumbra_engine": "Inversión capital separada (reutilizable)",
+        "costo_procedimiento_europa_historico": "~5,000-5,500 EUR (materiales sala operaciones, datos 2009-2011)",
+        "costo_dispositivos_trombectomia_europa": "3,175-3,509 EUR (aspiración vs stent retriever, datos históricos)"
+      },
+      "factores_precio": [
+        "Volumen de compras del hospital",
+        "Contratos marco del sistema de salud",
+        "Inclusión en catálogo DRG (Diagnosis Related Groups)",
+        "Negociaciones locales/regionales",
+        "Tipo de institución (pública vs privada)"
+      ],
+      "recomendacion": "Contactar directamente con Mercé V. Electromedicina para cotización actualizada en España"
+    },
+    "disponibilidad_sistema_salud": {
+      "hospitales_pioneros": [
+        "Hospital Universitario Virgen de las Nieves (Granada)",
+        "Complejo Hospitalario Universitario Insular (Canarias)",
+        "Hospitales con servicios de Radiología Intervencionista avanzada"
+      ],
+      "tendencia": "Adopción creciente en centros especializados con unidades de intervencionismo vascular y neurointervención",
+      "consideraciones_reembolso": {
+        "codigo_procedimiento": "Trombectomía mecánica asistida por ordenador (CAVT)",
+        "tendencia_europa": "Sistemas de salud europeos comenzando a incluir códigos específicos para CDT (Catheter-Directed Treatment)",
+        "alemania_ejemplo": "Reembolso DRG establecido en 2024 para varios procedimientos CDT",
+        "españa": "Evaluación por centros individuales y comunidades autónomas"
+      }
+    },
+    "contacto": {
+      "distribuidor": "Mercé V. Electromedicina",
+      "recomendacion": "Para información actualizada sobre precios, disponibilidad y formación en España, contactar directamente al distribuidor oficial",
+      "informacion_tecnica": "www.penumbrainc.com para documentación IFU completa",
+      "soporte_clinico": "Penumbra ofrece programas de formación y soporte clínico a través de distribuidor"
+    }
+  },
+  "informacion_ifu": {
+    "acceso_ifu_completo": {
+      "url_qr": "http://bit.ly/2BYj7Yj",
+      "website": "www.peninc.info/risk",
+      "documento": "Instructions for Use - Lightning Bolt 7 Indigo System"
+    },
+    "advertencias_criticas": [
+      "Dispositivo de venta solo bajo prescripción médica (USA/Europa)",
+      "Consultar IFU completo antes del uso",
+      "Documentación completa incluye: indicaciones, contraindicaciones, advertencias, precauciones, eventos adversos potenciales e instrucciones detalladas"
+    ],
+    "indicaciones_principales": [
+      "Eliminación de trombo en arterias periféricas",
+      "Isquemia aguda de extremidades (ALI)",
+      "Oclusiones viscerales",
+      "Trombo hibernante en arterias"
+    ],
+    "contraindicaciones_generales": [
+      "Consultar IFU completo para lista exhaustiva",
+      "Vasos con anatomía inadecuada para navegación del catéter",
+      "Situaciones donde anticoagulación está contraindicada (relativo)"
+    ],
+    "eventos_adversos_potenciales": [
+      "Perforación vascular (reportada en MAUDE database)",
+      "Sangrado en sitio de acceso",
+      "Disección arterial",
+      "Embolización distal",
+      "Espasmo vascular",
+      "Reacción al medio de contraste"
+    ],
+    "precauciones": [
+      "No exceder capacidades de navegación del catéter",
+      "Monitorizar pérdida sanguínea continuamente",
+      "Usar bajo guía fluoroscópica",
+      "Personal capacitado en técnicas endovasculares",
+      "Tener disponible equipo de cirugía vascular de emergencia"
+    ]
+  }
+}

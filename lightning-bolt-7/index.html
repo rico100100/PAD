@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>Lightning Bolt™ 7 - Sistema Avanzado de Trombectomía Arterial | Penumbra</title>
+    <meta name="description" content="Sistema Lightning Bolt 7 de Penumbra para trombectomía arterial. Tecnología CAVT, especificaciones técnicas, procedimientos y disponibilidad en España.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        .gradient-hero {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%);
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+        
+        .accordion-content.active {
+            max-height: 2000px;
+        }
+        
+        .led-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            box-shadow: 0 0 10px currentColor;
+        }
+        
+        .led-green {
+            background-color: #10b981;
+            color: #10b981;
+        }
+        
+        .led-yellow {
+            background-color: #fbbf24;
+            color: #fbbf24;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .nav-link {
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #60a5fa;
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .mobile-menu.active {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <span class="text-xl sm:text-2xl font-bold text-blue-900">Lightning Bolt™ 7</span>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-4 lg:space-x-6">
+                    <a href="#inicio" class="nav-link text-sm lg:text-base font-medium text-gray-700">Inicio</a>
+                    <a href="#descripcion" class="nav-link text-sm lg:text-base font-medium text-gray-700">Descripción</a>
+                    <a href="#especificaciones" class="nav-link text-sm lg:text-base font-medium text-gray-700">Especificaciones</a>
+                    <a href="#bolt-mode" class="nav-link text-sm lg:text-base font-medium text-gray-700">Bolt Mode</a>
+                    <a href="#procedimiento" class="nav-link text-sm lg:text-base font-medium text-gray-700">Procedimiento</a>
+                    <a href="#casos" class="nav-link text-sm lg:text-base font-medium text-gray-700">Casos Clínicos</a>
+                    <a href="#espana" class="nav-link text-sm lg:text-base font-medium text-gray-700">España</a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-button" class="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="mobile-menu md:hidden fixed top-16 left-0 w-64 h-full bg-white shadow-2xl z-40">
+            <div class="flex flex-col space-y-1 p-4">
+                <a href="#inicio" class="mobile-nav-link block px-4 py-3 text-gray-700 hover:bg-blue-50 rounded-lg transition-colors">Inicio</a>
+                <a href="#descripcion" class="mobile-nav-link block px-4 py-3 text-gray-700 hover:bg-blue-50 rounded-lg transition-colors">Descripción</a>
+                <a href="#especificaciones" class="mobile-nav-link block px-4 py-3 text-gray-700 hover:bg-blue-50 rounded-lg transition-colors">Especificaciones</a>
+                <a href="#bolt-mode" class="mobile-nav-link block px-4 py-3 text-gray-700 hover:bg-blue-50 rounded-lg transition-colors">Bolt Mode</a>
+                <a href="#procedimiento" class="mobile-nav-link block px-4 py-3 text-gray-700 hover:bg-blue-50 rounded-lg transition-colors">Procedimiento</a>
+                <a href="#casos" class="mobile-nav-link block px-4 py-3 text-gray-700 hover:bg-blue-50 rounded-lg transition-colors">Casos Clínicos</a>
+                <a href="#ifu" class="mobile-nav-link block px-4 py-3 text-gray-700 hover:bg-blue-50 rounded-lg transition-colors">IFU</a>
+                <a href="#espana" class="mobile-nav-link block px-4 py-3 text-gray-700 hover:bg-blue-50 rounded-lg transition-colors">España</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="gradient-hero pt-24 pb-16 sm:pt-32 sm:pb-24 px-4">
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="flex flex-wrap justify-center gap-3 mb-6">
+                <span class="inline-flex items-center px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-green-500 text-white shadow-lg">
+                    ✓ CE Mark 2024
+                </span>
+                <span class="inline-flex items-center px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-blue-500 text-white shadow-lg">
+                    ✓ FDA Aprobado 2023
+                </span>
+                <span class="inline-flex items-center px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-purple-500 text-white shadow-lg">
+                    ✓ Único sistema CAVT en Europa
+                </span>
+            </div>
+            
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-4 sm:mb-6 leading-tight">
+                Lightning Bolt™ 7
+            </h1>
+            <p class="text-lg sm:text-xl md:text-2xl text-blue-100 mb-3 sm:mb-4 font-medium">
+                Sistema Avanzado de Trombectomía Arterial
+            </p>
+            <p class="text-base sm:text-lg md:text-xl text-blue-200 max-w-3xl mx-auto">
+                Trombectomía Asistida por Ordenador (CAVT) - Penumbra Inc.
+            </p>
+            
+            <div class="mt-8 sm:mt-12 flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#descripcion" class="inline-block px-6 sm:px-8 py-3 sm:py-4 bg-white text-blue-900 rounded-lg font-semibold text-base sm:text-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300">
+                    Explorar Tecnología
+                </a>
+                <a href="#espana" class="inline-block px-6 sm:px-8 py-3 sm:py-4 bg-blue-600 text-white rounded-lg font-semibold text-base sm:text-lg shadow-xl hover:bg-blue-700 hover:shadow-2xl hover:scale-105 transition-all duration-300">
+                    Disponibilidad España
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Descripción General -->
+    <section id="descripcion" class="py-12 sm:py-20 px-4 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl sm:text-4xl font-bold text-blue-900 text-center mb-8 sm:mb-12 fade-in">Descripción General</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-12">
+                <div class="bg-blue-50 p-6 sm:p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 fade-in">
+                    <div class="text-4xl mb-4">⚡</div>
+                    <h3 class="text-xl sm:text-2xl font-bold text-blue-900 mb-4">¿Qué es Lightning Bolt 7?</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        El Lightning Bolt™ 7 es un sistema innovador de trombectomía arterial que utiliza tecnología CAVT (Computer-Assisted Vacuum Thrombectomy) para eliminar trombos de manera eficiente y segura en el sistema vascular arterial periférico.
+                    </p>
+                </div>
+                
+                <div class="bg-blue-50 p-6 sm:p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 fade-in">
+                    <div class="text-4xl mb-4">💻</div>
+                    <h3 class="text-xl sm:text-2xl font-bold text-blue-900 mb-4">Tecnología CAVT</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        Sistema de aspiración asistida por ordenador que utiliza algoritmos duales de detección (presión y flujo) para identificar y eliminar coágulos con precisión. El modo Bolt modula la aspiración hasta 12 veces por segundo.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="bg-gradient-to-br from-blue-900 to-blue-700 p-6 sm:p-10 rounded-2xl shadow-2xl text-white mb-12 fade-in">
+                <h3 class="text-2xl sm:text-3xl font-bold mb-6">Ventajas Principales</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                    <div class="flex items-start space-x-3">
+                        <span class="text-green-400 text-2xl flex-shrink-0">✓</span>
+                        <span class="text-base sm:text-lg">Detección automática de coágulos con retroalimentación audiovisual</span>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <span class="text-green-400 text-2xl flex-shrink-0">✓</span>
+                        <span class="text-base sm:text-lg">Tiempo promedio de procedimiento: 22 minutos</span>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <span class="text-green-400 text-2xl flex-shrink-0">✓</span>
+                        <span class="text-base sm:text-lg">&gt;98% salvamento de extremidad a 30 días</span>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <span class="text-green-400 text-2xl flex-shrink-0">✓</span>
+                        <span class="text-base sm:text-lg">Pérdida sanguínea típica: 150-200 mL</span>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <span class="text-green-400 text-2xl flex-shrink-0">✓</span>
+                        <span class="text-base sm:text-lg">Compatible con vainas 7 French</span>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <span class="text-green-400 text-2xl flex-shrink-0">✓</span>
+                        <span class="text-base sm:text-lg">Tecnología MaxID para máximo diámetro interno</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white p-6 sm:p-8 rounded-xl shadow-lg border-2 border-blue-100 fade-in">
+                <h3 class="text-xl sm:text-2xl font-bold text-blue-900 mb-6">Indicaciones Clínicas Principales</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="flex items-center space-x-3 bg-blue-50 p-4 rounded-lg">
+                        <span class="text-blue-600 text-xl">►</span>
+                        <span class="font-medium">Isquemia Aguda de Extremidades (ALI)</span>
+                    </div>
+                    <div class="flex items-center space-x-3 bg-blue-50 p-4 rounded-lg">
+                        <span class="text-blue-600 text-xl">►</span>
+                        <span class="font-medium">Trombo hibernante</span>
+                    </div>
+                    <div class="flex items-center space-x-3 bg-blue-50 p-4 rounded-lg">
+                        <span class="text-blue-600 text-xl">►</span>
+                        <span class="font-medium">Oclusiones viscerales</span>
+                    </div>
+                    <div class="flex items-center space-x-3 bg-blue-50 p-4 rounded-lg">
+                        <span class="text-blue-600 text-xl">►</span>
+                        <span class="font-medium">Embolismo cardioembólico arterial</span>
+                    </div>
+                    <div class="flex items-center space-x-3 bg-blue-50 p-4 rounded-lg">
+                        <span class="text-blue-600 text-xl">►</span>
+                        <span class="font-medium">Trombosis de injerto bypass</span>
+                    </div>
+                    <div class="flex items-center space-x-3 bg-blue-50 p-4 rounded-lg">
+                        <span class="text-blue-600 text-xl">►</span>
+                        <span class="font-medium">Oclusión arterial renal</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Especificaciones Técnicas -->
+    <section id="especificaciones" class="py-12 sm:py-20 px-4 bg-blue-50">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl sm:text-4xl font-bold text-blue-900 text-center mb-8 sm:mb-12 fade-in">Especificaciones Técnicas</h2>
+            
+            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden mb-8 fade-in">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-blue-900 text-white">
+                            <tr>
+                                <th class="px-4 sm:px-6 py-4 text-left text-sm sm:text-base font-semibold">Especificación</th>
+                                <th class="px-4 sm:px-6 py-4 text-left text-sm sm:text-base font-semibold">Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr class="hover:bg-blue-50 transition-colors">
+                                <td class="px-4 sm:px-6 py-4 font-medium text-gray-900 text-sm sm:text-base">Compatibilidad de Vaina</td>
+                                <td class="px-4 sm:px-6 py-4 text-gray-700 text-sm sm:text-base">7 French (7 F)</td>
+                            </tr>
+                            <tr class="hover:bg-blue-50 transition-colors">
+                                <td class="px-4 sm:px-6 py-4 font-medium text-gray-900 text-sm sm:text-base">Longitud de Trabajo</td>
+                                <td class="px-4 sm:px-6 py-4 text-gray-700 text-sm sm:text-base">130 cm (punta TORQ)</td>
+                            </tr>
+                            <tr class="hover:bg-blue-50 transition-colors">
+                                <td class="px-4 sm:px-6 py-4 font-medium text-gray-900 text-sm sm:text-base">Diámetro Interno</td>
+                                <td class="px-4 sm:px-6 py-4 text-gray-700 text-sm sm:text-base">2.1 mm (maximizado)</td>
+                            </tr>
+                            <tr class="hover:bg-blue-50 transition-colors">
+                                <td class="px-4 sm:px-6 py-4 font-medium text-gray-900 text-sm sm:text-base">Diámetro Externo</td>
+                                <td class="px-4 sm:px-6 py-4 text-gray-700 text-sm sm:text-base">7 F (2.33 mm)</td>
+                            </tr>
+                            <tr class="hover:bg-blue-50 transition-colors">
+                                <td class="px-4 sm:px-6 py-4 font-medium text-gray-900 text-sm sm:text-base">Plataforma de Alambre</td>
+                                <td class="px-4 sm:px-6 py-4 text-gray-700 text-sm sm:text-base">0.014" - 0.038"</td>
+                            </tr>
+                            <tr class="hover:bg-blue-50 transition-colors">
+                                <td class="px-4 sm:px-6 py-4 font-medium text-gray-900 text-sm sm:text-base">Material</td>
+                                <td class="px-4 sm:px-6 py-4 text-gray-700 text-sm sm:text-base">Acero inoxidable, hipótubo láser-cortado</td>
+                            </tr>
+                            <tr class="hover:bg-blue-50 transition-colors">
+                                <td class="px-4 sm:px-6 py-4 font-medium text-gray-900 text-sm sm:text-base">Tipo de Punta</td>
+                                <td class="px-4 sm:px-6 py-4 text-gray-700 text-sm sm:text-base">TORQ - atraumática, barrido circunferencial 28.3 mm</td>
+                            </tr>
+                            <tr class="hover:bg-blue-50 transition-colors">
+                                <td class="px-4 sm:px-6 py-4 font-medium text-gray-900 text-sm sm:text-base">Tecnología del Catéter</td>
+                                <td class="px-4 sm:px-6 py-4 text-gray-700 text-sm sm:text-base">MaxID (Maximum Inner Diameter)</td>
+                            </tr>
+                            <tr class="hover:bg-blue-50 transition-colors">
+                                <td class="px-4 sm:px-6 py-4 font-medium text-gray-900 text-sm sm:text-base">Compatibilidad Sistema</td>
+                                <td class="px-4 sm:px-6 py-4 text-gray-700 text-sm sm:text-base">Separator 7</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 fade-in">
+                <div class="bg-white p-6 sm:p-8 rounded-xl shadow-lg">
+                    <h3 class="text-xl sm:text-2xl font-bold text-blue-900 mb-6">Componentes del Sistema</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-3">
+                            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                <span class="text-white font-bold text-sm">1</span>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Penumbra ENGINE</p>
+                                <p class="text-sm text-gray-600">Motor de aspiración controlado por ordenador</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                <span class="text-white font-bold text-sm">2</span>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Lightning Bolt Aspiration Tubing</p>
+                                <p class="text-sm text-gray-600">Tubo con retroalimentación LED integrada</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                <span class="text-white font-bold text-sm">3</span>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">CAT7 con Hipótubo Láser-Cortado</p>
+                                <p class="text-sm text-gray-600">Catéter de aspiración de precisión</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                <span class="text-white font-bold text-sm">4</span>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Algoritmos Duales de Detección</p>
+                                <p class="text-sm text-gray-600">Presión diferencial + flujo</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-br from-blue-600 to-blue-800 p-6 sm:p-8 rounded-xl shadow-lg text-white">
+                    <h3 class="text-xl sm:text-2xl font-bold mb-6">Materiales Necesarios</h3>
+                    <ul class="space-y-2 text-sm sm:text-base">
+                        <li class="flex items-center space-x-2">
+                            <span class="text-green-300">✓</span>
+                            <span>Sistema Lightning Bolt 7 (catéter + tubing)</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <span class="text-green-300">✓</span>
+                            <span>Penumbra ENGINE</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <span class="text-green-300">✓</span>
+                            <span>Vaina introductora 7-8 French</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <span class="text-green-300">✓</span>
+                            <span>Alambre guía 0.014-0.038"</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <span class="text-green-300">✓</span>
+                            <span>Catéter diagnóstico 5F</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <span class="text-green-300">✓</span>
+                            <span>Contraste iodado</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <span class="text-green-300">✓</span>
+                            <span>Jeringas 5cc/10cc</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <span class="text-green-300">✓</span>
+                            <span>Solución salina</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <span class="text-green-300">✓</span>
+                            <span>Canister desechable</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bolt Mode -->
+    <section id="bolt-mode" class="py-12 sm:py-20 px-4 bg-gradient-to-br from-blue-900 to-blue-700 text-white">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-4 fade-in">Tecnología Bolt Mode</h2>
+            <p class="text-center text-blue-100 text-lg sm:text-xl mb-8 sm:mb-12 max-w-3xl mx-auto fade-in">
+                Sistema revolucionario de modulación de aspiración para eliminación eficiente de trombos
+            </p>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 mb-12">
+                <div class="bg-white/10 backdrop-blur-lg p-6 sm:p-8 rounded-xl shadow-2xl hover:scale-105 transition-transform duration-300 fade-in">
+                    <div class="text-5xl mb-4">⚡</div>
+                    <h3 class="text-xl sm:text-2xl font-bold mb-3">Modulación Rápida</h3>
+                    <p class="text-blue-100 text-sm sm:text-base leading-relaxed">
+                        Hasta <span class="font-bold text-yellow-300">12 veces por segundo</span> entre vacío puro (-29 in Hg) y presión ambiente (+29 in Hg)
+                    </p>
+                </div>
+                
+                <div class="bg-white/10 backdrop-blur-lg p-6 sm:p-8 rounded-xl shadow-2xl hover:scale-105 transition-transform duration-300 fade-in">
+                    <div class="text-5xl mb-4">🎯</div>
+                    <h3 class="text-xl sm:text-2xl font-bold mb-3">Algoritmos Duales</h3>
+                    <p class="text-blue-100 text-sm sm:text-base leading-relaxed">
+                        Detección simultánea basada en <span class="font-bold text-yellow-300">presión diferencial</span> y <span class="font-bold text-yellow-300">flujo</span> para identificación precisa de coágulos
+                    </p>
+                </div>
+                
+                <div class="bg-white/10 backdrop-blur-lg p-6 sm:p-8 rounded-xl shadow-2xl hover:scale-105 transition-transform duration-300 fade-in">
+                    <div class="text-5xl mb-4">🔄</div>
+                    <h3 class="text-xl sm:text-2xl font-bold mb-3">Fricción Estática</h3>
+                    <p class="text-blue-100 text-sm sm:text-base leading-relaxed">
+                        Rompe la fricción estática en la punta del catéter para mantener <span class="font-bold text-yellow-300">flujo dinámico continuo</span>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="bg-white/95 backdrop-blur-lg p-6 sm:p-10 rounded-2xl shadow-2xl text-gray-900 fade-in">
+                <h3 class="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-blue-900">Retroalimentación Audiovisual LED</h3>
+                
+                <div class="space-y-6">
+                    <div class="flex items-start space-x-4 bg-green-50 p-4 sm:p-6 rounded-xl">
+                        <div class="flex-shrink-0">
+                            <span class="led-indicator led-green"></span>
+                        </div>
+                        <div>
+                            <h4 class="text-lg sm:text-xl font-bold text-green-800 mb-2">Verde Sólido</h4>
+                            <p class="text-gray-700 text-sm sm:text-base">Tubing encendido en posición OFF, sistema listo para usar</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-4 bg-green-50 p-4 sm:p-6 rounded-xl">
+                        <div class="flex-shrink-0">
+                            <span class="led-indicator led-green" style="animation: pulse 1s infinite;"></span>
+                        </div>
+                        <div>
+                            <h4 class="text-lg sm:text-xl font-bold text-green-800 mb-2">Verde Parpadeante</h4>
+                            <p class="text-gray-700 text-sm sm:text-base">Tubing encendido en posición ON - Modo de muestreo activo</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-4 bg-yellow-50 p-4 sm:p-6 rounded-xl">
+                        <div class="flex-shrink-0">
+                            <span class="led-indicator led-yellow"></span>
+                        </div>
+                        <div>
+                            <h4 class="text-lg sm:text-xl font-bold text-yellow-800 mb-2">Amarillo Parpadeante</h4>
+                            <p class="text-gray-700 text-sm sm:text-base">¡Coágulo detectado! - Bolt Mode activado automáticamente</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 p-6 bg-blue-50 rounded-xl border-l-4 border-blue-600">
+                    <p class="text-gray-800 text-sm sm:text-base leading-relaxed">
+                        <span class="font-bold text-blue-900">Ventaja clínica:</span> La retroalimentación instantánea permite al operador confirmar la captura del coágulo y optimizar la técnica en tiempo real, mejorando significativamente la eficiencia del procedimiento.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Procedimiento Estándar -->
+    <section id="procedimiento" class="py-12 sm:py-20 px-4 bg-white">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl sm:text-4xl font-bold text-blue-900 text-center mb-8 sm:mb-12 fade-in">Procedimiento Estándar</h2>
+            
+            <div class="space-y-4">
+                <!-- Paso 1 -->
+                <div class="accordion-item bg-white border-2 border-blue-100 rounded-xl shadow-lg overflow-hidden fade-in">
+                    <button class="accordion-header w-full px-4 sm:px-6 py-4 sm:py-5 flex justify-between items-center hover:bg-blue-50 transition-colors">
+                        <div class="flex items-center space-x-3 sm:space-x-4">
+                            <span class="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm sm:text-base flex-shrink-0">I</span>
+                            <span class="font-bold text-gray-900 text-left text-sm sm:text-lg">Acceso Vascular y Angiografía Diagnóstica</span>
+                        </div>
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 transform transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="px-4 sm:px-6 py-4 sm:py-5 bg-gray-50">
+                            <p class="text-gray-700 mb-4 text-sm sm:text-base leading-relaxed">
+                                Obtener acceso vascular apropiado (generalmente femoral común contralateral o braquial). Realizar angiografía diagnóstica completa para identificar la ubicación y extensión del trombo.
+                            </p>
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <p class="text-sm font-semibold text-blue-900 mb-2">Materiales clave:</p>
+                                <ul class="text-sm text-gray-700 space-y-1">
+                                    <li>• Catéter diagnóstico 5F</li>
+                                    <li>• Contraste iodado</li>
+                                    <li>• Vaina introductora 7-8 French</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paso 2 -->
+                <div class="accordion-item bg-white border-2 border-blue-100 rounded-xl shadow-lg overflow-hidden fade-in">
+                    <button class="accordion-header w-full px-4 sm:px-6 py-4 sm:py-5 flex justify-between items-center hover:bg-blue-50 transition-colors">
+                        <div class="flex items-center space-x-3 sm:space-x-4">
+                            <span class="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm sm:text-base flex-shrink-0">II</span>
+                            <span class="font-bold text-gray-900 text-left text-sm sm:text-lg">Preparación del Sistema Lightning Bolt 7</span>
+                        </div>
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 transform transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="px-4 sm:px-6 py-4 sm:py-5 bg-gray-50">
+                            <p class="text-gray-700 mb-4 text-sm sm:text-base leading-relaxed">
+                                Conectar el Lightning Bolt Aspiration Tubing al Penumbra ENGINE. Purgar el sistema con solución salina heparinizada. Verificar la retroalimentación LED verde sólida indicando sistema listo.
+                            </p>
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <p class="text-sm font-semibold text-green-900 mb-2">Verificación:</p>
+                                <p class="text-sm text-gray-700">LED verde sólido = Sistema listo para uso</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paso 3 -->
+                <div class="accordion-item bg-white border-2 border-blue-100 rounded-xl shadow-lg overflow-hidden fade-in">
+                    <button class="accordion-header w-full px-4 sm:px-6 py-4 sm:py-5 flex justify-between items-center hover:bg-blue-50 transition-colors">
+                        <div class="flex items-center space-x-3 sm:space-x-4">
+                            <span class="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm sm:text-base flex-shrink-0">III</span>
+                            <span class="font-bold text-gray-900 text-left text-sm sm:text-lg">Avance del Catéter CAT7 sobre Alambre Guía</span>
+                        </div>
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 transform transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="px-4 sm:px-6 py-4 sm:py-5 bg-gray-50">
+                            <p class="text-gray-700 mb-4 text-sm sm:text-base leading-relaxed">
+                                Avanzar un alambre guía 0.014"-0.038" a través del trombo. Avanzar cuidadosamente el catéter CAT7 sobre el alambre hasta la ubicación del coágulo. La punta TORQ atraumática permite navegación segura.
+                            </p>
+                            <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400">
+                                <p class="text-sm font-semibold text-yellow-900">⚠️ Precaución: Avanzar bajo guía fluoroscópica continua</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paso 4 -->
+                <div class="accordion-item bg-white border-2 border-blue-100 rounded-xl shadow-lg overflow-hidden fade-in">
+                    <button class="accordion-header w-full px-4 sm:px-6 py-4 sm:py-5 flex justify-between items-center hover:bg-blue-50 transition-colors">
+                        <div class="flex items-center space-x-3 sm:space-x-4">
+                            <span class="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm sm:text-base flex-shrink-0">IV</span>
+                            <span class="font-bold text-gray-900 text-left text-sm sm:text-lg">Activación del Sistema - Modo Muestreo</span>
+                        </div>
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 transform transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="px-4 sm:px-6 py-4 sm:py-5 bg-gray-50">
+                            <p class="text-gray-700 mb-4 text-sm sm:text-base leading-relaxed">
+                                Retirar el alambre guía. Activar el Penumbra ENGINE a posición ON. El LED cambiará a verde parpadeante, indicando que el sistema está en modo de muestreo activo, analizando presión y flujo continuamente.
+                            </p>
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <p class="text-sm font-semibold text-green-900 mb-2">Estado LED:</p>
+                                <p class="text-sm text-gray-700">🟢 Verde parpadeante = Muestreo activo</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paso 5 -->
+                <div class="accordion-item bg-white border-2 border-blue-100 rounded-xl shadow-lg overflow-hidden fade-in">
+                    <button class="accordion-header w-full px-4 sm:px-6 py-4 sm:py-5 flex justify-between items-center hover:bg-blue-50 transition-colors">
+                        <div class="flex items-center space-x-3 sm:space-x-4">
+                            <span class="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm sm:text-base flex-shrink-0">V</span>
+                            <span class="font-bold text-gray-900 text-left text-sm sm:text-lg">Detección y Activación Automática de Bolt Mode</span>
+                        </div>
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 transform transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="px-4 sm:px-6 py-4 sm:py-5 bg-gray-50">
+                            <p class="text-gray-700 mb-4 text-sm sm:text-base leading-relaxed">
+                                Cuando los algoritmos duales detectan un coágulo, el LED cambiará automáticamente a amarillo parpadeante y el Bolt Mode se activará, modulando la aspiración hasta 12 veces por segundo para fragmentar y eliminar el trombo.
+                            </p>
+                            <div class="bg-yellow-50 p-4 rounded-lg">
+                                <p class="text-sm font-semibold text-yellow-900 mb-2">Acción automática:</p>
+                                <p class="text-sm text-gray-700">🟡 Amarillo parpadeante = Bolt Mode activo eliminando coágulo</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paso 6 -->
+                <div class="accordion-item bg-white border-2 border-blue-100 rounded-xl shadow-lg overflow-hidden fade-in">
+                    <button class="accordion-header w-full px-4 sm:px-6 py-4 sm:py-5 flex justify-between items-center hover:bg-blue-50 transition-colors">
+                        <div class="flex items-center space-x-3 sm:space-x-4">
+                            <span class="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm sm:text-base flex-shrink-0">VI</span>
+                            <span class="font-bold text-gray-900 text-left text-sm sm:text-lg">Retiro del Catéter y Recolección del Trombo</span>
+                        </div>
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 transform transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="px-4 sm:px-6 py-4 sm:py-5 bg-gray-50">
+                            <p class="text-gray-700 mb-4 text-sm sm:text-base leading-relaxed">
+                                Mantener la aspiración activa mientras se retira lentamente el catéter. El trombo será aspirado hacia el canister desechable. Repetir pases adicionales si es necesario hasta lograr revascularización completa.
+                            </p>
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <p class="text-sm font-semibold text-blue-900 mb-2">Tiempo típico:</p>
+                                <p class="text-sm text-gray-700">Promedio de 22 minutos para procedimiento completo</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paso 7 -->
+                <div class="accordion-item bg-white border-2 border-blue-100 rounded-xl shadow-lg overflow-hidden fade-in">
+                    <button class="accordion-header w-full px-4 sm:px-6 py-4 sm:py-5 flex justify-between items-center hover:bg-blue-50 transition-colors">
+                        <div class="flex items-center space-x-3 sm:space-x-4">
+                            <span class="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm sm:text-base flex-shrink-0">VII</span>
+                            <span class="font-bold text-gray-900 text-left text-sm sm:text-lg">Angiografía Final y Cierre</span>
+                        </div>
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 transform transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="px-4 sm:px-6 py-4 sm:py-5 bg-gray-50">
+                            <p class="text-gray-700 mb-4 text-sm sm:text-base leading-relaxed">
+                                Realizar angiografía de control para confirmar la revascularización exitosa y ausencia de complicaciones (espasmo, disección, perforación). Cerrar el sitio de acceso según protocolo institucional.
+                            </p>
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <p class="text-sm font-semibold text-green-900 mb-2">Resultados esperados:</p>
+                                <ul class="text-sm text-gray-700 space-y-1">
+                                    <li>• 82.5% - 96.5% éxito de revascularización</li>
+                                    <li>• &gt;98% salvamento de extremidad a 30 días</li>
+                                    <li>• 150-200 mL pérdida sanguínea típica</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Casos Clínicos -->
+    <section id="casos" class="py-12 sm:py-20 px-4 bg-blue-50">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl sm:text-4xl font-bold text-blue-900 text-center mb-4 fade-in">Casos Clínicos Documentados</h2>
+            <p class="text-center text-gray-600 mb-8 sm:mb-12 text-sm sm:text-base fade-in">Evidencia real del rendimiento del Lightning Bolt 7 en diferentes indicaciones arteriales</p>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+                <!-- Caso 1 -->
+                <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 fade-in">
+                    <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+                        <h3 class="text-xl sm:text-2xl font-bold text-white">Caso 1: Oclusión Poplítea ALI</h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="mb-4">
+                            <p class="text-sm font-semibold text-gray-500 mb-1">Paciente:</p>
+                            <p class="text-gray-800">Varón 50s años</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="text-sm font-semibold text-gray-500 mb-1">Presentación:</p>
+                            <p class="text-gray-800 text-sm sm:text-base">Isquemia arterial extremidad inferior izquierda por evento cardioembólico. Pie frío tras múltiples horas de lisis sin respuesta.</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div class="bg-blue-50 p-3 rounded-lg">
+                                <p class="text-xs font-semibold text-blue-900 mb-1">Tiempo Dispositivo</p>
+                                <p class="text-lg font-bold text-blue-700">5 minutos</p>
+                                <p class="text-xs text-gray-600">(2 pases)</p>
+                            </div>
+                            <div class="bg-green-50 p-3 rounded-lg">
+                                <p class="text-xs font-semibold text-green-900 mb-1">Resolución</p>
+                                <p class="text-lg font-bold text-green-700">&gt;90%</p>
+                                <p class="text-xs text-gray-600">Primer pase</p>
+                            </div>
+                        </div>
+                        <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-4">
+                            <p class="text-sm font-semibold text-green-900 mb-1">Resultado:</p>
+                            <p class="text-sm text-gray-800">Salvamento de extremidad. Pulsos palpables. Mejoría clínica inmediata.</p>
+                        </div>
+                        <div class="flex items-center justify-between text-xs text-gray-500">
+                            <span>📄 Pérdida sangre: 150 mL</span>
+                            <span class="font-semibold">Dra. Patricia Furey</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Caso 2 -->
+                <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 fade-in">
+                    <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+                        <h3 class="text-xl sm:text-2xl font-bold text-white">Caso 2: Trombosis Poplítea-Tibioperoneal</h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="mb-4">
+                            <p class="text-sm font-semibold text-gray-500 mb-1">Paciente:</p>
+                            <p class="text-gray-800">ALI Rutherford IIb</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="text-sm font-semibold text-gray-500 mb-1">Presentación:</p>
+                            <p class="text-gray-800 text-sm sm:text-base">Oclusión poplítea-tibioperoneal con reconstitución por colaterales</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div class="bg-blue-50 p-3 rounded-lg">
+                                <p class="text-xs font-semibold text-blue-900 mb-1">Tiempo Dispositivo</p>
+                                <p class="text-lg font-bold text-blue-700">&lt;10 min</p>
+                            </div>
+                            <div class="bg-green-50 p-3 rounded-lg">
+                                <p class="text-xs font-semibold text-green-900 mb-1">Pérdida Sangre</p>
+                                <p class="text-lg font-bold text-green-700">&lt;200 mL</p>
+                            </div>
+                        </div>
+                        <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-4">
+                            <p class="text-sm font-semibold text-green-900 mb-1">Resultado:</p>
+                            <p class="text-sm text-gray-800">Flujo restablecido. Perfusión vigorosa. Cirugía evitada.</p>
+                        </div>
+                        <div class="flex items-center justify-between text-xs text-gray-500">
+                            <span>🏥 Cooper Health</span>
+                            <span class="font-semibold">EVToday 2023</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Caso 3 -->
+                <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 fade-in">
+                    <div class="bg-gradient-to-r from-purple-600 to-purple-700 px-6 py-4">
+                        <h3 class="text-xl sm:text-2xl font-bold text-white">Caso 3: Embolismo Arteria Renal</h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="mb-4">
+                            <p class="text-sm font-semibold text-gray-500 mb-1">Paciente:</p>
+                            <p class="text-gray-800">Varón 70s con fibrilación auricular</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="text-sm font-semibold text-gray-500 mb-1">Presentación:</p>
+                            <p class="text-gray-800 text-sm sm:text-base">Dolor flanco agudo. Émbolo arteria renal. Cr 2.02, eGFR 35</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div class="bg-red-50 p-3 rounded-lg">
+                                <p class="text-xs font-semibold text-red-900 mb-1">Pre-procedimiento</p>
+                                <p class="text-sm font-bold text-red-700">Cr 2.02</p>
+                                <p class="text-xs text-gray-600">eGFR 35</p>
+                            </div>
+                            <div class="bg-green-50 p-3 rounded-lg">
+                                <p class="text-xs font-semibold text-green-900 mb-1">Al Alta</p>
+                                <p class="text-sm font-bold text-green-700">Cr 1.54</p>
+                                <p class="text-xs text-gray-600">eGFR 48</p>
+                            </div>
+                        </div>
+                        <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-4">
+                            <p class="text-sm font-semibold text-green-900 mb-1">Resultado:</p>
+                            <p class="text-sm text-gray-800">Diálisis evitada. Recuperación completa de función renal.</p>
+                        </div>
+                        <div class="flex items-center justify-between text-xs text-gray-500">
+                            <span>⏱️ Tiempo: &lt;1 hora</span>
+                            <span class="font-semibold">Dr. Allan Hoffman</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Caso 4 -->
+                <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 fade-in">
+                    <div class="bg-gradient-to-r from-purple-600 to-purple-700 px-6 py-4">
+                        <h3 class="text-xl sm:text-2xl font-bold text-white">Caso 4: ALI - Injerto Aortobifemoral</h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="mb-4">
+                            <p class="text-sm font-semibold text-gray-500 mb-1">Paciente:</p>
+                            <p class="text-gray-800">Mujer con injerto previo</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="text-sm font-semibold text-gray-500 mb-1">Presentación:</p>
+                            <p class="text-gray-800 text-sm sm:text-base">ALI Rutherford IIb. Trombosis femoral-pie</p>
+                        </div>
+                        <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-4">
+                            <p class="text-sm font-semibold text-green-900 mb-1">Resultado:</p>
+                            <p class="text-sm text-gray-800">Pulsos palpables. Mejoría clínica significativa a las horas del procedimiento.</p>
+                        </div>
+                        <div class="flex items-center justify-between text-xs text-gray-500">
+                            <span>📋 Vascular Specialist 2024</span>
+                            <span class="font-semibold">Dr. Reichard</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Datos Clínicos Consolidados -->
+            <div class="mt-12 bg-gradient-to-br from-blue-900 to-blue-700 rounded-2xl shadow-2xl p-6 sm:p-10 text-white fade-in">
+                <h3 class="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12">Resultados Clínicos Consolidados</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white/10 backdrop-blur-lg p-6 rounded-xl text-center">
+                        <div class="text-3xl sm:text-4xl font-bold text-yellow-300 mb-2">&gt;98%</div>
+                        <p class="text-blue-100 text-sm">Salvamento extremidad 30 días</p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-lg p-6 rounded-xl text-center">
+                        <div class="text-3xl sm:text-4xl font-bold text-yellow-300 mb-2">22 min</div>
+                        <p class="text-blue-100 text-sm">Tiempo promedio procedimiento</p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-lg p-6 rounded-xl text-center">
+                        <div class="text-3xl sm:text-4xl font-bold text-yellow-300 mb-2">3%</div>
+                        <p class="text-blue-100 text-sm">Mortalidad a 30 días</p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-lg p-6 rounded-xl text-center">
+                        <div class="text-3xl sm:text-4xl font-bold text-yellow-300 mb-2">150-200 mL</div>
+                        <p class="text-blue-100 text-sm">Pérdida sangre típica</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Artículo EVToday Destacado -->
+    <section id="evtoday" class="py-12 sm:py-20 px-4 bg-gradient-to-br from-indigo-900 to-purple-900 text-white">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-8 sm:mb-12 fade-in">
+                <span class="inline-block px-4 py-2 bg-yellow-400 text-indigo-900 rounded-full font-bold text-sm mb-4">
+                    📰 FUENTE DESTACADA
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">Artículo Científico de Referencia</h2>
+                <p class="text-lg text-indigo-200">Septiembre 2025 - Endovascular Today</p>
+            </div>
+            
+            <div class="bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl overflow-hidden fade-in">
+                <div class="p-6 sm:p-10">
+                    <h3 class="text-2xl sm:text-3xl font-bold mb-6 leading-tight">
+                        The Versatility of Lightning Bolt 7 Across Arterial Indications
+                    </h3>
+                    
+                    <div class="bg-white/10 p-6 rounded-xl mb-6">
+                        <p class="text-base sm:text-lg text-indigo-100 leading-relaxed mb-4">
+                            Este artículo exhaustivo documenta la versatilidad del sistema Lightning Bolt 7 en múltiples indicaciones arteriales, incluyendo casos de isquemia aguda de extremidades, oclusiones viscerales y embolismos arteriales de diversas etiologías.
+                        </p>
+                        <p class="text-base sm:text-lg text-indigo-100 leading-relaxed">
+                            Los autores presentan evidencia detallada del rendimiento clínico del dispositivo, destacando su capacidad única de detección automática de coágulos y la eficiencia del Bolt Mode en la eliminación rápida de trombos.
+                        </p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                        <div class="bg-white/10 p-4 rounded-lg">
+                            <p class="text-sm text-indigo-200 mb-1">Publicación</p>
+                            <p class="font-bold text-lg">EVToday</p>
+                        </div>
+                        <div class="bg-white/10 p-4 rounded-lg">
+                            <p class="text-sm text-indigo-200 mb-1">Fecha</p>
+                            <p class="font-bold text-lg">Septiembre 2025</p>
+                        </div>
+                        <div class="bg-white/10 p-4 rounded-lg">
+                            <p class="text-sm text-indigo-200 mb-1">Casos Documentados</p>
+                            <p class="font-bold text-lg">Múltiples indicaciones</p>
+                        </div>
+                    </div>
+                    
+                    <a href="https://evtoday.com/articles/2025-sept/the-versatility-of-lightning-bolt-7-across-arterial-indications" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       class="inline-flex items-center justify-center w-full sm:w-auto px-8 py-4 bg-yellow-400 hover:bg-yellow-300 text-indigo-900 rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
+                        <span>Leer Artículo Completo</span>
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
+                    </a>
+                    
+                    <div class="mt-6 pt-6 border-t border-white/20">
+                        <p class="text-xs text-indigo-200">
+                            <span class="font-semibold">Cita:</span> "The Versatility of Lightning Bolt 7 Across Arterial Indications." <em>Endovascular Today</em>, Septiembre 2025. 
+                            <a href="https://evtoday.com/articles/2025-sept/the-versatility-of-lightning-bolt-7-across-arterial-indications" target="_blank" class="underline hover:text-yellow-300">https://evtoday.com/articles/2025-sept/the-versatility-of-lightning-bolt-7-across-arterial-indications</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- IFU y Advertencias -->
+    <section id="ifu" class="py-12 sm:py-20 px-4 bg-yellow-50">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-8 sm:mb-12 fade-in">
+                <div class="inline-block px-4 py-2 bg-yellow-400 text-yellow-900 rounded-full font-bold text-sm mb-4">
+                    ⚠️ INFORMACIÓN IMPORTANTE
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">IFU y Advertencias</h2>
+            </div>
+            
+            <div class="bg-orange-100 border-l-4 border-orange-500 p-6 mb-8 rounded-lg shadow-lg fade-in">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0">
+                        <svg class="h-6 w-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-lg font-bold text-orange-900 mb-2">Advertencia Principal</h3>
+                        <p class="text-orange-800 text-sm sm:text-base">
+                            El Lightning Bolt™ 7 es un dispositivo médico de venta <span class="font-bold">solo bajo prescripción médica</span>. 
+                            Debe ser utilizado únicamente por médicos entrenados en procedimientos endovasculares.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-8">
+                <div class="bg-white p-6 rounded-xl shadow-lg border-2 border-blue-100 fade-in">
+                    <h3 class="text-xl font-bold text-blue-900 mb-4">✓ Indicaciones</h3>
+                    <ul class="space-y-2 text-sm sm:text-base text-gray-700">
+                        <li>• Isquemia Aguda de Extremidades (ALI)</li>
+                        <li>• Oclusiones arteriales periféricas</li>
+                        <li>• Embolismos cardioembólicos arteriales</li>
+                        <li>• Trombosis de injertos de bypass</li>
+                        <li>• Oclusiones viscerales (renal, mesentérica)</li>
+                        <li>• Trombo hibernante</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-lg border-2 border-red-100 fade-in">
+                    <h3 class="text-xl font-bold text-red-900 mb-4">✗ Contraindicaciones</h3>
+                    <ul class="space-y-2 text-sm sm:text-base text-gray-700">
+                        <li>• Vasos menores a 2 mm de diámetro</li>
+                        <li>• Alergia a acero inoxidable</li>
+                        <li>• Anatomía vascular tortuosa severa</li>
+                        <li>• Pacientes con coagulopatía no corregida</li>
+                        <li>• Infección activa en sitio de acceso</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="bg-white p-6 sm:p-8 rounded-xl shadow-lg border-2 border-yellow-200 mb-8 fade-in">
+                <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-4">⚠️ Eventos Adversos Potenciales</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm sm:text-base">
+                    <div class="flex items-start space-x-2">
+                        <span class="text-red-500 mt-1">•</span>
+                        <span class="text-gray-700">Perforación vascular</span>
+                    </div>
+                    <div class="flex items-start space-x-2">
+                        <span class="text-red-500 mt-1">•</span>
+                        <span class="text-gray-700">Disección arterial</span>
+                    </div>
+                    <div class="flex items-start space-x-2">
+                        <span class="text-red-500 mt-1">•</span>
+                        <span class="text-gray-700">Embolización distal</span>
+                    </div>
+                    <div class="flex items-start space-x-2">
+                        <span class="text-red-500 mt-1">•</span>
+                        <span class="text-gray-700">Vasoespasmo</span>
+                    </div>
+                    <div class="flex items-start space-x-2">
+                        <span class="text-red-500 mt-1">•</span>
+                        <span class="text-gray-700">Hematoma en sitio de acceso</span>
+                    </div>
+                    <div class="flex items-start space-x-2">
+                        <span class="text-red-500 mt-1">•</span>
+                        <span class="text-gray-700">Reacción al contraste</span>
+                    </div>
+                    <div class="flex items-start space-x-2">
+                        <span class="text-red-500 mt-1">•</span>
+                        <span class="text-gray-700">Hemorragia</span>
+                    </div>
+                    <div class="flex items-start space-x-2">
+                        <span class="text-red-500 mt-1">•</span>
+                        <span class="text-gray-700">Infección</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-blue-900 text-white p-6 sm:p-8 rounded-xl shadow-2xl fade-in">
+                <h3 class="text-xl sm:text-2xl font-bold mb-4">📋 Acceso a IFU Completo</h3>
+                <p class="mb-6 text-blue-100 text-sm sm:text-base">
+                    Para información completa sobre instrucciones de uso, advertencias, precauciones y especificaciones técnicas detalladas:
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <a href="https://www.peninc.info/risk" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center px-6 py-3 bg-white text-blue-900 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
+                        <span>www.peninc.info/risk</span>
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
+                    </a>
+                    <a href="http://bit.ly/2BYj7Yj" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center px-6 py-3 bg-yellow-400 text-blue-900 rounded-lg font-semibold hover:bg-yellow-300 transition-colors">
+                        <span>QR Code: bit.ly/2BYj7Yj</span>
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Disponibilidad España -->
+    <section id="espana" class="py-12 sm:py-20 px-4 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-8 sm:mb-12 fade-in">
+                <span class="inline-block px-4 py-2 bg-red-600 text-white rounded-full font-bold text-sm mb-4">
+                    🇪🇸 ESPAÑA
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Disponibilidad en España</h2>
+                <p class="text-lg text-gray-600">Distribuidor exclusivo y casos pioneros</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                <div class="bg-gradient-to-br from-blue-900 to-blue-700 p-8 rounded-2xl shadow-2xl text-white fade-in">
+                    <h3 class="text-2xl sm:text-3xl font-bold mb-6">Distribuidor Exclusivo</h3>
+                    <div class="bg-white/10 backdrop-blur-lg p-6 rounded-xl mb-6">
+                        <h4 class="text-2xl font-bold mb-2">Mercé V. Electromedicina</h4>
+                        <p class="text-blue-100 text-sm sm:text-base">Distribuidor oficial de tecnología Penumbra en España</p>
+                    </div>
+                    <div class="space-y-3 text-sm sm:text-base">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl">✓</span>
+                            <span>Soporte técnico especializado</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl">✓</span>
+                            <span>Entrenamiento clínico certificado</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl">✓</span>
+                            <span>Disponibilidad inmediata</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl">✓</span>
+                            <span>Servicio post-venta completo</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-blue-50 p-8 rounded-2xl shadow-xl fade-in">
+                    <h3 class="text-2xl sm:text-3xl font-bold text-blue-900 mb-6">Casos Pioneros en España</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-blue-600">
+                            <div class="flex items-start justify-between mb-2">
+                                <span class="text-sm font-bold text-blue-600">16 Mayo 2022</span>
+                                <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-bold">PRIMERO EN ESPAÑA</span>
+                            </div>
+                            <h4 class="font-bold text-gray-900 mb-2">Hospital Virgen de las Nieves</h4>
+                            <p class="text-sm text-gray-600 mb-2">Granada</p>
+                            <p class="text-sm text-gray-800">Primera trombectomía pulmonar con Lightning 12 en España</p>
+                        </div>
+                        
+                        <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-purple-600">
+                            <div class="flex items-start justify-between mb-2">
+                                <span class="text-sm font-bold text-purple-600">11 Septiembre 2025</span>
+                                <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-bold">2º EN EUROPA</span>
+                            </div>
+                            <h4 class="font-bold text-gray-900 mb-2">Complejo Hospitalario Insular</h4>
+                            <p class="text-sm text-gray-600 mb-2">Primer Lightning BOLT 12 - Segundo en Europa</p>
+                            <p class="text-sm text-gray-800 font-semibold">&gt;95% reducción trombótica</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-gradient-to-r from-green-50 to-blue-50 p-6 sm:p-10 rounded-2xl shadow-xl fade-in">
+                <h3 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8">Información de Costos</h3>
+                
+                <div class="overflow-x-auto mb-6">
+                    <table class="w-full bg-white rounded-xl overflow-hidden shadow-lg">
+                        <thead class="bg-blue-900 text-white">
+                            <tr>
+                                <th class="px-4 sm:px-6 py-4 text-left text-sm sm:text-base">Región/Referencia</th>
+                                <th class="px-4 sm:px-6 py-4 text-left text-sm sm:text-base">Rango de Precio</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr class="hover:bg-blue-50">
+                                <td class="px-4 sm:px-6 py-4 font-medium text-gray-900 text-sm sm:text-base">USA - Sistema Completo</td>
+                                <td class="px-4 sm:px-6 py-4 text-gray-700 text-sm sm:text-base">$8,000 - $10,000 USD</td>
+                            </tr>
+                            <tr class="hover:bg-blue-50">
+                                <td class="px-4 sm:px-6 py-4 font-medium text-gray-900 text-sm sm:text-base">Europa - Referencia Histórica</td>
+                                <td class="px-4 sm:px-6 py-4 text-gray-700 text-sm sm:text-base">€3,000 - €5,500 EUR</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-lg mb-6">
+                    <p class="text-sm sm:text-base text-gray-800">
+                        <span class="font-bold">Nota importante:</span> Los precios pueden variar según configuración del sistema, volumen de compra y acuerdos institucionales. 
+                        Para cotización actualizada y específica para su centro, contacte directamente al distribuidor.
+                    </p>
+                </div>
+                
+                <div class="text-center">
+                    <p class="text-gray-600 mb-4 text-sm sm:text-base">Para información detallada sobre precios, disponibilidad y entrenamiento:</p>
+                    <div class="inline-block px-8 py-4 bg-blue-600 text-white rounded-xl font-bold text-lg shadow-xl">
+                        📞 Contactar Mercé V. Electromedicina
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 bg-blue-900 text-white p-6 sm:p-10 rounded-2xl shadow-2xl fade-in">
+                <h3 class="text-2xl sm:text-3xl font-bold mb-6 text-center">Aprobaciones y Certificaciones</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <div class="bg-white/10 backdrop-blur-lg p-6 rounded-xl text-center">
+                        <div class="text-4xl mb-3">✅</div>
+                        <h4 class="font-bold text-lg mb-2">CE Mark 2024</h4>
+                        <p class="text-sm text-blue-200">Certificación Europea</p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-lg p-6 rounded-xl text-center">
+                        <div class="text-4xl mb-3">🇺🇸</div>
+                        <h4 class="font-bold text-lg mb-2">FDA 2023</h4>
+                        <p class="text-sm text-blue-200">Aprobación estadounidense</p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-lg p-6 rounded-xl text-center">
+                        <div class="text-4xl mb-3">🏥</div>
+                        <h4 class="font-bold text-lg mb-2">ICD-PCS</h4>
+                        <p class="text-sm text-blue-200">Código de procedimiento</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Penumbra Inc.</h3>
+                    <p class="text-gray-400 text-sm mb-4">
+                        Líder mundial en tecnología de trombectomía asistida por ordenador (CAVT)
+                    </p>
+                    <div class="space-y-2 text-sm text-gray-400">
+                        <p>📍 Alameda, California, USA</p>
+                        <p>🌐 www.penumbrainc.com</p>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Distribuidor España</h3>
+                    <p class="text-gray-400 text-sm mb-4">
+                        <span class="font-semibold text-white">Mercé V. Electromedicina</span><br>
+                        Distribuidor exclusivo en España
+                    </p>
+                    <p class="text-gray-400 text-sm">Para consultas comerciales y técnicas</p>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Enlaces Importantes</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li>
+                            <a href="https://www.peninc.info/risk" target="_blank" class="text-blue-400 hover:text-blue-300">IFU Completo →</a>
+                        </li>
+                        <li>
+                            <a href="https://evtoday.com/articles/2025-sept/the-versatility-of-lightning-bolt-7-across-arterial-indications" target="_blank" class="text-blue-400 hover:text-blue-300">Artículo EVToday →</a>
+                        </li>
+                        <li>
+                            <a href="http://bit.ly/2BYj7Yj" target="_blank" class="text-blue-400 hover:text-blue-300">QR Code IFU →</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8">
+                <div class="bg-yellow-900/30 border-l-4 border-yellow-500 p-4 rounded mb-6">
+                    <p class="text-sm text-yellow-100">
+                        <span class="font-bold">⚠️ AVISO LEGAL:</span> Lightning Bolt™ 7 es un dispositivo médico de venta solo bajo prescripción médica. 
+                        Debe ser utilizado únicamente por profesionales médicos entrenados. Para uso profesional médico únicamente.
+                    </p>
+                </div>
+                
+                <div class="text-center text-sm text-gray-400">
+                    <p class="mb-2">© 2025 Penumbra Inc. Todos los derechos reservados.</p>
+                    <p class="mb-2">Lightning Bolt™ es una marca registrada de Penumbra Inc.</p>
+                    <p>Última actualización: Noviembre 2025</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+        });
+        
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+            });
+        });
+        
+        // Accordion functionality
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                const icon = header.querySelector('svg');
+                
+                content.classList.toggle('active');
+                icon.classList.toggle('rotate-180');
+            });
+        });
+        
+        // Fade in on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.fade-in').forEach(element => {
+            observer.observe(element);
+        });
+        
+        // Smooth scroll with offset for fixed nav
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offset = 80;
+                    const targetPosition = target.offsetTop - offset;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Change nav background on scroll
+        const nav = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)';
+            } else {
+                nav.style.boxShadow = '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)';
+            }
+        });
+    </script>
+</body>
+</html>
