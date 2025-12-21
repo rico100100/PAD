@@ -1,0 +1,752 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VascularRisk · CLTI — Suite Clínica (v5.2)</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+          colors: {
+            medical: { 50: '#f8fafc', 100: '#f1f5f9', 500: '#64748b', 600: '#475569', 900: '#0f172a' },
+            brand: { 500: '#4f46e5', 600: '#4338ca' } // Indigo styling
+          }
+        }
+      }
+    };
+  </script>
+  
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    /* Custom Styles & Reset */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { background-color: #f8fafc; color: #1e293b; }
+
+    /* Segmented Control (Radio Button Groups) */
+    .segmented-control { display: flex; background: #f1f5f9; padding: 4px; border-radius: 0.5rem; }
+    .segmented-control label {
+      flex: 1; text-align: center; cursor: pointer; padding: 6px 12px;
+      font-size: 0.875rem; font-weight: 500; border-radius: 0.375rem;
+      transition: all 0.2s; color: #64748b;
+    }
+    .segmented-control input[type="radio"] { display: none; }
+    .segmented-control input[type="radio"]:checked + span {
+      background: white; color: #0f172a; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-weight: 600;
+    }
+    .segmented-control span { display: block; width: 100%; height: 100%; border-radius: 0.375rem; }
+
+    /* Card Utilities */
+    .card { background: white; border: 1px solid #e2e8f0; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); overflow: hidden; }
+    .card-header { padding: 1.25rem; border-bottom: 1px solid #f1f5f9; background: #ffffff; }
+    .card-body { padding: 1.25rem; }
+
+    /* Print Optimizations */
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white; font-size: 12pt; }
+      .card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; margin-bottom: 1rem; }
+      header { position: static; border-bottom: 2px solid #000; }
+      main { display: block; width: 100%; }
+      .grid-cols-12 { display: block; }
+      .col-span-12 { width: 100%; }
+      /* Force single column for print readability */
+      .md\:grid-cols-2, .md\:grid-cols-3 { display: flex; flex-wrap: wrap; gap: 1rem; }
+      input, select { border: none; background: transparent; -webkit-appearance: none; font-weight: bold; }
+    }
+  </style>
+</head>
+
+<body class="antialiased">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="bg-indigo-600 text-white p-2 rounded-lg shadow-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold text-slate-900 leading-tight">VascularRisk <span class="text-indigo-600">CLTI</span></h1>
+          <p class="text-xs text-slate-500 font-medium hidden sm:block">PLAN · WIfI · GLASS · FINNVASC · PREVENT III · BASIL</p>
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-2 no-print">
+        <button id="recalcBtn" class="hidden sm:inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-transparent transition-colors">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+          Recalcular
+        </button>
+        <button id="exportBtn" class="items-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-emerald-600 hover:bg-emerald-700 shadow-sm hover:shadow transition-all flex">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+          Exportar
+        </button>
+        <button id="resetBtn" class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Reiniciar todo">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- Left Column: Inputs & Scores -->
+      <div class="lg:col-span-8 space-y-8">
+        
+        <!-- WIfI Section -->
+        <section id="wifi" class="card">
+          <div class="card-header flex justify-between items-center">
+            <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+              <span class="bg-indigo-100 text-indigo-700 w-6 h-6 rounded-full flex items-center justify-center text-xs">1</span>
+              Clasificación WIfI (SVS)
+            </h2>
+            <div id="wifi_badge_live" class="text-xs font-bold px-2 py-1 rounded bg-slate-100 text-slate-500">Pendiente</div>
+          </div>
+          <div class="card-body space-y-6">
+            
+            <!-- W - Wound -->
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-2">W — Grado de Herida</label>
+              <div class="segmented-control">
+                <label><input type="radio" name="w_grade" value="0" checked><span>0</span></label>
+                <label><input type="radio" name="w_grade" value="1"><span>1</span></label>
+                <label><input type="radio" name="w_grade" value="2"><span>2</span></label>
+                <label><input type="radio" name="w_grade" value="3"><span>3</span></label>
+              </div>
+              <p class="text-xs text-slate-500 mt-2 italic" id="w_desc">Sin úlcera ni gangrena.</p>
+            </div>
+
+            <!-- fI - Infection -->
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-2">fI — Grado de Infección</label>
+              <div class="segmented-control">
+                <label><input type="radio" name="fi_grade" value="0" checked><span>0</span></label>
+                <label><input type="radio" name="fi_grade" value="1"><span>1</span></label>
+                <label><input type="radio" name="fi_grade" value="2"><span>2</span></label>
+                <label><input type="radio" name="fi_grade" value="3"><span>3</span></label>
+              </div>
+              <p class="text-xs text-slate-500 mt-2 italic" id="fi_desc">Sin síntomas/signos de infección.</p>
+            </div>
+
+            <!-- I - Ischemia (Auto Calculation) -->
+            <div class="p-4 bg-slate-50 rounded-lg border border-slate-100">
+              <label class="block text-sm font-semibold text-slate-700 mb-3">Isquemia (Hemodinámica)</label>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div>
+                  <label class="text-xs font-medium text-slate-500 uppercase">ABI</label>
+                  <input id="abi" type="number" step="0.01" class="mt-1 w-full border-slate-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm" placeholder="0.90">
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-slate-500 uppercase">Presión Tobillo</label>
+                  <input id="ap" type="number" step="1" class="mt-1 w-full border-slate-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm" placeholder="mmHg">
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-slate-500 uppercase">TP / TcPO₂</label>
+                  <input id="tp" type="number" step="1" class="mt-1 w-full border-slate-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm" placeholder="mmHg">
+                </div>
+                <div class="flex items-center pt-5">
+                   <label class="flex items-center gap-2 cursor-pointer">
+                     <input id="ncABI" type="checkbox" class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+                     <span class="text-xs text-slate-700 font-medium">ABI No compresible</span>
+                   </label>
+                </div>
+              </div>
+              
+              <div class="mt-4 pt-4 border-t border-slate-200">
+                <label class="block text-sm font-medium text-slate-600 mb-1">Override Manual (I)</label>
+                <select id="i_grade" class="w-full sm:w-1/2 text-sm border-slate-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                  <option value="-1">Automático (según valores arriba)</option>
+                  <option value="0">0 - No isquemia</option>
+                  <option value="1">1 - Leve</option>
+                  <option value="2">2 - Moderada</option>
+                  <option value="3">3 - Severa</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- GLASS Section -->
+        <section id="glass" class="card">
+          <div class="card-header">
+            <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+              <span class="bg-indigo-100 text-indigo-700 w-6 h-6 rounded-full flex items-center justify-center text-xs">2</span>
+              Anatomía GLASS (GVG)
+            </h2>
+          </div>
+          <div class="card-body space-y-6">
+            
+            <!-- FP -->
+            <div>
+              <div class="flex justify-between items-baseline mb-1">
+                <label class="block text-sm font-semibold text-slate-700">Femoropoplíteo (FP)</label>
+                <label class="text-xs flex items-center gap-1 cursor-pointer select-none">
+                  <input id="fp_calcif" type="checkbox" class="rounded text-indigo-600 focus:ring-indigo-500"> 
+                  <span class="text-slate-500">Calcificación Severa (+1)</span>
+                </label>
+              </div>
+              <select id="fp_grade" class="w-full border-slate-300 rounded-md shadow-sm text-sm py-2">
+                <option value="0">0 — Enfermedad leve / No significativa</option>
+                <option value="1">1 — Longitud total <10cm (AFS) / Sin poplítea severa</option>
+                <option value="2">2 — Longitud 10–20cm (AFS) / Estenosis poplítea <2cm</option>
+                <option value="3">3 — Longitud >20cm / Oclusión flush / Poplítea 2–5cm</option>
+                <option value="4">4 — Oclusión total >20cm / Poplítea severa extensa</option>
+              </select>
+            </div>
+
+            <!-- IP -->
+            <div>
+              <div class="flex justify-between items-baseline mb-1">
+                <label class="block text-sm font-semibold text-slate-700">Infrapoplíteo (IP)</label>
+                <label class="text-xs flex items-center gap-1 cursor-pointer select-none">
+                  <input id="ip_calcif" type="checkbox" class="rounded text-indigo-600 focus:ring-indigo-500"> 
+                  <span class="text-slate-500">Calcificación Severa (+1)</span>
+                </label>
+              </div>
+              <select id="ip_grade" class="w-full border-slate-300 rounded-md shadow-sm text-sm py-2">
+                <option value="0">0 — Enfermedad leve / No significativa</option>
+                <option value="1">1 — Focal <3cm (No Tronco TP)</option>
+                <option value="2">2 — Longitud total <10cm / CTO única <3cm</option>
+                <option value="3">3 — Longitud 10–20cm / CTO 3–10cm</option>
+                <option value="4">4 — Longitud >20cm / CTO >10cm / Afectación TTP</option>
+              </select>
+            </div>
+
+            <div class="grid sm:grid-cols-2 gap-4">
+               <!-- Pedal -->
+               <div>
+                  <label class="block text-sm font-semibold text-slate-700 mb-1">Descriptor Pedal</label>
+                  <select id="p_grade" class="w-full border-slate-300 rounded-md shadow-sm text-sm">
+                    <option value="P0">P0 — Arteria destino cruza tobillo, arco intacto</option>
+                    <option value="P1">P1 — Cruza tobillo, arco ausente</option>
+                    <option value="P2">P2 — No cruza tobillo</option>
+                  </select>
+               </div>
+               
+               <!-- Aorto-Iliac (Detailed) -->
+               <div class="bg-slate-50 p-3 rounded-md border border-slate-100">
+                 <label class="block text-sm font-semibold text-slate-700 mb-2">Aorto-Ilíaco (AI)</label>
+                 <select id="ai_stage" class="w-full border-slate-300 rounded-md shadow-sm text-sm mb-2">
+                   <option value="0">0 — Sin lesión significativa</option>
+                   <option value="1">1 — Enfermedad Focal (Estadio I)</option>
+                   <option value="2">2 — Enfermedad Extensa / Aorta (Estadio II)</option>
+                 </select>
+                 
+                 <!-- Dynamic Description -->
+                 <div class="text-xs text-slate-500 italic mb-3 min-h-[2.5em]" id="ai_desc_text">
+                   Sin estenosis significativa en sistema Aorto-Ilíaco.
+                 </div>
+
+                 <div class="flex flex-col gap-1 text-xs border-t border-slate-200 pt-2">
+                   <span class="font-semibold text-slate-600">Arteria Femoral Común (CFA):</span>
+                   <div class="flex gap-4 mt-1">
+                     <label class="flex items-center gap-1 cursor-pointer"><input type="radio" name="cfa" value="A" checked class="text-indigo-600 focus:ring-indigo-500"> <span>A (Intacta)</span></label>
+                     <label class="flex items-center gap-1 cursor-pointer"><input type="radio" name="cfa" value="B" class="text-indigo-600 focus:ring-indigo-500"> <span>B (>50%)</span></label>
+                   </div>
+                 </div>
+               </div>
+            </div>
+            
+            <div class="bg-blue-50 text-blue-800 text-xs p-3 rounded-md border border-blue-100 hidden" id="glass_result_preview">
+               Resultado parcial GLASS se mostrará aquí.
+            </div>
+          </div>
+        </section>
+
+        <!-- Risk Factors (Combined) -->
+        <section id="risk" class="card">
+          <div class="card-header">
+            <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+              <span class="bg-indigo-100 text-indigo-700 w-6 h-6 rounded-full flex items-center justify-center text-xs">3</span>
+              Factores de Riesgo (FINNVASC / P-III)
+            </h2>
+          </div>
+          <div class="card-body">
+            <div class="grid sm:grid-cols-2 gap-6">
+              
+              <!-- FINNVASC -->
+              <div class="space-y-2">
+                <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">Comorbilidades</h3>
+                <label class="flex items-center justify-between p-2 rounded hover:bg-slate-50 border border-transparent hover:border-slate-200 cursor-pointer transition-all">
+                  <span class="text-sm text-slate-700">Diabetes Mellitus</span>
+                  <input id="fv_dm" type="checkbox" class="rounded text-emerald-600 focus:ring-emerald-500 w-5 h-5">
+                </label>
+                <label class="flex items-center justify-between p-2 rounded hover:bg-slate-50 border border-transparent hover:border-slate-200 cursor-pointer transition-all">
+                  <span class="text-sm text-slate-700">Cardiopatía Isquémica (CAD)</span>
+                  <input id="fv_cad" type="checkbox" class="rounded text-emerald-600 focus:ring-emerald-500 w-5 h-5">
+                </label>
+                 <label class="flex items-center justify-between p-2 rounded hover:bg-slate-50 border border-transparent hover:border-slate-200 cursor-pointer transition-all">
+                  <span class="text-sm text-slate-700">Insuficiencia Renal (Diálisis)</span>
+                  <input id="piii_dial" type="checkbox" class="rounded text-emerald-600 focus:ring-emerald-500 w-5 h-5">
+                </label>
+                 <label class="flex items-center justify-between p-2 rounded hover:bg-slate-50 border border-transparent hover:border-slate-200 cursor-pointer transition-all">
+                  <span class="text-sm text-slate-700">Edad &ge; 75 años</span>
+                  <input id="piii_age" type="checkbox" class="rounded text-emerald-600 focus:ring-emerald-500 w-5 h-5">
+                </label>
+              </div>
+
+              <!-- Presentation -->
+              <div class="space-y-2">
+                <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">Presentación Clínica</h3>
+                <label class="flex items-center justify-between p-2 rounded hover:bg-slate-50 border border-transparent hover:border-slate-200 cursor-pointer transition-all">
+                  <span class="text-sm text-slate-700">Gangrena del Pie</span>
+                  <input id="fv_gang" type="checkbox" class="rounded text-red-600 focus:ring-red-500 w-5 h-5">
+                </label>
+                <label class="flex items-center justify-between p-2 rounded hover:bg-slate-50 border border-transparent hover:border-slate-200 cursor-pointer transition-all">
+                  <span class="text-sm text-slate-700">Cirugía Urgente</span>
+                  <input id="fv_urg" type="checkbox" class="rounded text-red-600 focus:ring-red-500 w-5 h-5">
+                </label>
+                <label class="flex items-center justify-between p-2 rounded hover:bg-slate-50 border border-transparent hover:border-slate-200 cursor-pointer transition-all">
+                  <span class="text-sm text-slate-700">Pérdida Tisular Activa</span>
+                  <input id="piii_tiss" type="checkbox" class="rounded text-red-600 focus:ring-red-500 w-5 h-5">
+                </label>
+                <div class="flex items-center justify-between p-2">
+                  <span class="text-sm text-slate-700">Hematocrito (%)</span>
+                  <input id="piii_hct" type="number" step="1" class="w-20 border-slate-300 rounded-md text-sm text-right focus:ring-indigo-500 focus:border-indigo-500" placeholder=">30">
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        <!-- Charts Row -->
+        <section class="grid md:grid-cols-2 gap-6 no-print">
+           <div class="card p-4">
+             <h4 class="text-xs font-bold text-slate-400 uppercase mb-4 text-center">Patencia Estimada (1 año)</h4>
+             <!-- FIX: Container to constrain height and prevent loop -->
+             <div class="relative h-48 w-full">
+                <canvas id="lbpChart"></canvas>
+             </div>
+           </div>
+           <div class="card p-4">
+             <h4 class="text-xs font-bold text-slate-400 uppercase mb-4 text-center">Bandas de Riesgo</h4>
+             <!-- FIX: Container to constrain height and prevent loop -->
+             <div class="relative h-48 w-full">
+                <canvas id="riskChart"></canvas>
+             </div>
+           </div>
+        </section>
+
+      </div>
+
+      <!-- Right Column: Summary Dashboard (Sticky) -->
+      <aside class="lg:col-span-4">
+        <div class="sticky top-24 space-y-6">
+          
+          <!-- Summary Card -->
+          <div class="card border-t-4 border-t-indigo-500 shadow-lg">
+            <div class="card-header bg-slate-50">
+              <h2 class="text-lg font-bold text-slate-800">Resultados del Caso</h2>
+              <p class="text-xs text-slate-500">Cálculo en tiempo real</p>
+            </div>
+            <div class="divide-y divide-slate-100">
+              
+              <!-- WIfI Result -->
+              <div class="p-4">
+                <div class="flex justify-between items-center mb-1">
+                  <span class="text-sm font-medium text-slate-600">Estadio WIfI</span>
+                  <span id="wifi_stage_out" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-800">--</span>
+                </div>
+                <div class="flex justify-between text-xs text-slate-400 font-mono mt-1">
+                  <span id="wifi_codes">W- I- fI-</span>
+                  <span id="amputation_risk">Riesgo Amp: --</span>
+                </div>
+              </div>
+
+              <!-- GLASS Result -->
+              <div class="p-4">
+                 <div class="flex justify-between items-center mb-1">
+                  <span class="text-sm font-medium text-slate-600">Estadio GLASS</span>
+                  <span id="glass_stage_out" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-800">--</span>
+                </div>
+                <div class="text-xs text-slate-500 mt-2 leading-relaxed" id="glass_detail_text">
+                  Detalles anatómicos pendientes.
+                </div>
+              </div>
+
+              <!-- PLAN / BASIL Result -->
+              <div class="p-4 bg-indigo-50/50">
+                <div class="text-xs font-bold text-indigo-400 uppercase mb-1">Recomendación Sugerida</div>
+                <p id="plan_recommendation" class="text-sm font-medium text-slate-800 leading-snug">
+                  Complete los datos para ver la sugerencia basada en evidencia.
+                </p>
+                <div class="mt-3 pt-3 border-t border-indigo-100 flex items-center justify-between">
+                   <span class="text-xs text-slate-500">OS (2 años)</span>
+                   <div class="flex items-center gap-2">
+                     <input id="os2y_manual" type="number" placeholder="%" class="w-12 h-6 text-xs border-slate-300 rounded bg-white text-right" title="Sobrevida manual">
+                     <span id="os2y_display" class="font-bold text-sm text-slate-700">--</span>
+                   </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Reference Card (Hidden on Print) -->
+          <div class="card bg-slate-800 text-slate-300 p-4 text-xs space-y-2 no-print">
+            <h3 class="font-bold text-white uppercase tracking-wider mb-2">Referencias</h3>
+            <p>1. Global Vascular Guidelines (ESVS/SVS/WFVS).</p>
+            <p>2. Conte MS et al. J Vasc Surg 2019.</p>
+            <p>3. FINNVASC & PREVENT III Scores.</p>
+            <div class="pt-2 mt-2 border-t border-slate-700 text-slate-500 italic">
+              Esta herramienta es una ayuda de decisión. No sustituye el juicio clínico profesional.
+            </div>
+          </div>
+
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <script>
+    // --- Logic Utilities ---
+    // Added Safe Null Check for $
+    const $ = (s) => document.querySelector(s) || null;
+    const $$ = (s) => Array.from(document.querySelectorAll(s));
+    const clamp = (n,min,max) => Math.max(min, Math.min(max,n));
+    const toInt = (v,d=0) => { const n=parseInt(v,10); return isNaN(n)?d:n; };
+    const toFloat = (v,d=0) => { const n=parseFloat(v); return isNaN(n)?d:n; };
+
+    // --- Data Dictionaries (Descriptions) ---
+    const DESCRIPTIONS = {
+      W: ["Sin úlcera/gangrena", "Úlcera pequeña / distal", "Úlcera profunda / Gangrena falange", "Gangrena extensa / antepié"],
+      FI: ["Sin infección", "Local / Celulitis <2cm", "Local profunda / absceso", "Sistémica / SIRS / Sepsis"],
+      GLASS: ["I", "II", "III"],
+      AI: [
+        "Sin estenosis significativa en sistema Aorto-Ilíaco.",
+        "• Estenosis Ilíaca (uni/bilateral)<br>• Oclusión (CTO) Ilíaca Unilateral<br>• Estenosis Aorta Infrarrenal",
+        "• Oclusión (CTO) Aórtica<br>• Oclusión Ilíaca Bilateral<br>• Calcificación severa difusa / Hipoplasia<br>• Aneurisma concomitante"
+      ]
+    };
+
+    // --- WIfI Logic ---
+    const wifiMatrix = [
+      // W0
+      [[1,1,2,3],[1,1,2,3],[2,2,3,4],[3,3,4,4]],
+      // W1
+      [[1,2,3,4],[1,2,3,4],[3,3,4,4],[4,4,4,4]],
+      // W2
+      [[2,2,3,4],[2,3,4,4],[3,4,4,4],[4,4,4,4]],
+      // W3
+      [[2,3,3,4],[3,3,4,4],[4,4,4,4],[4,4,4,4]]
+    ];
+
+    function calculateIschemia({abi, ap, tp, nc}) {
+      if (nc) return 3; // Worst case assumption if Non-Compressible and no other data, usually requires manual override though
+      
+      let score = 0;
+      // Logic hierarchy: TP > AP > ABI (Clinical preference often favors TP in CLTI)
+      if (tp > 0) score = Math.max(score, tp>=60?0 : tp>=40?1 : tp>=30?2 : 3);
+      else if (ap > 0) score = Math.max(score, ap>100?0 : ap>=70?1 : ap>=50?2 : 3);
+      else if (abi > 0) score = Math.max(score, abi>=0.8?0 : abi>=0.6?1 : abi>=0.4?2 : 3);
+      
+      return score;
+    }
+
+    function getAmputationRisk(stage) {
+      const risks = {1: "Muy Bajo", 2: "Bajo", 3: "Moderado", 4: "Alto"};
+      return risks[stage] || "--";
+    }
+
+    // --- GLASS Logic ---
+    function getGlassStage(fp, ip) {
+      // Matrix from app.js [4-fp][ip]
+      // Row 0 = FP4, Row 4 = FP0
+      const table = [
+        ["III","III","III","III","III"], // FP 4
+        ["II","II","II","III","III"],   // FP 3
+        ["I","II","II","II","III"],     // FP 2
+        ["I","I","II","II","III"],      // FP 1
+        ["NA","I","I","II","III"]       // FP 0
+      ];
+      // Safety clamp
+      const r = clamp(4-fp, 0, 4);
+      const c = clamp(ip, 0, 4);
+      return table[r][c];
+    }
+
+    function getLBP(stage) {
+      if(stage === "I") return 80;
+      if(stage === "II") return 60;
+      if(stage === "III") return 40;
+      return 90; // NA
+    }
+
+    // --- Charts ---
+    let lbpChartInstance, riskChartInstance;
+
+    function initCharts() {
+      const ctxLBP = document.getElementById('lbpChart');
+      const ctxRisk = document.getElementById('riskChart');
+      
+      if(!ctxLBP || !ctxRisk) return;
+
+      Chart.defaults.font.family = "'Inter', sans-serif";
+      Chart.defaults.color = '#64748b';
+
+      lbpChartInstance = new Chart(ctxLBP, {
+        type: 'bar',
+        data: {
+          labels: ['Estadio GLASS'],
+          datasets: [{
+            label: 'Probabilidad Patencia Técnica (1a)',
+            data: [0],
+            backgroundColor: 'rgba(79, 70, 229, 0.2)',
+            borderColor: 'rgba(79, 70, 229, 1)',
+            borderWidth: 1,
+            barThickness: 40
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: { y: { beginAtZero: true, max: 100 } },
+          plugins: { legend: { display: false } }
+        }
+      });
+
+      riskChartInstance = new Chart(ctxRisk, {
+        type: 'bar',
+        data: {
+          labels: ['FINNVASC', 'PREVENT III'],
+          datasets: [{
+            label: 'Nivel de Riesgo (1-3)',
+            data: [1, 1],
+            backgroundColor: ['rgba(16, 185, 129, 0.2)', 'rgba(16, 185, 129, 0.2)'],
+            borderColor: ['rgba(16, 185, 129, 1)', 'rgba(16, 185, 129, 1)'],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: { y: { beginAtZero: true, max: 3, ticks: { stepSize: 1, callback: v=>['','Bajo','Med','Alto'][v] } } },
+          plugins: { legend: { display: false } }
+        }
+      });
+    }
+
+    // --- Main Calculation ---
+    function update() {
+      // 1. Inputs WIfI
+      const wEl = $('input[name="w_grade"]:checked');
+      const fiEl = $('input[name="fi_grade"]:checked');
+      
+      // SAFEGUARD: If elements not found, abort or default
+      const w = wEl ? toInt(wEl.value) : 0;
+      const fi = fiEl ? toInt(fiEl.value) : 0;
+      
+      // Update Descriptions (Check existence)
+      if($('#w_desc')) $('#w_desc').innerText = DESCRIPTIONS.W[w];
+      if($('#fi_desc')) $('#fi_desc').innerText = DESCRIPTIONS.FI[fi];
+
+      // Ischemia
+      let i = toInt($('#i_grade') ? $('#i_grade').value : -1);
+      if (i === -1) {
+        i = calculateIschemia({
+          abi: toFloat($('#abi') ? $('#abi').value : 0),
+          ap: toFloat($('#ap') ? $('#ap').value : 0),
+          tp: toFloat($('#tp') ? $('#tp').value : 0),
+          nc: $('#ncABI') ? $('#ncABI').checked : false
+        });
+      }
+      
+      // WIfI Stage
+      const wifiStage = wifiMatrix[w][i][fi];
+      
+      // UI Update WIfI
+      const wBadge = $('#wifi_badge_live');
+      if (wBadge) {
+        wBadge.innerText = `Estadio ${wifiStage}`;
+        wBadge.className = `text-xs font-bold px-2 py-1 rounded ${
+            wifiStage === 1 ? 'bg-emerald-100 text-emerald-700' :
+            wifiStage === 2 ? 'bg-amber-100 text-amber-700' :
+            wifiStage === 3 ? 'bg-orange-100 text-orange-700' :
+            'bg-red-100 text-red-700'
+        }`;
+      }
+      
+      if($('#wifi_stage_out')) {
+         $('#wifi_stage_out').innerText = wifiStage;
+         if(wBadge) $('#wifi_stage_out').className = wBadge.className + " inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold";
+      }
+      if($('#wifi_codes')) $('#wifi_codes').innerText = `W:${w} I:${i} fI:${fi}`;
+      if($('#amputation_risk')) $('#amputation_risk').innerText = `Riesgo Amp 1a: ${getAmputationRisk(wifiStage)}`;
+
+      // 2. GLASS
+      // SAFEGUARD: Check inputs
+      let fp = toInt($('#fp_grade') ? $('#fp_grade').value : 0);
+      let ip = toInt($('#ip_grade') ? $('#ip_grade').value : 0);
+      if ($('#fp_calcif') && $('#fp_calcif').checked) fp = clamp(fp + 1, 0, 4);
+      if ($('#ip_calcif') && $('#ip_calcif').checked) ip = clamp(ip + 1, 0, 4);
+      
+      const glassStage = getGlassStage(fp, ip);
+      
+      // UI Update GLASS
+      const gBadge = $('#glass_stage_out');
+      if(gBadge) {
+          gBadge.innerText = glassStage;
+          gBadge.className = `inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${
+            glassStage === 'III' ? 'bg-red-100 text-red-700' : 
+            glassStage === 'II' ? 'bg-amber-100 text-amber-700' : 
+            'bg-emerald-100 text-emerald-700'
+          }`;
+      }
+      
+      const ai = toInt($('#ai_stage') ? $('#ai_stage').value : 0);
+      
+      // Update AI Description
+      if($('#ai_desc_text')) {
+        $('#ai_desc_text').innerHTML = DESCRIPTIONS.AI[ai] || "";
+      }
+
+      const cfaEl = $('input[name="cfa"]:checked');
+      const cfa = cfaEl ? cfaEl.value : 'A';
+      const pedal = $('#p_grade') ? $('#p_grade').value : 'P0';
+      
+      if($('#glass_detail_text')) {
+          $('#glass_detail_text').innerHTML = `
+            <b>FP:</b> ${fp} | <b>IP:</b> ${ip} | <b>P:</b> ${pedal}<br>
+            <b>AI:</b> Estadio ${ai} (CFA ${cfa})
+          `;
+      }
+
+      // 3. Risk Scores
+      // FINNVASC
+      let finnScore = 0;
+      if($('#fv_dm') && $('#fv_dm').checked) finnScore++;
+      if($('#fv_cad') && $('#fv_cad').checked) finnScore++;
+      if($('#fv_gang') && $('#fv_gang').checked) finnScore++;
+      if($('#fv_urg') && $('#fv_urg').checked) finnScore++;
+      const finnLevel = finnScore >=3 ? 3 : (finnScore === 2 ? 2 : 1);
+
+      // P-III
+      let p3 = 0;
+      if($('#piii_dial') && $('#piii_dial').checked) p3 += 4;
+      if(($('#piii_tiss') && $('#piii_tiss').checked) || w > 0) p3 += 3; // Auto-detect tissue loss from WIfI
+      if($('#piii_age') && $('#piii_age').checked) p3 += 2;
+      
+      // FIX: Use shared CAD input because 'piii_cad' didn't exist in HTML
+      if($('#fv_cad') && $('#fv_cad').checked) p3 += 1; 
+
+      const hct = toFloat($('#piii_hct') ? $('#piii_hct').value : 0);
+      if(hct > 0 && hct <= 30) p3 += 2;
+      const p3Level = p3 >= 8 ? 3 : (p3 >= 4 ? 2 : 1);
+
+      // 4. Update Charts
+      if(lbpChartInstance) {
+        lbpChartInstance.data.datasets[0].data = [getLBP(glassStage)];
+        lbpChartInstance.update();
+      }
+      if(riskChartInstance) {
+        riskChartInstance.data.datasets[0].data = [finnLevel, p3Level];
+        riskChartInstance.data.datasets[0].backgroundColor = [
+            finnLevel===3?'rgba(239, 68, 68, 0.2)':(finnLevel===2?'rgba(245, 158, 11, 0.2)':'rgba(16, 185, 129, 0.2)'),
+            p3Level===3?'rgba(239, 68, 68, 0.2)':(p3Level===2?'rgba(245, 158, 11, 0.2)':'rgba(16, 185, 129, 0.2)')
+        ];
+        riskChartInstance.data.datasets[0].borderColor = [
+            finnLevel===3?'rgba(239, 68, 68, 1)':(finnLevel===2?'rgba(245, 158, 11, 1)':'rgba(16, 185, 129, 1)'),
+            p3Level===3?'rgba(239, 68, 68, 1)':(p3Level===2?'rgba(245, 158, 11, 1)':'rgba(16, 185, 129, 1)')
+        ];
+        riskChartInstance.update();
+      }
+
+      // 5. Logic PLAN / BASIL
+      // Est. OS 2yr
+      let os = toFloat($('#os2y_manual') ? $('#os2y_manual').value : 0);
+      if(!os && wifiStage > 0) {
+        os = (wifiStage <= 2) ? 75 : (wifiStage === 3 ? 60 : 40); // Rough estimation logic
+      }
+      if($('#os2y_display')) $('#os2y_display').innerText = os > 0 ? os + "%" : "--";
+      
+      let rec = "";
+      if (os > 0 && os < 50) {
+        rec = "Esperanza de vida limitada (<50% a 2 años). Preferir abordaje <b>Endovascular</b> o Conservador.";
+      } else if (glassStage === 'III' && os >= 50 && ($('#piii_dial') && $('#piii_dial').checked === false)) {
+         rec = "Enfermedad compleja (GLASS III) y riesgo aceptable. Considerar <b>Bypass con Vena</b> (BASIL-1).";
+      } else {
+         rec = "Abordaje individualizado. Endovascular primero es razonable si anatomía favorable.";
+      }
+      if($('#plan_recommendation')) $('#plan_recommendation').innerHTML = rec;
+    }
+
+    // --- Export ---
+    function exportData() {
+      // Safe check function
+      const safeCheck = (id) => $(id) && $(id).checked;
+      const safeVal = (id) => $(id) ? $(id).value : "";
+
+      const data = {
+        date: new Date().toISOString(),
+        wifi: { 
+            w: safeVal('input[name="w_grade"]:checked'),
+            fi: safeVal('input[name="fi_grade"]:checked'),
+            i_final: $('#wifi_codes') ? $('#wifi_codes').innerText : ""
+        },
+        glass: {
+            stage: $('#glass_stage_out') ? $('#glass_stage_out').innerText : "",
+            fp: safeVal('#fp_grade'),
+            ip: safeVal('#ip_grade')
+        },
+        risk: {
+            dm: safeCheck('#fv_dm'),
+            cad: safeCheck('#fv_cad'),
+            score: $('#riskChart') ? "Generated" : ""
+        }
+      };
+      
+      const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `VascularRisk_Report_${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+    }
+
+    function reset() {
+       $$('input[type="checkbox"]').forEach(c => c.checked = false);
+       $$('input[type="number"]').forEach(i => i.value = '');
+       $$('select').forEach(s => s.selectedIndex = 0);
+       
+       // Reset Radios
+       const w0 = $('input[name="w_grade"][value="0"]'); if(w0) w0.click();
+       const fi0 = $('input[name="fi_grade"][value="0"]'); if(fi0) fi0.click();
+       const cfaA = $('input[name="cfa"][value="A"]'); if(cfaA) cfaA.click();
+       
+       update();
+    }
+
+    // --- Init ---
+    window.addEventListener('DOMContentLoaded', () => {
+      initCharts();
+      
+      // Bind all inputs
+      $$('input, select').forEach(el => {
+        el.addEventListener('change', update);
+        el.addEventListener('input', update);
+      });
+
+      if($('#exportBtn')) $('#exportBtn').addEventListener('click', exportData);
+      if($('#resetBtn')) $('#resetBtn').addEventListener('click', reset);
+      if($('#recalcBtn')) $('#recalcBtn').addEventListener('click', update);
+
+      // Initial run
+      update();
+    });
+
+  </script>
+</body>
+</html>
